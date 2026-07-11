@@ -1,0 +1,196 @@
+/* ==========================================================================
+   styles.css  —  "Modern Slate" theme
+   All the colors, fonts, and spacing live here. To recolor the whole site
+   later, you mostly just change the values in the ":root" block below.
+   ========================================================================== */
+
+/* ---- 1. THE COLOR & FONT "DIALS" ----------------------------------------
+   These named values are reused everywhere. Change one here and it updates
+   across the entire site. (The #hex codes are exact color names for the computer.) */
+:root {
+  --color-slate:      #2b3440;  /* charcoal/slate — header background        */
+  --color-slate-deep: #1f2933;  /* a darker slate — footer background        */
+  --color-bg:         #f7f8f9;  /* soft off-white — page background          */
+  --color-surface:    #ffffff;  /* pure white — cards/boxes                  */
+  --color-text:       #232b33;  /* dark slate — main text                    */
+  --color-text-soft:  #5b6773;  /* muted gray — secondary text               */
+  --color-accent:     #14958a;  /* teal — buttons, highlights, links         */
+  --color-accent-dk:  #0f7a71;  /* darker teal — hover state                 */
+  --color-border:     #e2e6ea;  /* light gray — thin dividing lines          */
+
+  --font-head: "Lora", Georgia, serif;               /* serif for headings   */
+  --font-body: "Inter", Arial, Helvetica, sans-serif; /* sans for everything else */
+
+  --maxwidth: 1140px;   /* how wide content stretches on big desktop screens */
+  --radius:   10px;     /* rounded-corner amount                             */
+}
+
+/* ---- 2. BASELINE RESET --------------------------------------------------
+   A few sensible defaults so the page looks consistent across browsers. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+
+  /* Make the footer sit at the bottom even when the page is short. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-accent-dk);
+}
+
+/* ---- 3. THE "CONTAINER" --------------------------------------------------
+   A reusable centered column that keeps content from touching screen edges.
+   Every section wraps its content in a .container. */
+.container {
+  width: 100%;
+  max-width: var(--maxwidth);
+  margin: 0 auto;      /* centers it horizontally */
+  padding: 0 24px;     /* breathing room on the left and right */
+}
+
+/* ---- 4. HEADER / NAV BAR ------------------------------------------------- */
+.site-header {
+  background-color: var(--color-slate);
+  color: #ffffff;
+  border-bottom: 3px solid var(--color-accent);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* name on the left, menu on the right */
+  height: 74px;
+}
+
+.brand {
+  font-family: var(--font-head);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+.brand:hover {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.main-nav a {
+  color: #e8ebee;
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+.main-nav a:hover {
+  color: #ffffff;
+}
+
+/* The temporary "Menu links go here" hint text. Delete this style later. */
+.nav-placeholder {
+  color: #9aa6b2;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* ---- 5. MAIN CONTENT AREA ------------------------------------------------ */
+.site-main {
+  flex: 1 0 auto;          /* lets the main area grow and push footer down */
+  padding: 56px 0;
+}
+
+/* Placeholder sections — these EXIST ONLY to show you where content goes.
+   You'll replace them with real content later. */
+.placeholder-section {
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 48px 40px;
+  margin-bottom: 28px;
+  min-height: 180px;
+}
+
+.placeholder-tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background-color: rgba(20, 149, 138, 0.09);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.placeholder-note {
+  color: var(--color-text-soft);
+  max-width: 620px;
+}
+
+/* ---- 6. FOOTER ----------------------------------------------------------- */
+.site-footer {
+  flex-shrink: 0;
+  background-color: var(--color-slate-deep);
+  color: #c6ced6;
+  padding: 32px 0;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  font-family: var(--font-head);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.footer-note {
+  font-size: 0.9rem;
+  color: #8a95a1;
+}
+
+/* ---- 7. SMALL-SCREEN FALLBACK -------------------------------------------
+   You design mostly for desktop, but this keeps it from breaking on a phone
+   by stacking the header and footer items vertically on narrow screens. */
+@media (max-width: 640px) {
+  .header-inner,
+  .footer-inner {
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+}

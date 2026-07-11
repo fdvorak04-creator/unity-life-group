@@ -1,0 +1,13 @@
+# Folders and files that should NOT be uploaded to GitHub.
+
+# "node_modules" holds thousands of downloaded helper files. It gets rebuilt
+# automatically, so we never upload it.
+node_modules/
+
+# Log files and operating-system clutter.
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Local secret settings (we don't have any yet, but this is here for later).
+.env
