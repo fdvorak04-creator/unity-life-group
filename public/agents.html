@@ -1,7 +1,17 @@
 <!-- ==========================================================================
      agents.html  —  "AGENT PORTAL"  (lives at the address /agents)
-     A skeleton for now: the real header and layout, with EMPTY category
-     cards waiting to be filled in. Nothing here is clickable yet.
+
+     The daily driver. Every page in /new-agents is an ERRAND — you do it once
+     and you never open it again. This page is the opposite: a producing agent
+     opens it every single morning, so it is built for speed, not for reading.
+     Seven sections, each one a flat grid of links, nothing collapsed, nothing
+     to click through to get to a carrier login.
+
+     No contact information anywhere, by design: this is where an agent goes to
+     WORK, not a directory.
+
+     Everything external opens in a new tab — an agent clicking a carrier login
+     should never lose the hub they came from.
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +52,6 @@
         <a href="/new-agents">Start Here</a>
         <!-- "is-active" gives this link the gold underline, because we ARE on this page. -->
         <a href="/agents" class="is-active" aria-current="page">Agent Portal</a>
-        <a href="/vision">The Vision</a>
       </nav>
 
     </div>
@@ -53,62 +62,150 @@
   <main class="site-main">
     <div class="container">
 
-      <div class="page-head">
+      <div class="page-head fade-up fade-up-1">
         <h1 class="page-title">Agent Portal</h1>
-        <p class="page-sub">
-          For active agents — carriers, tools, and resources.
-        </p>
       </div>
 
-      <!-- The empty category cards. Each one is a plain box (not a link), so
-           there is nothing misleading to click. Fill these in later.
-
-           The ids are the targets of the homepage's quick-links. They point at
-           sections that ALREADY EXIST here — no new section was invented to give
-           a link somewhere to land. ("Book of Business" has no section yet, so
-           that link goes to this page rather than to an anchor that scrolls to
-           nothing.) -->
-      <div class="card-grid">
-
-        <div class="cat-card" id="carriers">
-          <h2 class="cat-name">Carriers</h2>
-          <span class="cat-soon">Coming soon</span>
+      <div class="portal-shell fade-up fade-up-2" id="portal-shell">
+        <div class="portal-category-grid" id="portal-category-grid">
+          <button type="button" class="portal-category-card" data-open-category="carriers" aria-controls="portal-panel-carriers">
+            <span class="portal-category-title">Carriers</span>
+          </button>
+          <button type="button" class="portal-category-card" data-open-category="quoting" aria-controls="portal-panel-quoting">
+            <span class="portal-category-title">Quoting &amp; Tools</span>
+          </button>
+          <button type="button" class="portal-category-card" data-open-category="trackers" aria-controls="portal-panel-trackers">
+            <span class="portal-category-title">Trackers &amp; Templates</span>
+          </button>
+          <button type="button" class="portal-category-card" data-open-category="comp" aria-controls="portal-panel-comp">
+            <span class="portal-category-title">Compensation &amp; Bonuses</span>
+          </button>
+          <button type="button" class="portal-category-card" data-open-category="leads" aria-controls="portal-panel-leads">
+            <span class="portal-category-title">Leads</span>
+          </button>
+          <button type="button" class="portal-category-card" data-open-category="back-office" aria-controls="portal-panel-back-office">
+            <span class="portal-category-title">Back Office</span>
+          </button>
         </div>
 
-        <div class="cat-card">
-          <h2 class="cat-name">E-Apps</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <section class="portal-panel" id="portal-panel-carriers" data-panel="carriers" hidden aria-label="Carriers">
+          <div class="portal-panel-head">
+            <button type="button" class="portal-back" data-close-panel>Back to categories</button>
+            <h2 class="portal-panel-title">Carriers</h2>
+          </div>
+          <div class="portal-list">
+            <div class="portal-item"><a class="portal-item-link" href="https://www.aetnaseniorproducts.com/ssi/index.html" target="_blank" rel="noopener noreferrer">Aetna</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://www.americanamicable.com/v4/agentLogin.php" target="_blank" rel="noopener noreferrer">American Amicable</a><a class="portal-item-link portal-item-link-sub" href="https://www.americanamicable.com/cgi/expresspay/expresspay.php" target="_blank" rel="noopener noreferrer">Express Pay</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://account.americoagent.com/Identity/Account/Login/?returnUrl=https://portal.americoagent.com/" target="_blank" rel="noopener noreferrer">Americo</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://chubb.insuranceadmin.com/login" target="_blank" rel="noopener noreferrer">Chubb</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://connext.corebridgefinancial.com/life/connext-bob/public/login" target="_blank" rel="noopener noreferrer">Corebridge</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://agents.ethoslife.com/login" target="_blank" rel="noopener noreferrer">Ethos</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://producer.mutualofomaha.com/enterprise/portal/home/welcome/" target="_blank" rel="noopener noreferrer">Mutual of Omaha</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://agent.royalneighbors.org/secure" target="_blank" rel="noopener noreferrer">Royal Neighbors</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://secure.transamerica.com/login/sign-in/login.html?TAM_OP=login" target="_blank" rel="noopener noreferrer">Transamerica</a></div>
+          </div>
+        </section>
 
-        <div class="cat-card" id="tools">
-          <h2 class="cat-name">Underwriting Tools</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <section class="portal-panel" id="portal-panel-quoting" data-panel="quoting" hidden aria-label="Quoting &amp; Tools">
+          <div class="portal-panel-head">
+            <button type="button" class="portal-back" data-close-panel>Back to categories</button>
+            <h2 class="portal-panel-title">Quoting &amp; Tools</h2>
+          </div>
+          <div class="portal-list">
+            <div class="portal-item portal-item-stack">
+              <div class="portal-item-main">
+                <span class="portal-item-name">Insurance Toolkits</span>
+                <a class="portal-item-link" href="https://insurancetoolkits.com/login" target="_blank" rel="noopener noreferrer">Open Toolkits</a>
+              </div>
+              <div class="portal-cred">
+                <div class="portal-cred-row"><span class="portal-cred-key">Username</span><span class="portal-cred-val">rosstonkaib@gmail.com</span></div>
+                <div class="portal-cred-row"><span class="portal-cred-key">Password</span><span class="portal-cred-val">Viper101!</span></div>
+              </div>
+            </div>
+            <div class="portal-item">
+              <div class="portal-item-main">
+                <span class="portal-item-name">True People Search</span>
+                <a class="portal-item-link" href="https://www.truepeoplesearch.com/" target="_blank" rel="noopener noreferrer">Open Search</a>
+              </div>
+              <p class="portal-item-note">Find a current number or address when the one on the lead is dead.</p>
+            </div>
+            <div class="portal-item">
+              <div class="portal-item-main">
+                <span class="portal-item-name">TNS Report</span>
+                <a class="portal-item-link" href="https://reportarobocall.com/trf/" target="_blank" rel="noopener noreferrer">Open TNS Report</a>
+              </div>
+            </div>
+            <div class="portal-item">
+              <div class="portal-item-main">
+                <span class="portal-item-name">Business Card</span>
+                <a class="portal-item-link" href="https://www.canva.com/design/DAHDwOzZUjI/x0tLqRuvnDtiRk7WetubZA/edit" target="_blank" rel="noopener noreferrer">Open Template</a>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <div class="cat-card">
-          <h2 class="cat-name">Lead Sheet Guides</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <section class="portal-panel" id="portal-panel-trackers" data-panel="trackers" hidden aria-label="Trackers &amp; Templates">
+          <div class="portal-panel-head">
+            <button type="button" class="portal-back" data-close-panel>Back to categories</button>
+            <h2 class="portal-panel-title">Trackers &amp; Templates</h2>
+          </div>
+          <div class="portal-list">
+            <div class="portal-item"><a class="portal-item-link" href="https://docs.google.com/spreadsheets/d/1kZgN2axlU6WnEBRH-oPdtJRo6A2GIaEpetwkGHvTOk8/edit" target="_blank" rel="noopener noreferrer">Book of Business Template</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://docs.google.com/spreadsheets/d/1OQwERNd8eJmstkDgf6vW6EuicMkmTgKGMvjKphaelow/edit" target="_blank" rel="noopener noreferrer">State License Tracker</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://docs.google.com/document/d/1LQmFAD_nJJI2h7v-4MrTz2rbA1hlDsas5yPnoOtwKzw/edit" target="_blank" rel="noopener noreferrer">The Script</a></div>
+          </div>
+        </section>
 
-        <div class="cat-card">
-          <h2 class="cat-name">Client Resources</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <section class="portal-panel" id="portal-panel-comp" data-panel="comp" hidden aria-label="Compensation &amp; Bonuses">
+          <div class="portal-panel-head">
+            <button type="button" class="portal-back" data-close-panel>Back to categories</button>
+            <h2 class="portal-panel-title">Compensation &amp; Bonuses</h2>
+          </div>
+          <div class="portal-list">
+            <div class="portal-item"><a class="portal-item-link" href="/images/ulg-comp-guide.png" target="_blank" rel="noopener noreferrer">Comp Guide</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="/images/ulg-producer-bonus.png" target="_blank" rel="noopener noreferrer">Producer Bonus</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="/images/ulg-vp-bonus.pdf" target="_blank" rel="noopener noreferrer">VP Bonus</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://www.youtube.com/watch?v=Iy0g-mkznp0" target="_blank" rel="noopener noreferrer">VP Breakdown Video</a></div>
+          </div>
+        </section>
 
-        <div class="cat-card">
-          <h2 class="cat-name">Agent Resources</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <section class="portal-panel" id="portal-panel-leads" data-panel="leads" hidden aria-label="Leads">
+          <div class="portal-panel-head">
+            <button type="button" class="portal-back" data-close-panel>Back to categories</button>
+            <h2 class="portal-panel-title">Leads</h2>
+          </div>
+          <div class="portal-list">
+            <div class="portal-item"><a class="portal-item-link" href="https://store.goatleads.com/" target="_blank" rel="noopener noreferrer">GOAT Leads</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://closrleads.com/" target="_blank" rel="noopener noreferrer">Closr Leads</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://buyleads.co/" target="_blank" rel="noopener noreferrer">Buy Leads</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://leadstfc.com/login.html?redirect=%2Fprofile.html" target="_blank" rel="noopener noreferrer">Leads TFC</a></div>
+          </div>
+        </section>
 
-        <div class="cat-card" id="bonuses">
-          <h2 class="cat-name">Bonus Charts &amp; Incentives</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
-
+        <section class="portal-panel" id="portal-panel-back-office" data-panel="back-office" hidden aria-label="Back Office">
+          <div class="portal-panel-head">
+            <button type="button" class="portal-back" data-close-panel>Back to categories</button>
+            <h2 class="portal-panel-title">Back Office</h2>
+          </div>
+          <div class="portal-list">
+            <div class="portal-item"><a class="portal-item-link" href="https://ww3.familyfirstlife.com/login" target="_blank" rel="noopener noreferrer">HCMS Portal</a></div>
+            <div class="portal-item"><a class="portal-item-link" href="https://accounts.surancebay.com/oauth/authorize?redirect_uri=https:%2F%2Fsurelc.surancebay.com%2Fproducer%2Foauth%3FreturnUrl%3D%252Fprofile%252Fcontact-info%253FgaId%253D689%2526gaId%253D689%2526branch%253DFFL%252520Apex%2526branchVisible%253Dtrue%2526branchEditable%253Dfalse%2526branchRequired%253Dfalse%2526autoAdd%253Dfalse%2526requestMethod%253DGET&gaId=689&client_id=surecrmweb&response_type=code" target="_blank" rel="noopener noreferrer">SureLC</a></div>
+          </div>
+        </section>
       </div>
-
     </div>
   </main>
+
+
+  <!-- ===================== THE LIGHTBOX =====================
+       Empty until a comp chart is clicked; /js/lightbox.js fills in the src and
+       unhides it. It lives outside <main> so it can cover the whole page. -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close image">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+  </div>
 
 
   <!-- ===================== FOOTER ===================== -->
@@ -120,5 +217,54 @@
   </footer>
 
   <script src="/js/main.js"></script>
+  <script src="/js/lightbox.js"></script>
+  <script>
+    (() => {
+      const shell = document.getElementById("portal-shell");
+      if (!shell) return;
+
+      const grid = document.getElementById("portal-category-grid");
+      const cards = Array.from(document.querySelectorAll("[data-open-category]"));
+      const panels = Array.from(document.querySelectorAll(".portal-panel"));
+
+      const showGrid = () => {
+        grid.hidden = false;
+        cards.forEach((card) => card.classList.remove("is-active"));
+        panels.forEach((panel) => {
+          panel.hidden = true;
+          panel.classList.remove("is-active");
+        });
+      };
+
+      const showPanel = (category) => {
+        grid.hidden = true;
+        cards.forEach((card) => {
+          const isActive = card.getAttribute("data-open-category") === category;
+          card.classList.toggle("is-active", isActive);
+        });
+        panels.forEach((panel) => {
+          const isActive = panel.id === `portal-panel-${category}`;
+          panel.hidden = !isActive;
+          panel.classList.toggle("is-active", isActive);
+        });
+      };
+
+      cards.forEach((card) => {
+        card.addEventListener("click", (event) => {
+          event.preventDefault();
+          showPanel(card.getAttribute("data-open-category"));
+        });
+      });
+
+      shell.querySelectorAll("[data-close-panel]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          showGrid();
+        });
+      });
+
+      showGrid();
+    })();
+  </script>
 </body>
 </html>

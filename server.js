@@ -21,27 +21,26 @@ const PORT = process.env.PORT || 3000;
 // Where all the visitor-facing files live.
 const PUBLIC_DIR = path.join(__dirname, "public");
 
-// Serve everything inside the "public" folder (your HTML, CSS, images, etc.).
-// This means a visitor automatically sees public/index.html as the home page.
-app.use(express.static(PUBLIC_DIR));
-
 // ---------------------------------------------------------------------------
 // CLEAN ADDRESSES
 // Without these two lines, the section pages would only answer to the clumsy
 // addresses /new-agents.html and /agents.html. These make the tidy versions
 // work instead — ulgagency.com/new-agents and ulgagency.com/agents.
+//
+// (/vision was removed. Anyone who still has the old link bookmarked falls
+// through to the catch-all at the bottom and lands on the homepage.)
 // ---------------------------------------------------------------------------
-app.get("/new-agents", (req, res) => {
+app.get(["/new-agents", "/new-agents/"], (req, res) => {
   res.sendFile(path.join(PUBLIC_DIR, "new-agents.html"));
 });
 
-app.get("/agents", (req, res) => {
+app.get(["/agents", "/agents/"], (req, res) => {
   res.sendFile(path.join(PUBLIC_DIR, "agents.html"));
 });
 
-app.get("/vision", (req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, "vision.html"));
-});
+// Serve everything inside the "public" folder (your HTML, CSS, images, etc.).
+// This means a visitor automatically sees public/index.html as the home page.
+app.use(express.static(PUBLIC_DIR));
 
 // The three "new agent" stage pages, e.g. /new-agents/licensing.
 // Listing the allowed names explicitly means a made-up address like

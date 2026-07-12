@@ -83,68 +83,19 @@
 
   // Escape closes the open section — the same as hitting "All Sections". Not
   // while the lightbox is up, though: there, Escape belongs to the lightbox
-  // (see below), and closing the section out from under it would dump the agent
-  // back on the grid.
+  // (/js/lightbox.js), and closing the section out from under it would dump the
+  // agent back on the grid. The element is looked up at press time rather than
+  // held in a variable, because the lightbox is another file's business now.
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
-    if (!lightbox.hidden) return;
+    const lb = document.getElementById("lightbox");
+    if (lb && !lb.hidden) return;
     if (!panelWrap.hidden) backBtn.click();
   });
 
   window.addEventListener("hashchange", render);
   render();   // set the right view before the agent has touched anything.
 
-
-  // -------------------------------------------------------------------------
-  // THE LIGHTBOX — the comp guide and the producer bonus, full size.
-  //
-  // The two charts sit side by side at half width so they can be compared, which
-  // makes them too small to actually read. Clicking one opens it over the page at
-  // its full size. It closes on the X, on a click anywhere off the image, and on
-  // Escape.
-  // -------------------------------------------------------------------------
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-  const lightboxClose = document.getElementById("lightbox-close");
-  if (!lightbox || !lightboxImg || !lightboxClose) return;
-
-  // The element that was focused when the lightbox opened, so focus can be put
-  // back where the agent left it once it closes.
-  let lastFocused = null;
-
-  function openLightbox(src, alt) {
-    lastFocused = document.activeElement;
-    lightboxImg.src = src;
-    lightboxImg.alt = alt || "";
-    lightbox.hidden = false;
-    document.body.style.overflow = "hidden";   // the page must not scroll behind it
-    lightboxClose.focus();
-  }
-
-  function closeLightbox() {
-    lightbox.hidden = true;
-    lightboxImg.src = "";
-    document.body.style.overflow = "";
-    if (lastFocused) lastFocused.focus();
-  }
-
-  document.querySelectorAll(".comp-zoom").forEach((zoom) => {
-    zoom.addEventListener("click", () => {
-      const img = zoom.querySelector("img");
-      openLightbox(zoom.dataset.zoom, img && img.alt);
-    });
-  });
-
-  lightboxClose.addEventListener("click", closeLightbox);
-
-  // A click on the backdrop closes; a click on the image itself does not, so
-  // nobody dismisses the chart by trying to look at it.
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightboxImg) return;
-    closeLightbox();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
-  });
+  // (The click-to-expand lightbox that used to live down here is now
+  // /js/lightbox.js, so the Agent Portal can use it too. This page loads it.)
 })();

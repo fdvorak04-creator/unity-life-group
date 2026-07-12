@@ -413,9 +413,50 @@ img {
 .world {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;   /* LEFT-ALIGNED. The hero is centred; this is not. */
-  text-align: left;
-  gap: clamp(10px, 1.3vh, 16px);
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 0;
+  padding: clamp(22px, 2.8vh, 32px) clamp(20px, 2.2vw, 28px);
+  min-height: 100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--surface-sunk);
+}
+
+.world-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.world-row-shield {
+  min-height: clamp(60px, 7.2vh, 84px);
+  margin-bottom: clamp(8px, 1.1vh, 12px);
+}
+
+.world-row-label {
+  min-height: 1.2rem;
+  margin-bottom: clamp(8px, 1.1vh, 12px);
+}
+
+.world-row-headline {
+  min-height: clamp(3.4rem, 5.2vh, 4.2rem);
+  margin-bottom: clamp(8px, 1.1vh, 12px);
+}
+
+.world-row-cta {
+  min-height: clamp(56px, 6.2vh, 72px);
+  margin-bottom: clamp(8px, 1.1vh, 12px);
+}
+
+.world-row-links {
+  min-height: clamp(30px, 3.2vh, 36px);
+  align-items: flex-start;
 }
 
 /* The small gold label over each world. This — and only this — is where wide
@@ -431,40 +472,40 @@ img {
 
 /* The framing line. Playfair, heavy, and big enough to be the thing you read.
 
-   THE TWO-LINE BOX IS WHAT LINES THE BUTTONS UP. The left headline runs to two
-   lines and the right one to one, so without this the two CTAs would sit at
-   different heights. Reserving two lines' worth of height on both (the heading
-   line-height is 1.14, so 2 x 1.14em) means BEGIN and AGENT PORTAL start on the
-   same line — see also the spacer on .world-work, which reserves the height of
-   the shield motif the left side carries and the right side doesn't. */
+   The two world blocks now share the same vertical rhythm and the same card
+   treatment, so the shield row, the label row, the headline row, the button row,
+   and the sub-link row all land at identical Y positions on both sides. */
 .world-line {
   font-size: clamp(1.28rem, 1.72vw, 1.7rem);
   font-weight: 700;
   color: var(--text);
   margin: 0;
-  max-width: 27ch;
-  min-height: 2.28em;
+  max-width: 20ch;
+  min-height: 2.6em;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .world-cta {
-  margin-top: clamp(6px, 1.2vh, 14px);
-}
-
-
-/* ---------- LEFT: the journey. Borderless, with a gold rule. ---------- */
-.world-new {
-  border-top: 2px solid var(--gold);
-  padding-top: clamp(18px, 2.4vh, 28px);
-  /* no border, no box, no fill — this side breathes */
+  width: min(220px, 100%);
+  min-width: 220px;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
 }
 
 /* THE SHIELD PROGRESSION: outline -> half -> the finished mark with its gold.
    The three real marks, in a row, so the eye reads "this completes". */
 .world-motif {
   display: flex;
-  align-items: flex-end;
-  gap: clamp(10px, 1vw, 16px);
-  margin-bottom: clamp(2px, 0.6vh, 8px);
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.2vw, 20px);
+  margin: 0;
 }
 
 /* These are the generated .stage-icon marks, reused here — so they arrive with
@@ -472,16 +513,20 @@ img {
    and the margin ZEROED: left in, it added ~14px of invisible height to this row
    that the spacer on .world-work couldn't know about, and the two CTAs came out
    misaligned by exactly that much. */
-.world-motif svg {
-  height: clamp(26px, 3.4vh, 40px);
+.world-row-shield svg {
+  height: clamp(42px, 5.2vh, 62px);
   width: auto;
   display: block;
   margin: 0;
+  stroke: var(--gold);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
 }
 
 /* The two earlier stages sit back, so the completed mark is the one that lands. */
-.world-motif svg:nth-child(1) { opacity: 0.4; }
-.world-motif svg:nth-child(2) { opacity: 0.62; }
+.world-row-shield svg:nth-child(1) { opacity: 0.4; }
+.world-row-shield svg:nth-child(2) { opacity: 0.62; }
 
 /* The ghost links, for the agent who is already mid-journey. Text only — they
    must not compete with "Begin". */
@@ -489,8 +534,9 @@ img {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 0 18px;
-  margin-top: clamp(8px, 1.4vh, 16px);
+  margin: 0;
 }
 
 .world-jump a {
@@ -520,28 +566,6 @@ img {
   height: 11px;
   transform: translateY(-50%);
   background: var(--edge);
-}
-
-
-/* ---------- RIGHT: the toolkit. A bordered panel, sunk and dense. ---------- */
-.world-work {
-  border: 1px solid var(--edge);
-  border-top: 2px solid var(--steel-light);   /* steel, not gold: this is the tool side */
-  background: var(--surface-sunk);
-  /* The top padding MATCHES .world-new's padding-top, so both worlds start their
-     content on the same line under their rules. */
-  padding: clamp(18px, 2.4vh, 28px) clamp(20px, 1.8vw, 28px) clamp(20px, 2.4vh, 26px);
-}
-
-/* The left world opens with the shield motif; this side doesn't. This reserves
-   exactly that height so the eyebrow, the headline and — the point of the whole
-   exercise — the CTA all sit on the same lines as the left's. It is a spacer, so
-   it is empty and invisible; it matches .world-motif's height and margin. */
-.world-work::before {
-  content: "";
-  display: block;
-  height: clamp(26px, 3.4vh, 40px);        /* = .world-motif svg height */
-  margin-bottom: clamp(2px, 0.6vh, 8px);   /* = .world-motif margin-bottom */
 }
 
 /* (The 2x2 quick-link grid that used to sit under the Agent Portal button, and
@@ -1043,7 +1067,7 @@ img {
 /* -- Page heading -- */
 .site-main {
   flex: 1 0 auto;
-  padding: 64px 0 80px;
+  padding: 54px 0 84px;
 }
 
 /* THE PAGE HEAD. A short gold rule ABOVE a left-aligned title, rather than a
@@ -1052,17 +1076,17 @@ img {
    whole stylesheet, and it made every page open the same way. The rule is now a
    mark of emphasis, not a divider. */
 .page-head {
-  margin-bottom: clamp(34px, 4.4vh, 52px);
-  padding-top: 20px;
+  margin-bottom: clamp(28px, 3.6vh, 42px);
+  padding-top: 18px;
   border-top: 2px solid var(--gold);
-  /* The rule is a short accent, not a full-width line. */
   max-width: 62ch;
 }
 
 .page-title {
-  font-size: clamp(2.4rem, 4.4vw, 3.8rem);   /* big and heavy: this leads */
+  font-size: clamp(2.2rem, 4.2vw, 3.3rem);
   font-weight: 800;
   color: var(--ink);
+  line-height: 1.06;
 }
 
 .page-sub {
@@ -1072,57 +1096,261 @@ img {
   max-width: 56ch;
 }
 
-/* -- The grid of placeholder category cards -- */
-.card-grid {
+/* -- THE PORTAL HUB  (/agents) --------------------------------------------
+   The landing page now operates as a compact hub: the category cards sit first,
+   and the selected category opens an in-page panel with nothing but the links
+   a working agent needs. */
+.portal-shell {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);   /* three across on desktop */
-  gap: 24px;
+  gap: 22px;
 }
 
-/* These are deliberately NOT links. Nothing here is clickable yet, so there's
-   nothing to click that would lead to a dead end. The dashed edge is what says
-   "this is a space held open", as opposed to the solid edge every real card on
-   the site wears. */
-/* THE AGENT PORTAL SHELL. Still a shell — nothing here is clickable and nothing
-   new has been built into it. But it wears the new clothes: no box, no dashed
-   rounded tile. Each category is a panel with a STEEL RULE over it and an open
-   edge below, so the grid reads as a set of columns held open for content rather
-   than as seven identical empty tiles.
-
-   The rule goes gold as the section fills in — the card is a held-open space
-   today, and the day it has content, it earns the gold. */
-.cat-card {
-  border: 0;
-  border-top: 2px solid var(--edge-strong);
-  border-radius: 0;
-  background: linear-gradient(180deg, var(--surface) 0%, rgba(93, 128, 184, 0) 100%);
-  padding: 22px 20px 26px 0;
-  min-height: 132px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.portal-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
-.cat-name {
-  font-family: var(--font-head);
-  font-size: 1.24rem;
-  font-weight: 700;
+.portal-category-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 118px;
+  padding: 20px 24px;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--surface);
   color: var(--text);
+  font-family: var(--font-head);
+  font-size: 1.08rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 }
 
-/* The small gold "coming soon" pill. */
-.cat-soon {
-  align-self: flex-start;
-  font-size: 0.66rem;
+.portal-category-card:hover,
+.portal-category-card:focus-visible,
+.portal-category-card.is-active {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  background: var(--surface-hover);
+  outline: none;
+}
+
+.portal-panel {
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  background: rgba(8, 20, 40, 0.72);
+  padding: clamp(18px, 2vw, 24px);
+}
+
+.portal-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.portal-panel-title {
+  font-size: 1.35rem;
+  color: var(--white);
+}
+
+.portal-back {
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  cursor: pointer;
+}
+
+.portal-list {
+  display: grid;
+  gap: 12px;
+}
+
+.portal-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: rgba(253, 253, 252, 0.03);
+}
+
+.portal-item-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.portal-item-name {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.portal-item-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--gold);
-  background: rgba(198, 161, 91, 0.12);
-  border: 1px solid rgba(198, 161, 91, 0.4);
-  padding: 5px 12px;
-  border-radius: 2px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.portal-item-link:hover,
+.portal-item-link:focus-visible {
+  color: var(--gold-bright);
+  outline: none;
+}
+
+.portal-item-link-sub {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.portal-item-note {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  max-width: 62ch;
+}
+
+.portal-item-stack {
+  gap: 12px;
+}
+
+.portal-cred {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--surface-sunk);
+}
+
+.portal-cred-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+}
+
+.portal-cred-key {
+  color: var(--text-mute);
+}
+
+.portal-cred-val {
+  color: var(--gold);
+}
+
+/* THE RULES ARE BORDERS ON THE TILES, NOT A BACKGROUND BEHIND THE GRID.
+   The obvious trick — a 1px gap over a hairline-coloured grid background — has a
+   tell: when a row isn't full (Leads has four, Back Office has two), the EMPTY
+   cells still paint, and the section ends in one or two blank tiles that look
+   like something failed to load. Bordering each tile means an empty cell simply
+   isn't there, and the row just stops where the links stop. */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--hairline);
+  border-left: 1px solid var(--hairline);
+}
+
+.portal-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  background: var(--surface);
+  border-right: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: 0;
+  transition: background-color 0.3s ease;
+}
+
+.portal-tile:hover {
+  background: var(--surface-hover);
+}
+
+/* The name IS the link, and it fills the tile — so the click target is the
+   whole cell, not just the few pixels of text. */
+.portal-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  color: var(--text);
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.portal-name:hover,
+.portal-name:focus-visible {
+  color: var(--gold-bright);
+  outline: none;
+}
+
+.portal-tile:focus-within {
+  background: var(--surface-hover);
+}
+
+/* The arrow sits at the far edge and steps forward on hover. */
+.portal-arrow {
+  color: var(--gold);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1), color 0.3s ease;
+}
+.portal-name:hover .portal-arrow,
+.portal-name:focus-visible .portal-arrow {
+  transform: translateX(5px);
+  color: var(--gold-bright);
+}
+
+/* The second door (American Amicable's Express Pay). Deliberately quiet: it is
+   a link the agent already knows they want, not one to be sold on. */
+.portal-alt {
+  align-self: flex-start;
+  margin: -8px 20px 16px;
+  padding: 3px 0;
+  color: var(--text-mute);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--edge);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.portal-alt:hover,
+.portal-alt:focus-visible {
+  color: var(--gold-bright);
+  border-bottom-color: var(--gold-bright);
+  outline: none;
+}
+
+/* Narrower screens: two across, then one. The tiles are the densest thing on
+   the site, so they are the first thing that needs the room. */
+@media (max-width: 1000px) {
+  .portal-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portal-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .portal-category-grid { grid-template-columns: 1fr; }
+  .portal-grid { grid-template-columns: 1fr; }
 }
 
 /* -- Slim footer --
@@ -1135,13 +1363,14 @@ img {
   backdrop-filter: blur(14px);
   border-top: 1px solid var(--hairline);
   color: var(--text-mute);
-  padding: 26px 0;
+  padding: 24px 0;
 }
 
 .footer-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   font-size: 0.8rem;
 }
 
@@ -3438,12 +3667,9 @@ img {
    rules keep it from breaking on a laptop-in-half-screen, tablet, or phone.
    ========================================================================== */
 
-/* Narrower laptops / tablets: category cards drop to two across. */
-@media (max-width: 980px) {
-  .card-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+/* (The Agent Portal's tiles carry their own breakpoints — see .portal-grid. The
+   placeholder .card-grid these rules used to shrink is gone; the page has real
+   content now.) */
 
 /* Phones: everything stacks. (The homepage no longer needs an "allow scrolling"
    rule here — it's now allowed to scroll at every width, but only ever does so
@@ -3458,9 +3684,6 @@ img {
   }
   .fork-title {
     font-size: 1.6rem;
-  }
-  .card-grid {
-    grid-template-columns: 1fr;
   }
   .main-nav {
     gap: 18px;

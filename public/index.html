@@ -10,8 +10,8 @@
                                  about DOING, so it is denser, squarer, more
                                  utilitarian. More will be added to it later.
 
-     The page ends on those two choices. "The Vision" lives in the top nav of the
-     section pages — it is deliberately not given a third door here.
+     The page ends on those two choices. There is no third door: the nav is now
+     Start Here and Agent Portal, and nothing else.
 
      This is the only page that runs the Ember Drift background at FULL strength
      (data-bg="full"): more embers, brighter, and the shield watermark behind the
@@ -336,12 +336,8 @@
     <div class="worlds">
 
       <!-- ---------- LEFT: the journey. About BECOMING. ---------- -->
-      <section class="world world-new fade-up fade-up-3" aria-labelledby="w-new">
-
-        <!-- The shield progression: the mark completing itself as the agent
-             advances — outline, then half, then the finished mark with its gold.
-             Real artwork; generated, not drawn. -->
-        <div class="world-motif" aria-hidden="true">
+      <section class="world fade-up fade-up-3" aria-labelledby="w-new">
+        <div class="world-row world-row-shield" aria-hidden="true">
           <!-- ULG:MOTIF:START -->
 <svg class="stage-icon" viewBox="284.578125 123.871094 43.55859400000003 65.390625" fill="none" aria-hidden="true" focusable="false">
             <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="none" stroke="#FDFDFC" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/>
@@ -356,45 +352,50 @@
             <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="rgb(99.21875%, 99.21875%, 98.81897%)"/>
             <path d="M 306.355469 136.289062 L 318.054688 139.875 L 318.054688 155.007812 C 318.054688 165.144531 313.375 171.382812 306.355469 176.0625 C 299.339844 171.382812 294.660156 165.144531 294.660156 155.007812 L 294.660156 139.875 Z M 306.355469 136.289062 " fill="rgb(78.42865%, 60.778809%, 23.529053%)"/>
           </svg>
-      <!-- ULG:MOTIF:END -->
+          <!-- ULG:MOTIF:END -->
         </div>
-
-        <p class="world-eyebrow">I'm New Here</p>
-        <h2 class="world-line" id="w-new">
-          Get licensed, contracted, and to your first sale.
-        </h2>
-
-        <a href="/new-agents" class="btn-gold btn-lg world-cta">
-          Begin <span class="btn-arrow" aria-hidden="true">&rarr;</span>
-        </a>
-
-        <!-- For the agent already mid-journey who knows where they left off. -->
-        <nav class="world-jump" aria-label="Jump to a stage">
-          <a href="/new-agents/licensing">Get Licensed</a>
-          <a href="/new-agents/contracting">Get Contracted</a>
-          <a href="/new-agents/launch">Launch</a>
-        </nav>
+        <div class="world-row world-row-label"><p class="world-eyebrow">I'm New Here</p></div>
+        <div class="world-row world-row-headline"><h2 class="world-line" id="w-new">Start your path with clarity.</h2></div>
+        <div class="world-row world-row-cta"><a href="/new-agents" class="btn-gold btn-lg world-cta">Begin <span class="btn-arrow" aria-hidden="true">&rarr;</span></a></div>
+        <div class="world-row world-row-links">
+          <nav class="world-jump" aria-label="Jump to a stage">
+            <a href="/new-agents/licensing">Get Licensed</a>
+            <a href="/new-agents/contracting">Get Contracted</a>
+            <a href="/new-agents/launch">Launch</a>
+          </nav>
+        </div>
       </section>
 
 
       <!-- ---------- RIGHT: the toolkit. About DOING. ---------- -->
-      <section class="world world-work fade-up fade-up-3" aria-labelledby="w-work">
-        <p class="world-eyebrow">I'm Producing</p>
-        <h2 class="world-line" id="w-work">
-          Day to day resources.
-        </h2>
-
-        <a href="/agents" class="btn-gold btn-lg world-cta">
-          Agent Portal <span class="btn-arrow" aria-hidden="true">&rarr;</span>
-        </a>
+      <section class="world fade-up fade-up-3" aria-labelledby="w-work">
+        <div class="world-row world-row-shield" aria-hidden="true">
+          <!-- ULG:MOTIF:START -->
+<svg class="stage-icon" viewBox="284.578125 123.871094 43.55859400000003 65.390625" fill="none" aria-hidden="true" focusable="false">
+            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="none" stroke="#FDFDFC" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/>
+          </svg>
+          <svg class="stage-icon" viewBox="284.578125 123.871094 68.515625 65.390625" fill="none" aria-hidden="true" focusable="false">
+            <path d="M 17.433594 1.167969 L 34.59375 6.628906 L 34.59375 24.566406 C 34.59375 37.824219 27.574219 45.625 17.433594 51.082031 C 7.296875 45.625 0.277344 37.824219 0.277344 24.566406 L 0.277344 6.628906 Z M 17.433594 1.167969 " transform="translate(317 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)" opacity="0.5"/>
+            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="rgb(99.21875%, 99.21875%, 98.81897%)" opacity="0.92"/>
+          </svg>
+          <svg class="stage-icon" viewBox="259.621094 123.871094 93.47265599999997 65.390625" fill="none" aria-hidden="true" focusable="false">
+            <path d="M 17.28125 1.167969 L 34.4375 6.628906 L 34.4375 24.566406 C 34.4375 37.824219 27.417969 45.625 17.28125 51.082031 C 7.140625 45.625 0.121094 37.824219 0.121094 24.566406 L 0.121094 6.628906 Z M 17.28125 1.167969 " transform="translate(261 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)"/>
+            <path d="M 17.433594 1.167969 L 34.59375 6.628906 L 34.59375 24.566406 C 34.59375 37.824219 27.574219 45.625 17.433594 51.082031 C 7.296875 45.625 0.277344 37.824219 0.277344 24.566406 L 0.277344 6.628906 Z M 17.433594 1.167969 " transform="translate(317 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)"/>
+            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="rgb(99.21875%, 99.21875%, 98.81897%)"/>
+            <path d="M 306.355469 136.289062 L 318.054688 139.875 L 318.054688 155.007812 C 318.054688 165.144531 313.375 171.382812 306.355469 176.0625 C 299.339844 171.382812 294.660156 165.144531 294.660156 155.007812 L 294.660156 139.875 Z M 306.355469 136.289062 " fill="rgb(78.42865%, 60.778809%, 23.529053%)"/>
+          </svg>
+          <!-- ULG:MOTIF:END -->
+        </div>
+        <div class="world-row world-row-label"><p class="world-eyebrow">I'm Producing</p></div>
+        <div class="world-row world-row-headline"><h2 class="world-line" id="w-work">Day to day resources.</h2></div>
+        <div class="world-row world-row-cta"><a href="/agents" class="btn-gold btn-lg world-cta">Agent Portal <span class="btn-arrow" aria-hidden="true">&rarr;</span></a></div>
+        <div class="world-row world-row-links" aria-hidden="true"></div>
       </section>
 
     </div>
 
 
-    <!-- The homepage ends on the two choices. "The Vision" still lives in the
-         top nav of every section page; it just no longer competes for attention
-         down here. -->
+    <!-- The homepage ends on the two choices. -->
     <p class="home-note fade-up fade-up-4">Internal use only</p>
 
   </main>

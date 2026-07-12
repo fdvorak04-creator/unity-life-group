@@ -11,3 +11,6 @@ Thumbs.db
 
 # Local secret settings (we don't have any yet, but this is here for later).
 .env
+
+# Keep the local UI/UX skill files out of Git and deployment.
+.claude/
