@@ -64,11 +64,22 @@
   /* The signature background: the midnight gradient. */
   --navy-gradient: linear-gradient(160deg, var(--navy-light) 0%, var(--navy) 48%, var(--navy-deep) 100%);
 
-  --font-head: "Marcellus", Georgia, serif;                  /* headings/wordmark */
+  /* PLAYFAIR DISPLAY, set HEAVY (600-800). This is the serif that answers the
+     logo: a high-contrast Didone, hairline thins against thick stems — the same
+     letterforms as the wordmark in the artwork. Marcellus, the old heading face,
+     ships in ONE weight and it is a light one, which is exactly why every heading
+     on the site read as polite instead of authoritative. */
+  --font-head: "Playfair Display", Georgia, serif;           /* headings          */
   --font-body: "Albert Sans", Arial, Helvetica, sans-serif;  /* body/supporting   */
 
   --maxwidth: 1140px;   /* how wide content stretches on big desktop screens */
-  --radius:   14px;     /* rounded-corner amount                             */
+
+  /* THE CORNER: 3px, not 14px. A 14px radius on every box is the loudest tell of
+     a template — it makes every card read as a soft app tile. At 3px the edge is
+     a cut, not a cushion, and the cards read as printed panels. Anything that is
+     genuinely round (the embers, the pulse ring, the numbered medallions) asks
+     for 50% explicitly and is untouched by this dial. */
+  --radius:   3px;
 }
 
 
@@ -130,21 +141,24 @@
 
 /* THE SHIELD WATERMARK — the real three-shield ULG mark, homepage only.
    It is deliberately at the very edge of visible. You should not notice it;
-   you should notice that the hero feels anchored. */
+   you should notice that the hero feels anchored.
+
+   This is now /logos-final/web/shield-outline.svg — the genuine mark, cut from
+   the artwork master and stroked, rather than three path shapes retyped inside
+   main.js. It comes in as a plain <img>, so the stroke is baked into the file
+   and CSS only has to place it and hold it down at the edge of visible. */
 .ulg-bg-shield {
   position: absolute;
-  top: 42%;
+  top: 26%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Sized to sit BEHIND the lockup, not to sprawl across the cards underneath
-     it. At 92vw the outline ran straight through all three cards and read as a
-     stray line rather than a watermark. */
-  width: min(760px, 68vw);
+  /* Sized and placed to sit BEHIND THE LOCKUP and nothing else. At 620px it
+     sprawled down across the left-hand world and read as a stray outline behind
+     the copy rather than as a watermark under the mark. It rides high and tight
+     with the compressed hero now. */
+  width: min(460px, 38vw);
   height: auto;
-  fill: none;
-  stroke: var(--steel-light);
-  stroke-width: 0.35;
-  opacity: 0.11;
+  opacity: 0.09;
 }
 
 /* THE EMBERS. Each one is a small round div that rises the full height of the
@@ -224,11 +238,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* THE HIERARCHY. Playfair carries real weight, so the levels are told apart by
+   WEIGHT and SIZE — not by tracking. Wide letter-spacing is reserved for one
+   thing only on this site: small gold label text (.world-eyebrow, .*-eyebrow,
+   .cat-soon). Spacing out a big serif heading is the other classic template
+   tell, and it is what made the old headings read as decoration rather than
+   structure. */
 h1, h2, h3, h4 {
   font-family: var(--font-head);
-  font-weight: 400;   /* Marcellus only comes in one weight, and it's elegant as-is */
-  line-height: 1.2;
+  line-height: 1.14;
+  letter-spacing: -0.005em;   /* a hair tight: big Didones set better closed up */
 }
+
+h1 { font-weight: 800; }             /* page titles: the heaviest thing on screen */
+h2 { font-weight: 700; }             /* section titles: clearly stepped down      */
+h3, h4 { font-weight: 600; }
 
 a {
   color: var(--gold);
@@ -265,8 +289,22 @@ img {
 
 
 /* ==========================================================================
-   3. THE HOMEPAGE  ("fork in the road")
-   One full screen: logo, tagline, two cards. Nothing scrolls.
+   3. THE HOMEPAGE  (two worlds)
+   A compressed hero, then the screen splits. Two different people land here and
+   they are not looking for the same thing:
+
+     LEFT  "I'm New Here"   — the JOURNEY. Open, editorial, airy. Borderless,
+                              with a gold rule over it and the shield progression
+                              running along the top: the mark completing itself.
+                              This side is about BECOMING.
+     RIGHT "I'm Producing"  — the TOOLKIT. Contained, dense, utilitarian. A
+                              bordered panel sunk into the page, with the four
+                              things a working agent actually opens laid out as a
+                              hard grid. This side is about DOING.
+
+   They are deliberately built from OPPOSITE materials — one has no box at all,
+   the other is all box — because two cards with the same treatment side by side
+   is precisely the "two identical tiles" look this page had before.
    ========================================================================== */
 .page-home {
   background: var(--navy-gradient);
@@ -275,18 +313,14 @@ img {
   min-height: 100dvh;   /* the more accurate "screen height" in modern browsers */
 
   /* THE NO-SCROLL RULE, DONE SAFELY.
-     "auto" means "scroll ONLY if the content genuinely doesn't fit". On a
-     full desktop screen everything fits, so no scrollbar ever appears and the
-     page looks exactly as designed. But the moment the window is narrowed or
-     shortened and the cards stack, the page can be scrolled instead of having
-     its bottom half silently cut off. (The old rule here was
-     "overflow: hidden", which clipped that overflow away for good.) */
+     "auto" means "scroll ONLY if the content genuinely doesn't fit". On a full
+     desktop screen everything fits, so no scrollbar ever appears and the page
+     looks exactly as designed. But the moment the window is narrowed or
+     shortened, the page can be scrolled instead of having its bottom half
+     silently cut off. */
   overflow-x: hidden;
   overflow-y: auto;
 }
-
-/* (The pool of gold light that used to live here is now part of the shared
-   Ember Drift layer — see .ulg-bg-glow. One glow, every page.) */
 
 .hero {
   position: relative;   /* sits above the glow */
@@ -295,191 +329,282 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(16px, 2.2vh, 28px);
-  padding: clamp(32px, 5vh, 64px) 32px clamp(28px, 4vh, 48px);
+  gap: clamp(10px, 1.4vh, 18px);
+  padding: clamp(26px, 4vh, 52px) 32px clamp(22px, 3vh, 38px);
 
-  /* "SAFE" CENTRING — the whole group sits balanced on the screen.
-     Plain "justify-content: center" has a trap: as soon as the content is
-     taller than the screen, it overflows off BOTH ends equally, and the part
-     that spills off the top can never be scrolled back to. "safe center"
-     centres while there's room and quietly falls back to top-aligned once
-     there isn't, so nothing is ever stranded above the top edge.
-     The plain "center" on the first line is the fallback for older browsers. */
+  /* "SAFE" CENTRING — the whole group sits balanced on the screen. Plain
+     "justify-content: center" has a trap: once the content is taller than the
+     screen it overflows off BOTH ends, and the part that spills off the top can
+     never be scrolled back to. "safe center" centres while there's room and
+     quietly falls back to top-aligned once there isn't. */
   justify-content: center;
   justify-content: safe center;
 }
 
-/* -- The logo: the centerpiece, BUILT IN CODE (not a picture) --
-   Because it's a vector shield plus real text, it is always razor sharp.
 
-   How the sizing works: one "dial" below sets the overall lockup width, and
-   every part of the lockup (shield, wordmark, GROUP line) is measured in "em"
-   — meaning "a share of the text size". So changing the one dial scales the
-   whole lockup together, proportions locked.
+/* -- THE LOCKUP: the real artwork, inlined -------------------------------
+   Not a picture and not a redraw — the genuine SVG from the master (see
+   index.html). It is inlined so the intro can animate its pieces.
+
+   COMPRESSED. The lockup used to take 52vw and over half the screen's height,
+   because it was the only thing on the page worth looking at. It isn't any more:
+   the two worlds below are the point, and the hero's job is now to introduce
+   them, not to upstage them. So the dial comes down hard.
 
    The dial is the smallest of three limits:
-     52vw            -> the target: the lockup now takes over half the screen.
-                        This is the "commanding scale" — it is the first thing
-                        you see, and it is meant to be the ONLY thing you see
-                        for a moment.
-     880px           -> stops it getting silly on an ultra-wide monitor
-     38vh x 1.4857   -> a height guard (1.4857 is the lockup's true
-                        width-to-height ratio), which is what keeps the whole
-                        page — logo, tagline, AND the three cards — on one
-                        screen on a short laptop. It's tighter than it was,
-                        because there's a third card to find room for now. */
+     30vw               -> the target width
+     430px              -> stops it getting silly on an ultra-wide monitor
+     22vh x 1.7169      -> a height guard. 1.7169 is the REAL lockup's true
+                           width-to-height ratio, measured from the artwork by
+                           tools/build-marks.js. (The old hand-drawn lockup was
+                           1.4857 — a different shape entirely, which is one more
+                           reason the code copy had to go.) */
 .hero-lockup {
-  --lockup-width: min(52vw, 880px, calc(38vh * 1.4857));
-
-  /* 6.1 is measured from the real logo: the lockup is ~6.1x as wide as the
-     wordmark's text size. So this gives the wordmark the right size to make
-     the lockup come out at --lockup-width. */
-  font-size: calc(var(--lockup-width) / 6.1);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: max-content;
-  max-width: 100%;
-  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.38));
+  position: relative;   /* the ring and the flash are positioned against it */
+  width: min(30vw, 430px, calc(22vh * 1.7169));
+  filter: drop-shadow(0 16px 38px rgba(0, 0, 0, 0.42));
 }
 
-/* The shield sits above the words. 2.47em = 40.4% of the lockup width,
-   measured from the original artwork. */
-.lockup-shield {
-  width: 2.47em;
+.lockup-svg {
+  display: block;
+  width: 100%;
   height: auto;
-  margin-bottom: 0.85em;   /* the 58px gap in the original, as a share of the text size */
+  overflow: visible;   /* the shields overshoot their box as they land */
 }
 
-/* "UNITY LIFE" — live text in Marcellus. */
-.lockup-word {
-  font-family: var(--font-head);
-  font-size: 1em;            /* this IS the dial set above */
-  line-height: 1;
-  letter-spacing: 0.12em;
-  text-indent: 0.12em;       /* offsets the trailing letter-space so it stays centred */
-  text-transform: uppercase;
-  color: var(--white);
-  white-space: nowrap;
-}
-
-/* The gold "— GROUP —" line underneath. */
-.lockup-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  align-self: stretch;       /* stretches to match the wordmark's width */
-  margin-top: 0.53em;        /* the 36px gap in the original */
-}
-
-.lockup-group-text {
-  font-family: var(--font-body);
-  font-size: 0.31em;         /* small caps line, sized from the original */
-  font-weight: 500;
-  letter-spacing: 0.42em;
-  text-indent: 0.42em;
-  text-transform: uppercase;
-  color: var(--gold);
-  white-space: nowrap;
-}
-
-/* The thin gold rules either side of the word GROUP. */
-.lockup-rule {
-  flex: 1;
-  height: 1px;
-  background: var(--gold);
-  opacity: 0.9;
-}
 
 /* -- Gold hairline + tagline -- */
 .hero-rule {
-  width: clamp(190px, 22vw, 280px);
+  width: clamp(150px, 16vw, 220px);
   height: 1px;
   border: 0;
   /* Fades in from nothing at both ends, so it reads as light, not a hard line. */
   background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
   opacity: 0.9;
+  margin: 0;
 }
 
 .hero-tagline {
-  font-family: var(--font-head);
-  font-size: clamp(1.1rem, 1.7vw, 1.6rem);
-  letter-spacing: 0.2em;
-  text-indent: 0.2em;   /* offsets the trailing letter-space so it stays centred */
+  font-family: var(--font-body);   /* the SERIF is spent on the headings now */
+  font-size: clamp(0.72rem, 0.85vw, 0.84rem);
+  font-weight: 500;
+  letter-spacing: 0.28em;          /* small gold-label treatment: tracking allowed */
+  text-indent: 0.28em;             /* offsets the trailing letter-space, stays centred */
   text-transform: uppercase;
-  color: var(--text);
+  color: var(--text-mute);
   text-align: center;
 }
 
-/* -- The three cards --
-   Start Here / Agent Portal / The Vision. Three across on a desktop, and the
-   row is wide enough that they read as the page's foundation rather than three
-   buttons floating under a logo. */
-.fork {
+
+/* ================= THE TWO WORLDS ================= */
+.worlds {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(18px, 1.8vw, 26px);
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 3.4vw, 56px);
+  /* STRETCH, not start: the right-hand panel matches the left column's height
+     instead of stopping short and reading as an afterthought. The empty space
+     under its button is the room the portal's own items will fill. */
+  align-items: stretch;
   width: 100%;
-  max-width: 1180px;
-  /* A deliberate, measured gap under the tagline — enough to separate the
-     cards from the logo, but not so much that they're stranded at the bottom
-     of the screen. */
-  margin-top: clamp(10px, 2.2vh, 26px);
+  max-width: 1120px;
+  margin-top: clamp(14px, 2.6vh, 34px);
 }
 
+.world {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;   /* LEFT-ALIGNED. The hero is centred; this is not. */
+  text-align: left;
+  gap: clamp(10px, 1.3vh, 16px);
+}
+
+/* The small gold label over each world. This — and only this — is where wide
+   letter-spacing is allowed to live. */
+.world-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+}
+
+/* The framing line. Playfair, heavy, and big enough to be the thing you read.
+
+   THE TWO-LINE BOX IS WHAT LINES THE BUTTONS UP. The left headline runs to two
+   lines and the right one to one, so without this the two CTAs would sit at
+   different heights. Reserving two lines' worth of height on both (the heading
+   line-height is 1.14, so 2 x 1.14em) means BEGIN and AGENT PORTAL start on the
+   same line — see also the spacer on .world-work, which reserves the height of
+   the shield motif the left side carries and the right side doesn't. */
+.world-line {
+  font-size: clamp(1.28rem, 1.72vw, 1.7rem);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  max-width: 27ch;
+  min-height: 2.28em;
+}
+
+.world-cta {
+  margin-top: clamp(6px, 1.2vh, 14px);
+}
+
+
+/* ---------- LEFT: the journey. Borderless, with a gold rule. ---------- */
+.world-new {
+  border-top: 2px solid var(--gold);
+  padding-top: clamp(18px, 2.4vh, 28px);
+  /* no border, no box, no fill — this side breathes */
+}
+
+/* THE SHIELD PROGRESSION: outline -> half -> the finished mark with its gold.
+   The three real marks, in a row, so the eye reads "this completes". */
+.world-motif {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(10px, 1vw, 16px);
+  margin-bottom: clamp(2px, 0.6vh, 8px);
+}
+
+/* These are the generated .stage-icon marks, reused here — so they arrive with
+   .stage-icon's own height and margin-bottom attached. Both must be overridden,
+   and the margin ZEROED: left in, it added ~14px of invisible height to this row
+   that the spacer on .world-work couldn't know about, and the two CTAs came out
+   misaligned by exactly that much. */
+.world-motif svg {
+  height: clamp(26px, 3.4vh, 40px);
+  width: auto;
+  display: block;
+  margin: 0;
+}
+
+/* The two earlier stages sit back, so the completed mark is the one that lands. */
+.world-motif svg:nth-child(1) { opacity: 0.4; }
+.world-motif svg:nth-child(2) { opacity: 0.62; }
+
+/* The ghost links, for the agent who is already mid-journey. Text only — they
+   must not compete with "Begin". */
+.world-jump {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 18px;
+  margin-top: clamp(8px, 1.4vh, 16px);
+}
+
+.world-jump a {
+  position: relative;
+  color: var(--text-mute);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 3px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.world-jump a:hover,
+.world-jump a:focus-visible {
+  color: var(--gold-bright);
+  border-bottom-color: var(--gold-bright);
+  outline: none;
+}
+
+/* A hairline between them, rather than a bullet or a slash. */
+.world-jump a + a::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  width: 1px;
+  height: 11px;
+  transform: translateY(-50%);
+  background: var(--edge);
+}
+
+
+/* ---------- RIGHT: the toolkit. A bordered panel, sunk and dense. ---------- */
+.world-work {
+  border: 1px solid var(--edge);
+  border-top: 2px solid var(--steel-light);   /* steel, not gold: this is the tool side */
+  background: var(--surface-sunk);
+  /* The top padding MATCHES .world-new's padding-top, so both worlds start their
+     content on the same line under their rules. */
+  padding: clamp(18px, 2.4vh, 28px) clamp(20px, 1.8vw, 28px) clamp(20px, 2.4vh, 26px);
+}
+
+/* The left world opens with the shield motif; this side doesn't. This reserves
+   exactly that height so the eyebrow, the headline and — the point of the whole
+   exercise — the CTA all sit on the same lines as the left's. It is a spacer, so
+   it is empty and invisible; it matches .world-motif's height and margin. */
+.world-work::before {
+  content: "";
+  display: block;
+  height: clamp(26px, 3.4vh, 40px);        /* = .world-motif svg height */
+  margin-bottom: clamp(2px, 0.6vh, 8px);   /* = .world-motif margin-bottom */
+}
+
+/* (The 2x2 quick-link grid that used to sit under the Agent Portal button, and
+   the slim "The Vision" band that used to close the page, were both removed —
+   their styles went with them. The right-hand world will gain more items later;
+   it is deliberately left as one clean door until then.) */
+
+.home-note {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(253, 253, 252, 0.32);
+  margin-top: clamp(10px, 1.6vh, 18px);
+}
+
+
+/* -- The stage cards (/new-agents) --------------------------------------
+   These are no longer used on the homepage — the two worlds replaced them — but
+   the three STAGE cards on /new-agents still wear them. De-slopped to match:
+   the corner is a cut now, the glow bloom is gone, and the hover is a hard gold
+   edge and a small lift rather than a pool of light. */
 .fork-card {
-  /* Steel glass, so the gradient and the embers behind still show through. */
   background: var(--surface);
   border: 1px solid var(--edge);
   border-radius: var(--radius);
-  padding: clamp(26px, 3.2vh, 38px) clamp(24px, 2.2vw, 34px) clamp(22px, 2.6vh, 30px);
+  padding: clamp(24px, 3vh, 34px) clamp(22px, 2vw, 30px) clamp(20px, 2.4vh, 26px);
   color: var(--white);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  /* Animate only the properties that actually change — keeps the hover smooth. */
-  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1),
-              border-color 0.45s ease,
-              box-shadow 0.45s ease,
-              background-color 0.45s ease;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.3, 1),
+              border-color 0.4s ease,
+              background-color 0.4s ease;
 }
 
-/* The "expensive" hover: the card lifts, its edge turns bright gold, and a
-   pool of gold light blooms out from underneath it. This is one of the few
-   places the gold is allowed to be loud — it's the thing you're touching. */
-.fork-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--gold-bright);
-  background: var(--surface-hover);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45),
-              0 0 0 1px rgba(226, 190, 121, 0.55),
-              0 0 38px rgba(198, 161, 91, 0.30);
-}
-
-/* Keyboard users get the exact same treatment as mouse users. */
+/* Sharp, not soft: the edge goes gold and the card lifts a little. No bloom. */
+.fork-card:hover,
 .fork-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  background: var(--surface-hover);
   outline: none;
-  transform: translateY(-6px);
-  border-color: var(--gold-bright);
-  box-shadow: 0 0 0 2px var(--gold-bright), 0 0 38px rgba(198, 161, 91, 0.30);
+}
+.fork-card:focus-visible {
+  box-shadow: 0 0 0 2px var(--gold-bright);
 }
 
 .fork-title {
   font-family: var(--font-head);
-  font-size: clamp(1.5rem, 1.9vw, 1.95rem);
+  font-size: clamp(1.4rem, 1.8vw, 1.8rem);
+  font-weight: 700;
   color: var(--text);
 }
 
 .fork-sub {
   color: var(--text-soft);
-  font-size: clamp(0.92rem, 0.95vw, 1rem);
+  font-size: clamp(0.9rem, 0.95vw, 1rem);
   line-height: 1.55;
   flex: 1;   /* pushes "Enter" to the bottom, so all three cards line up */
 }
 
 .fork-enter {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -488,54 +613,39 @@ img {
   align-items: center;
   gap: 9px;
   margin-top: 8px;
-  transition: color 0.45s ease;
+  transition: color 0.4s ease;
 }
 
-/* Touch the card and its gold comes up to full brightness. */
 .fork-card:hover .fork-enter,
 .fork-card:focus-visible .fork-enter {
   color: var(--gold-bright);
 }
 
-/* The little arrow slides forward on hover. */
 .fork-arrow {
-  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .fork-card:hover .fork-arrow,
 .fork-card:focus-visible .fork-arrow {
   transform: translateX(6px);
 }
 
-.home-note {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.4);
-  margin-top: 4px;
-}
 
-/* THREE cards need more width than two did. Below this they'd be three thin
-   columns of wrapped text, so they become one column and the page scrolls. */
+/* NARROW / LAPTOP. The two worlds stack rather than becoming two thin columns of
+   wrapped text. The page scrolls — which .page-home already allows for. */
 @media (max-width: 900px) {
-  .fork {
+  .worlds {
     grid-template-columns: 1fr;
     max-width: 560px;
   }
+  .world-line {
+    max-width: none;
+  }
 }
 
-/* SHORT SCREENS (e.g. a 1366x768 laptop): the logo stays big, so the cards
-   give up a little padding instead. This is what guarantees the "no scroll"
-   rule holds even when the screen isn't very tall. */
+/* SHORT SCREENS (a 1366x768 laptop): the lockup is already compressed, so the
+   worlds give up padding rather than the logo giving up presence. */
 @media (max-height: 820px) {
-  .fork-card {
-    padding: 22px 26px 20px;
-  }
-  .fork-title {
-    font-size: 1.5rem;
-  }
-  .fork-sub {
-    font-size: 0.9rem;
-  }
+  .world-line { font-size: 1.18rem; }
 }
 
 /* A calm fade-up on load, so the page assembles itself instead of just appearing. */
@@ -564,23 +674,33 @@ img {
    The shields drop in, the letters land one by one, GROUP arrives, a single
    pulse of energy fires from the mark — and the curtain goes. About 2 seconds.
 
-   THE WHOLE IDEA: it animates the REAL LOCKUP. Not a copy of it built for the
-   intro, and not a separate "intro logo" that then has to be matched up with
-   the page's one — the actual .hero-lockup, in its actual final position, at
-   its actual final size. So there is no handoff to get wrong: when the curtain
-   goes, the logo is already exactly where it lives. The intro doesn't hand over
-   to the homepage. It IS the homepage, assembling itself.
+   THE WHOLE IDEA: it animates the REAL LOCKUP — and as of the rebuild, that is
+   now literally true. It is the genuine artwork from /logos-final, inlined into
+   the page, and the intro moves the artwork's OWN shields and the artwork's OWN
+   letters. There is no copy of the logo anywhere, and so there is nothing that
+   can drift out of step with it.
 
-   Everything below is scoped to `html.intro-armed`, which is set (or not) by an
-   inline script in the head of index.html. That has two consequences worth
-   knowing:
-     - NOT PLAYING COSTS NOTHING. Without the class there are no animations to
-       run and the curtain is display:none. Other pages never even load this.
+   Everything below is scoped to `html.intro-armed`, set (or not) by an inline
+   script in the head of index.html. Two consequences worth knowing:
+     - NOT PLAYING COSTS NOTHING. Without the class there are no animations and
+       the curtain is display:none. Other pages never load this.
      - SKIPPING IS JUST REMOVING THE CLASS. Every piece's animation ends at
        exactly the element's natural resting state (opacity 1, no transform), so
        dropping the class mid-flight snaps everything to where it was always
-       going to end up. There is no "skip to the end" state to maintain, and no
-       way for the skipped page to differ from the played one.
+       going to end up. There is no "skip to the end" state to maintain.
+
+   ---------------------------------------------------------------------------
+   THE TRAP THAT COMES WITH ANIMATING A REAL SVG — read before you touch this.
+
+   A CSS transform on an element INSIDE an <svg> is measured in the SVG's own
+   user units, NOT in screen pixels. Our lockup's viewBox is ~266 units wide, so
+   `translateY(22px)` — which was a gentle nudge back when the letters were HTML
+   spans — would now throw a letter a seventh of the way down the artwork.
+
+   So every distance in here is a PERCENTAGE, and every animated piece sets
+   `transform-box: fill-box`, which makes 100% mean "this element's own bounding
+   box". The motion is then proportional to the piece being moved and survives
+   any future resize of the lockup, at any viewBox, forever.
    ========================================================================== */
 
 /* The curtain. The site's OWN background gradient — not a black screen, not a
@@ -605,8 +725,8 @@ img {
 }
 
 /* The hero is lifted above the curtain so the lockup can assemble ON it. That
-   lifts the tagline and the cards too — so they're held back until the curtain
-   goes (see the reveal below). */
+   lifts the tagline and the two worlds too — so they're held back until the
+   curtain goes (see the reveal below). */
 .intro-armed .hero {
   z-index: 320;
 }
@@ -621,21 +741,20 @@ img {
    of the two fighting over the same element. */
 .intro-armed .hero-rule,
 .intro-armed .hero-tagline,
-.intro-armed .fork-card,
+.intro-armed .world,
 .intro-armed .home-note {
   animation: introReveal 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
 
-/* These delays and the RUNTIME_MS in /js/intro.js are a pair. The last thing to
+/* These delays and RUNTIME_MS in /js/intro.js are a pair. The last thing to
    finish here is the note, at 1.66 + 0.55 = 2.21s — and intro.js must not swap
    the class out before then, or it will clip the final reveals mid-fade and snap
    them to full opacity. Change one, change the other. */
-.intro-armed .hero-rule     { animation-delay: 1.42s; }
-.intro-armed .hero-tagline  { animation-delay: 1.46s; }
-.intro-armed .fork-card:nth-child(1) { animation-delay: 1.52s; }
-.intro-armed .fork-card:nth-child(2) { animation-delay: 1.57s; }
-.intro-armed .fork-card:nth-child(3) { animation-delay: 1.62s; }
-.intro-armed .home-note     { animation-delay: 1.66s; }
+.intro-armed .hero-rule    { animation-delay: 1.42s; }
+.intro-armed .hero-tagline { animation-delay: 1.46s; }
+.intro-armed .world:nth-child(1) { animation-delay: 1.52s; }
+.intro-armed .world:nth-child(2) { animation-delay: 1.57s; }
+.intro-armed .home-note    { animation-delay: 1.66s; }
 
 @keyframes introReveal {
   from { opacity: 0; transform: translateY(16px); }
@@ -644,60 +763,27 @@ img {
 
 
 /* -- THE PIECES ------------------------------------------------------------
-   Each letter is its own inline-block so it can be transformed at all (a plain
-   inline box can't be). At rest — which is to say, on every visit after the
-   first — they are simply the wordmark, and none of this exists. */
-.lk-ch {
-  display: inline-block;
-
-  /* letter-spacing: normal — AND THIS IS LOad-BEARING.
-     The wordmark's 0.12em tracking is set on .lockup-word and inherits down. A
-     browser applies letter-spacing after every "typographic character unit" —
-     and an inline-block counts as one. So each span was being spaced TWICE: once
-     after the letter inside it, and again after the span itself as an atomic box.
-     Ten letters, ten extra 10px gaps: the wordmark came out 55px wider than the
-     text it replaced.
-
-     Killing the tracking INSIDE each span leaves each one exactly as wide as its
-     glyph, and lets the parent's tracking do the spacing between them — which is
-     what it was doing before the split. Measured: the split wordmark and the
-     plain text node are now the same width to the pixel. */
-  letter-spacing: normal;
-}
-
-/* The gap between UNITY and LIFE. It holds a real (non-breaking) space rather
-   than a width we guessed at, so it is EXACTLY as wide as the space it replaced
-   — the font decides, not us. */
-.lk-gap {
-  white-space: pre;
-}
-
-/* SVG paths need this to rotate/scale about their own middle rather than about
-   the top-left corner of the whole SVG canvas. */
-.lk-shield {
+   All of them live inside the SVG now, so all of them need fill-box: it makes
+   `transform-origin: center` mean the piece's own centre rather than the corner
+   of the whole artwork, and it makes the percentage distances above resolve
+   against the piece itself. At rest — which is to say on every visit after the
+   first — none of this exists and they are simply the logo. */
+.lk-shield,
+.lk-ch,
+.lk-gp {
   transform-box: fill-box;
   transform-origin: center;
 }
 
-/* EACH SHIELD FADES IN TO ITS OWN OPACITY, NOT TO 1.
-   The two outer shields are held at 0.62 in the artwork — as an `opacity`
-   attribute on the SVG path. A CSS opacity beats a presentation attribute, so a
-   keyframe ending at `opacity: 1` doesn't just look wrong mid-flight: it lands
-   the outer shields at full white, and then the moment the intro class comes off
-   and the CSS stops applying, they snap back down to 0.62. A visible pop, right
-   at the handoff — the one place the whole design cannot afford one.
-
-   So each shield declares the opacity it belongs at, and the keyframe animates to
-   THAT. The animation now ends at exactly the value the attribute would have
-   given anyway, and removing the class changes nothing on screen. */
-.lk-shield-l,
-.lk-shield-r { --lk-o: 0.62; }
-.lk-shield-m,
-.lk-shield-g { --lk-o: 1; }
-
-/* The shields fall in, in the order the logo is built: the two behind, then the
-   white shield over them, then the gold. The overshoot in the easing is what
-   makes it read as "landing" rather than "arriving". */
+/* THE OUTER SHIELDS' FADE IS IN THE ARTWORK, NOT IN THE CSS.
+   The two side shields are held back by a MASK inside the master file, which is
+   how the export builds them — so at rest they are steel blue at ~95%, and the
+   element's own CSS opacity is a plain 1. That matters: the old hand-drawn
+   lockup carried an `opacity="0.62"` ATTRIBUTE on those shields, and a CSS
+   keyframe ending at `opacity: 1` beat it — landing them full white and then
+   snapping back the instant the class came off. There is no attribute to fight
+   now, so every shield simply animates to 1 and the mask does the rest. Do not
+   "helpfully" add an opacity attribute back to the shields. */
 .intro-armed .lk-shield {
   animation: lkShieldDrop 0.36s cubic-bezier(0.2, 1.5, 0.35, 1) both;
 }
@@ -705,75 +791,84 @@ img {
 .intro-armed .lk-shield-r { animation-delay: 0.13s; }
 .intro-armed .lk-shield-m { animation-delay: 0.20s; }
 
-/* The gold centre is the one piece that doesn't drop — it ignites in place, so
-   the mark's heart is the last thing to arrive and it arrives differently. */
+/* The gold heart is the one piece that doesn't drop — it ignites in place, so
+   the mark's centre is the last thing to arrive and it arrives differently. */
 .intro-armed .lk-shield-g {
   animation: lkGoldIgnite 0.42s cubic-bezier(0.2, 1.5, 0.35, 1) 0.30s both;
 }
 
 @keyframes lkShieldDrop {
-  from { opacity: 0;            transform: translateY(-26px) scale(0.86); }
-  to   { opacity: var(--lk-o);  transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(-45%) scale(0.86); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes lkGoldIgnite {
-  from { opacity: 0;            transform: scale(0.35); }
-  to   { opacity: var(--lk-o);  transform: scale(1); }
+  from { opacity: 0; transform: scale(0.35); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* The letters land one after another, left to right. */
+/* THE LETTERS LAND ONE AFTER ANOTHER, LEFT TO RIGHT — and the stagger is
+   COMPUTED, not listed. Each letter carries style="--i:N" (written by
+   tools/build-marks.js straight from the artwork), so the delay is arithmetic.
+   The old version hand-listed ten :nth-child rules; the wordmark has exactly as
+   many glyphs as the artwork says it has, and a hand-listed set silently stops
+   matching the moment the master changes. */
 .intro-armed .lk-ch {
   animation: lkLetterDrop 0.34s cubic-bezier(0.2, 1.4, 0.35, 1) both;
+  animation-delay: calc(0.28s + var(--i) * 0.05s);
 }
-.intro-armed .lk-ch:nth-child(1)  { animation-delay: 0.28s; }
-.intro-armed .lk-ch:nth-child(2)  { animation-delay: 0.33s; }
-.intro-armed .lk-ch:nth-child(3)  { animation-delay: 0.38s; }
-.intro-armed .lk-ch:nth-child(4)  { animation-delay: 0.43s; }
-.intro-armed .lk-ch:nth-child(5)  { animation-delay: 0.48s; }
-.intro-armed .lk-ch:nth-child(6)  { animation-delay: 0.53s; }  /* the gap */
-.intro-armed .lk-ch:nth-child(7)  { animation-delay: 0.58s; }
-.intro-armed .lk-ch:nth-child(8)  { animation-delay: 0.63s; }
-.intro-armed .lk-ch:nth-child(9)  { animation-delay: 0.68s; }
-.intro-armed .lk-ch:nth-child(10) { animation-delay: 0.73s; }
 
+/* 60% of a letter's own height, not "22px" — see the trap at the top. The blur
+   is in user units too, so it is a small number by design. */
 @keyframes lkLetterDrop {
-  from { opacity: 0; transform: translateY(22px); filter: blur(5px); }
-  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+  from { opacity: 0; transform: translateY(60%); filter: blur(2px); }
+  to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
 }
 
-/* GROUP is the last piece of the logo to arrive, and the pulse fires off it. */
-.intro-armed .lockup-group {
-  animation: introReveal 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) 0.96s both;
+/* GROUP — and the two gold rules that flank it — is the last piece of the logo
+   to arrive, and the pulse fires off it. */
+.intro-armed .lk-gp {
+  animation: lkGroupIn 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) 0.96s both;
+}
+
+@keyframes lkGroupIn {
+  from { opacity: 0; transform: translateY(40%); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 
 /* -- THE PULSE -------------------------------------------------------------
-   One beat, once, fired from the centre of the shield — which is why both of
-   these live inside .hero-lockup rather than in the middle of the screen. A ring
-   that expands and thins, and a wash of gold light behind it. */
+   One beat, once, fired from the SHIELD'S HEART — which is why both of these
+   live inside .hero-lockup rather than in the middle of the screen. A ring that
+   expands and thins, and a wash of gold light behind it.
+
+   The position is MEASURED: 51.14% across and 21.45% down the artwork's box is
+   where the centre of the shield actually sits, computed from the real geometry
+   by tools/build-marks.js. Every size here is a percentage of the lockup's
+   width, so the pulse scales with the logo and never drifts off the mark.
+   (A percentage margin resolves against the parent's WIDTH — including the
+   vertical one — which is exactly what centres these on a circle.) */
 .lk-ring,
 .lk-flash {
   position: absolute;
-  left: 50%;
-  /* 0.85em down from the top of the lockup is the centre of the shield: the
-     shield is 2.47em wide on a 58x40 viewBox, so it stands 1.70em tall. */
-  top: 0.85em;
+  left: 51.14%;
+  top: 21.45%;
   border-radius: 50%;
   pointer-events: none;
   opacity: 0;   /* the resting state — and where both animations end */
 }
 
 .lk-ring {
-  width: 2.2em;
-  height: 2.2em;
-  margin: -1.1em 0 0 -1.1em;
+  width: 26%;
+  aspect-ratio: 1;
+  margin: -13% 0 0 -13%;
   border: 1px solid var(--gold-bright);
 }
 
 .lk-flash {
-  width: 5.5em;
-  height: 5.5em;
-  margin: -2.75em 0 0 -2.75em;
+  width: 66%;
+  aspect-ratio: 1;
+  margin: -33% 0 0 -33%;
   background: radial-gradient(circle, rgba(226, 190, 121, 0.34) 0%, rgba(226, 190, 121, 0) 62%);
 }
 
@@ -781,9 +876,9 @@ img {
 .intro-armed .lk-flash { animation: lkFlash 0.70s ease-out 1.15s both; }
 
 @keyframes lkRing {
-  0%   { opacity: 0;    transform: scale(0.35); }
-  14%  { opacity: 0.9;  }
-  100% { opacity: 0;    transform: scale(3.2); }
+  0%   { opacity: 0;   transform: scale(0.35); }
+  14%  { opacity: 0.9; }
+  100% { opacity: 0;   transform: scale(3.2); }
 }
 
 @keyframes lkFlash {
@@ -793,9 +888,12 @@ img {
 }
 
 /* The lockup takes the pulse: one quick, tight recoil. It settles at exactly
-   scale(1) — NOT at 1.02 or anything else — because the size it ends at is the
-   size the homepage's logo is. Anything else and the intro would end with a
-   visible snap as the logo resized itself. */
+   scale(1) — NOT 1.02 or anything else — because the size it ends at is the size
+   the homepage's logo is. Anything else and the intro would end with a visible
+   snap as the logo resized itself.
+
+   This one is on .hero-lockup, an ordinary HTML div OUTSIDE the svg, so its
+   transform is in real pixels and needs no fill-box. */
 .intro-armed .hero-lockup {
   animation: lkPop 0.5s cubic-bezier(0.3, 1.7, 0.4, 1) 1.15s both;
 }
@@ -804,11 +902,6 @@ img {
   0%   { transform: scale(1); }
   40%  { transform: scale(1.045); }
   100% { transform: scale(1); }
-}
-
-/* The lockup needs to be a positioning parent for the ring and the flash. */
-.hero-lockup {
-  position: relative;
 }
 
 
@@ -836,12 +929,12 @@ img {
   .intro-armed .hero-lockup,
   .intro-armed .lk-shield,
   .intro-armed .lk-ch,
-  .intro-armed .lockup-group,
+  .intro-armed .lk-gp,
   .intro-armed .lk-ring,
   .intro-armed .lk-flash,
   .intro-armed .hero-rule,
   .intro-armed .hero-tagline,
-  .intro-armed .fork-card,
+  .intro-armed .world,
   .intro-armed .home-note {
     animation: none;
   }
@@ -953,21 +1046,30 @@ img {
   padding: 64px 0 80px;
 }
 
+/* THE PAGE HEAD. A short gold rule ABOVE a left-aligned title, rather than a
+   full-width hairline slung underneath it. The old version drew a line all the
+   way across the page under every title — the most template-ish move in the
+   whole stylesheet, and it made every page open the same way. The rule is now a
+   mark of emphasis, not a divider. */
 .page-head {
-  margin-bottom: 44px;
-  padding-bottom: 26px;
-  border-bottom: 1px solid var(--grey);
+  margin-bottom: clamp(34px, 4.4vh, 52px);
+  padding-top: 20px;
+  border-top: 2px solid var(--gold);
+  /* The rule is a short accent, not a full-width line. */
+  max-width: 62ch;
 }
 
 .page-title {
-  font-size: clamp(2.1rem, 3.4vw, 2.9rem);
+  font-size: clamp(2.4rem, 4.4vw, 3.8rem);   /* big and heavy: this leads */
+  font-weight: 800;
   color: var(--ink);
 }
 
 .page-sub {
-  margin-top: 10px;
+  margin-top: 12px;
   color: var(--ink-soft);
   font-size: 1.02rem;
+  max-width: 56ch;
 }
 
 /* -- The grid of placeholder category cards -- */
@@ -981,21 +1083,31 @@ img {
    nothing to click that would lead to a dead end. The dashed edge is what says
    "this is a space held open", as opposed to the solid edge every real card on
    the site wears. */
+/* THE AGENT PORTAL SHELL. Still a shell — nothing here is clickable and nothing
+   new has been built into it. But it wears the new clothes: no box, no dashed
+   rounded tile. Each category is a panel with a STEEL RULE over it and an open
+   edge below, so the grid reads as a set of columns held open for content rather
+   than as seven identical empty tiles.
+
+   The rule goes gold as the section fills in — the card is a held-open space
+   today, and the day it has content, it earns the gold. */
 .cat-card {
-  border: 1px dashed var(--edge-strong);
-  border-radius: var(--radius);
-  background: var(--surface);
-  padding: 30px 28px;
-  min-height: 150px;
+  border: 0;
+  border-top: 2px solid var(--edge-strong);
+  border-radius: 0;
+  background: linear-gradient(180deg, var(--surface) 0%, rgba(93, 128, 184, 0) 100%);
+  padding: 22px 20px 26px 0;
+  min-height: 132px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 18px;
+  gap: 16px;
 }
 
 .cat-name {
   font-family: var(--font-head);
-  font-size: 1.3rem;
+  font-size: 1.24rem;
+  font-weight: 700;
   color: var(--text);
 }
 
@@ -1010,7 +1122,7 @@ img {
   background: rgba(198, 161, 91, 0.12);
   border: 1px solid rgba(198, 161, 91, 0.4);
   padding: 5px 12px;
-  border-radius: 999px;
+  border-radius: 2px;
 }
 
 /* -- Slim footer --
@@ -1194,7 +1306,7 @@ img {
   background: rgba(198, 161, 91, 0.12);
   border: 1px solid rgba(198, 161, 91, 0.45);
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: 2px;
 }
 
 .empty-title {
@@ -1359,7 +1471,7 @@ img {
   gap: 10px;
   margin-top: 8px;
   padding: 12px 24px;
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid var(--gold-bright);
   background: var(--gold-bright);
   color: var(--navy-deep);   /* dark text on gold: the high-contrast pairing */
@@ -1372,13 +1484,28 @@ img {
   transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* On hover the fill drops away and the button becomes a glowing gold outline. */
+/* Hover: the gold goes UP, not away. The old rule emptied the fill out to a
+   transparent outline wrapped in a 26px glow — which is the glowing-box look,
+   and it also made the primary action get QUIETER the moment you reached for it.
+   A primary button should become more decisive under the cursor, not less. */
 .btn-gold:hover,
 .btn-gold:focus-visible {
-  background: transparent;
-  color: var(--gold-bright);
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
   outline: none;
-  box-shadow: 0 0 26px rgba(226, 190, 121, 0.35);
+}
+
+/* Keyboard focus: a hard double ring, not a bloom. */
+.btn-gold:focus-visible {
+  box-shadow: 0 0 0 2px var(--navy-deep), 0 0 0 4px var(--gold-bright);
+}
+
+/* The larger, load-bearing size — the one dominant CTA in each world. */
+.btn-gold.btn-lg {
+  padding: 15px 30px;
+  font-size: 0.86rem;
+  letter-spacing: 0.13em;
 }
 
 /* The real button, greyed out: it's the button this thing WILL have, shown in
@@ -1449,7 +1576,7 @@ img {
   display: inline-block;
   margin-bottom: 14px;
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid rgba(198, 161, 91, 0.45);
   background: rgba(198, 161, 91, 0.12);
   color: var(--gold);
@@ -1523,7 +1650,7 @@ img {
   -webkit-appearance: none;
   min-width: 290px;
   padding: 13px 48px 13px 18px;   /* the big right pad leaves room for the chevron */
-  border-radius: 10px;
+  border-radius: 3px;
   border: 1px solid rgba(253, 253, 252, 0.28);
   background: var(--surface-hover);
   color: var(--white);
@@ -1695,7 +1822,7 @@ img {
 
 .phase-eyebrow {
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid rgba(198, 161, 91, 0.45);
   background: rgba(198, 161, 91, 0.12);
   color: var(--gold);
@@ -1741,7 +1868,7 @@ img {
   padding: 20px 24px;
   border: 1px solid var(--edge);
   border-left: 4px solid var(--gold);
-  border-radius: 12px;
+  border-radius: 3px;
   background: var(--surface);
   display: grid;
   gap: 12px;
@@ -1781,7 +1908,7 @@ img {
 /* Steel chips, gold ink. The chip is a surface; the words on it are the point. */
 .ref-chips li {
   padding: 7px 14px;
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid var(--edge-strong);
   background: var(--surface);
   color: var(--gold);
@@ -1799,7 +1926,7 @@ img {
   padding: 18px 22px;
   border: 1px solid var(--edge);
   border-left: 4px solid var(--gold);
-  border-radius: 12px;
+  border-radius: 3px;
   background: var(--surface);
   color: var(--text);
 }
@@ -1834,7 +1961,7 @@ img {
   display: inline-block;
   margin-bottom: 14px;
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: 2px;
   background: var(--gold-bright);
   color: var(--navy-deep);
   font-size: 0.66rem;
@@ -1888,7 +2015,7 @@ img {
 .template {
   margin: 0;
   padding: 22px 24px;
-  border-radius: 12px;
+  border-radius: 3px;
   border: 1px solid var(--edge);
   background: var(--surface-sunk);
   color: var(--white);
@@ -1911,7 +2038,7 @@ img {
   align-items: center;
   gap: 8px;
   padding: 9px 18px;
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid var(--gold);
   background: transparent;
   color: var(--gold);
@@ -2130,7 +2257,7 @@ img {
   margin-top: 22px;
   padding: 20px 24px;
   border: 2px solid var(--gold-bright);
-  border-radius: 12px;
+  border-radius: 3px;
   background: linear-gradient(160deg, rgba(226, 190, 121, 0.16) 0%, rgba(198, 161, 91, 0.03) 100%);
   box-shadow: 0 0 40px rgba(198, 161, 91, 0.14);
 }
@@ -2141,9 +2268,10 @@ img {
   font-weight: 500;
 }
 
-/* The closing line, set apart above its own gold hairline. Albert Sans at 600
-   rather than Marcellus: Marcellus ships in one weight only, so asking it for
-   bold gets a fake, smeared bold from the browser instead of a real one. */
+/* The closing line, set apart above its own gold hairline. Deliberately Albert
+   Sans at 600, not the heading serif: this is the last thing said at the end of
+   a long walkthrough, and it should land as a spoken instruction rather than as
+   another section title. */
 .guide-close {
   margin-top: 26px;
   padding-top: 22px;
@@ -2346,7 +2474,7 @@ img {
   place-items: center;
   width: 44px;
   height: 44px;
-  border-radius: 11px;
+  border-radius: 3px;
   border: 1px solid rgba(198, 161, 91, 0.32);
   background: rgba(198, 161, 91, 0.1);
   color: var(--gold);
@@ -2570,7 +2698,7 @@ img {
   align-items: center;
   gap: clamp(6px, 0.6vw, 9px);
   padding: 10px clamp(11px, 1.1vw, 16px) 10px clamp(7px, 0.7vw, 9px);
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid var(--edge-strong);
   background: var(--surface);
   color: var(--text);
@@ -2683,7 +2811,7 @@ img {
   gap: 6px;
   padding: 24px 26px;
   border: 1px solid var(--edge);
-  border-radius: 12px;
+  border-radius: 3px;
   background: var(--surface);
 }
 
@@ -2746,7 +2874,7 @@ img {
   aspect-ratio: 3 / 4;
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: 3px;
   background: var(--navy-deep);
   cursor: zoom-in;
   overflow: hidden;
@@ -2768,7 +2896,7 @@ img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 3px;
 }
 
 /* The hint only shows on hover — at rest the chart should be the only thing on
@@ -2778,7 +2906,7 @@ img {
   right: 10px;
   bottom: 10px;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: 2px;
   background: rgba(8, 20, 40, 0.92);
   border: 1px solid rgba(198, 161, 91, 0.6);
   color: var(--gold);
@@ -2834,7 +2962,7 @@ img {
   max-height: 100%;
   width: auto;
   height: auto;
-  border-radius: 10px;
+  border-radius: 3px;
   background: var(--white);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
   cursor: default;
@@ -2882,7 +3010,7 @@ img {
 .example-box {
   margin-top: 30px;
   padding: 26px 28px;
-  border-radius: 12px;
+  border-radius: 3px;
   border: 1px solid var(--edge);
   background: var(--surface-sunk);
 }
@@ -3051,7 +3179,7 @@ img {
 .trio-card {
   padding: 24px 26px;
   border: 1px solid var(--edge);
-  border-radius: 12px;
+  border-radius: 3px;
   background: var(--surface);
 }
 
@@ -3219,7 +3347,7 @@ img {
   align-self: stretch;
   margin-top: 4px;
   padding: 16px 20px;
-  border-radius: 10px;
+  border-radius: 3px;
   border: 1px solid var(--edge);
   background: var(--surface-sunk);
   display: grid;

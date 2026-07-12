@@ -3,13 +3,15 @@
      A "choose your stage" fork: the agent picks where they are in the journey
      and is routed to one of three stage pages. Fills one screen, no scrolling.
 
-     THE ICONS: these are built from the SAME shield shapes as the real logo
-     mark (public/logos/mark-white-for-dark-bg -vector-.svg), so they match the
-     brand exactly. The mark is three shields; the icons reveal them one stage
-     at a time, so the logo "completes itself" as the agent progresses:
-        stage 1 -> the centre shield alone, outlined
-        stage 2 -> the centre shield filled, plus one side shield
-        stage 3 -> the finished three-shield mark, with the gold
+     THE ICONS ARE GENERATED, NOT DRAWN. They are cut from the REAL logo master
+     (public/logos-final/ulg-lockup-navy.svg) by tools/build-marks.js, and dropped
+     in between the ULG:STAGE markers below. The mark is three shields; the icons
+     reveal them one stage at a time, so the logo "completes itself" as the agent
+     progresses:
+        stage 1 -> the centre shield alone, still just an outline
+        stage 2 -> the centre shield solid, plus one side shield
+        stage 3 -> the finished three-shield mark, with its gold heart
+     Do not hand-edit the path data — change the master and re-run the tool.
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -22,11 +24,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Marcellus&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap"
     rel="stylesheet"
   />
 
-  <link rel="icon" href="/logos/ulg-monogram-navy.png" />
+  <link rel="icon" href="/logos-final/web/monogram-on-dark.svg" />
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 
@@ -39,10 +41,10 @@
 
       <a href="/" class="brand-lockup" aria-label="Unity Life Group — back to home">
         <img
-          src="/logos/mark-white-for-dark-bg%20-vector-.svg"
+          src="/logos-final/web/shield-on-dark.svg"
           alt=""
           class="brand-mark"
-          width="62" height="48"
+          width="62" height="43"
         />
         <span class="brand-word">Unity Life Group</span>
       </a>
@@ -73,13 +75,11 @@
 
         <!-- ---------- STAGE 1: the centre shield alone, outlined ---------- -->
         <a href="/new-agents/licensing" class="fork-card fade-up fade-up-2">
-          <!-- The viewBox is cropped tight to just the centre shield, so this ONE
-               shield renders at the same size as the centre shield in stages 2
-               and 3. (Sharing the wide 3-shield viewBox would shrink it.) -->
-          <svg class="stage-icon" viewBox="17 1 28 42" fill="none" aria-hidden="true" focusable="false">
-            <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z"
-                  fill="none" stroke="#FDFDFC" stroke-width="1.4" stroke-linejoin="round" opacity="0.55"/>
+          <!-- ULG:STAGE1:START -->
+<svg class="stage-icon" viewBox="284.578125 123.871094 43.55859400000003 65.390625" fill="none" aria-hidden="true" focusable="false">
+            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="none" stroke="#FDFDFC" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/>
           </svg>
+      <!-- ULG:STAGE1:END -->
           <h2 class="fork-title">Get Licensed</h2>
           <p class="fork-sub">
             You haven't taken your state exam yet. Your pre-licensing course, state
@@ -92,15 +92,12 @@
 
         <!-- ---------- STAGE 2: centre shield filled + one side shield ---------- -->
         <a href="/new-agents/contracting" class="fork-card fade-up fade-up-3">
-          <!-- Cropped to the centre shield PLUS the one side shield. -->
-          <svg class="stage-icon" viewBox="17 1 44 42" fill="none" aria-hidden="true" focusable="false">
-            <!-- one side shield has arrived -->
-            <path d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z"
-                  fill="#FDFDFC" opacity="0.3"/>
-            <!-- the centre shield is now solid -->
-            <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z"
-                  fill="#FDFDFC" opacity="0.9"/>
+          <!-- ULG:STAGE2:START -->
+<svg class="stage-icon" viewBox="284.578125 123.871094 68.515625 65.390625" fill="none" aria-hidden="true" focusable="false">
+            <path d="M 17.433594 1.167969 L 34.59375 6.628906 L 34.59375 24.566406 C 34.59375 37.824219 27.574219 45.625 17.433594 51.082031 C 7.296875 45.625 0.277344 37.824219 0.277344 24.566406 L 0.277344 6.628906 Z M 17.433594 1.167969 " transform="translate(317 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)" opacity="0.5"/>
+            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="rgb(99.21875%, 99.21875%, 98.81897%)" opacity="0.92"/>
           </svg>
+      <!-- ULG:STAGE2:END -->
           <h2 class="fork-title">Get Contracted</h2>
           <p class="fork-sub">
             You passed your exam. Buying your state license, finding your NPN, and
@@ -113,18 +110,14 @@
 
         <!-- ---------- STAGE 3: the complete mark, exactly as the logo ---------- -->
         <a href="/new-agents/launch" class="fork-card fade-up fade-up-4">
-          <!-- The complete mark: all three shields, exactly as the logo. -->
-          <svg class="stage-icon" viewBox="1 1 60 42" fill="none" aria-hidden="true" focusable="false">
-            <path d="M13 7 L24 10.5 L24 22 C24 30.5 19.5 35.5 13 39 C6.5 35.5 2 30.5 2 22 L2 10.5 Z"
-                  fill="#FDFDFC" opacity="0.45"/>
-            <path d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z"
-                  fill="#FDFDFC" opacity="0.45"/>
-            <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z"
-                  fill="#FDFDFC"/>
-            <!-- the gold arrives only at the final stage -->
-            <path d="M31 9 L38.5 11.3 L38.5 21 C38.5 27.5 35.5 31.5 31 34.5 C26.5 31.5 23.5 27.5 23.5 21 L23.5 11.3 Z"
-                  fill="#C6A15B"/>
+          <!-- ULG:STAGE3:START -->
+<svg class="stage-icon" viewBox="259.621094 123.871094 93.47265599999997 65.390625" fill="none" aria-hidden="true" focusable="false">
+            <path d="M 17.28125 1.167969 L 34.4375 6.628906 L 34.4375 24.566406 C 34.4375 37.824219 27.417969 45.625 17.28125 51.082031 C 7.140625 45.625 0.121094 37.824219 0.121094 24.566406 L 0.121094 6.628906 Z M 17.28125 1.167969 " transform="translate(261 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)"/>
+            <path d="M 17.433594 1.167969 L 34.59375 6.628906 L 34.59375 24.566406 C 34.59375 37.824219 27.574219 45.625 17.433594 51.082031 C 7.296875 45.625 0.277344 37.824219 0.277344 24.566406 L 0.277344 6.628906 Z M 17.433594 1.167969 " transform="translate(317 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)"/>
+            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="rgb(99.21875%, 99.21875%, 98.81897%)"/>
+            <path d="M 306.355469 136.289062 L 318.054688 139.875 L 318.054688 155.007812 C 318.054688 165.144531 313.375 171.382812 306.355469 176.0625 C 299.339844 171.382812 294.660156 165.144531 294.660156 155.007812 L 294.660156 139.875 Z M 306.355469 136.289062 " fill="rgb(78.42865%, 60.778809%, 23.529053%)"/>
           </svg>
+      <!-- ULG:STAGE3:END -->
           <h2 class="fork-title">Launch</h2>
           <p class="fork-sub">
             You're contracted with carriers. Training, scripts, leads, and everything

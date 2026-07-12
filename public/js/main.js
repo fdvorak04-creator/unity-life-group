@@ -55,19 +55,18 @@
     glow.className = "ulg-bg-glow";
     bg.appendChild(glow);
 
-    // The shield watermark — homepage only. This is the real ULG mark (the same
-    // three-shield artwork as the logo), not a generic shield, so the watermark
-    // behind the hero is the brand's own silhouette. It's held at a few percent
-    // opacity by CSS: it should be felt, not read.
+    // The shield watermark — homepage only. THE REAL MARK: this is
+    // /logos-final/web/shield-outline.svg, cut from the artwork master by
+    // tools/build-marks.js and stroked. It used to be three path shapes retyped
+    // by hand in this file, which is how a watermark quietly stops being the
+    // logo. It's held at a few percent opacity by CSS: it should be felt, not
+    // read.
     if (isFull) {
-      bg.insertAdjacentHTML(
-        "beforeend",
-        '<svg class="ulg-bg-shield" viewBox="2 2 58 40" fill="none" focusable="false">' +
-          '<path d="M13 7 L24 10.5 L24 22 C24 30.5 19.5 35.5 13 39 C6.5 35.5 2 30.5 2 22 L2 10.5 Z"/>' +
-          '<path d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z"/>' +
-          '<path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z"/>' +
-        "</svg>"
-      );
+      const shield = document.createElement("img");
+      shield.className = "ulg-bg-shield";
+      shield.src = "/logos-final/web/shield-outline.svg";
+      shield.alt = "";
+      bg.appendChild(shield);
     }
 
     // The dark veil: a gradient wash over the embers, heaviest where the content

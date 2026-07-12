@@ -1,101 +1,5 @@
-<!-- ==========================================================================
-     index.html  —  THE HOMEPAGE
-     A compressed hero, and then the screen splits into TWO WORLDS, because two
-     different people land here:
-
-       LEFT  — "I'm New Here"    the journey. One door: Begin. This side is about
-                                 BECOMING, so it carries the shield progression:
-                                 the mark completing itself, stage by stage.
-       RIGHT — "I'm Producing"   the toolkit. One door: Agent Portal. This side is
-                                 about DOING, so it is denser, squarer, more
-                                 utilitarian. More will be added to it later.
-
-     The page ends on those two choices. "The Vision" lives in the top nav of the
-     section pages — it is deliberately not given a third door here.
-
-     This is the only page that runs the Ember Drift background at FULL strength
-     (data-bg="full"): more embers, brighter, and the shield watermark behind the
-     hero. Every other page runs the ambient version. See /js/main.js.
-
-     ---------------------------------------------------------------------------
-     THE LOGO MARKUP IS GENERATED, NOT WRITTEN.
-     The two blocks below marked ULG:LOCKUP and ULG:MOTIF are produced from the
-     real artwork in /logos-final by tools/build-marks.js. Do not hand-edit the
-     path data inside them: run the tool. Redrawing a mark by hand is how you end
-     up with a logo that is *almost* the logo.
-     ========================================================================== -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unity Life Group — Agent Hub</title>
-
-  <!-- Internal hub: ask search engines not to list it publicly. -->
-  <meta name="robots" content="noindex, nofollow" />
-
-  <!-- Brand fonts: Playfair Display (headings, 600-800) and Albert Sans (body). -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap"
-    rel="stylesheet"
-  />
-
-  <link rel="icon" href="/logos-final/web/monogram-on-dark.svg" />
-  <link rel="stylesheet" href="/css/styles.css" />
-
-  <!-- ---------- ARMING THE LOGO INTRO ----------
-       This has to run HERE, in the head, and it has to be inline: it decides
-       whether the intro plays, and that decision must be made before the browser
-       paints a single frame. Deferred to the end of <body> (where all our other
-       scripts live) the hero would flash on screen for a frame before the intro
-       overlay covered it — which is precisely the thing an intro is for.
-
-       ONCE PER SESSION. The flag is written the moment the intro is armed, not
-       when it finishes, so a visitor who lands and immediately clicks through to
-       another page doesn't get the intro again when they come back.
-
-       No class = no intro: the overlay is display:none by default, so the "not
-       playing" path costs nothing and the page is just the page. sessionStorage
-       throws in some locked-down/private modes, so a failure quietly means
-       "no intro" rather than a broken homepage. -->
-  <script>
-    try {
-      if (!sessionStorage.getItem("ulg-intro-played")) {
-        sessionStorage.setItem("ulg-intro-played", "1");
-        document.documentElement.classList.add("intro-armed");
-      }
-    } catch (e) {
-      /* no sessionStorage (private mode, blocked cookies) — just skip the intro */
-    }
-  </script>
-</head>
-
-<!-- "page-home" switches on the midnight gradient and the no-scroll rule.
-     'data-bg="full"' is what turns the background layer up to full strength. -->
-<body class="page-home" data-bg="full">
-
-  <main class="hero">
-
-    <!-- ---------- THE LOCKUP — THE REAL ARTWORK ----------
-         The genuine mark from /logos-final (ulg-lockup-navy.svg: the LIGHT
-         artwork, which is the one that belongs on a navy ground — the filename
-         names the BACKGROUND, not the ink).
-
-         It is INLINED rather than dropped in as an <img> for one reason: the
-         intro animates its pieces — the four shields land one at a time, then
-         the letters — and you cannot reach inside an <img>. The build strips the
-         print export's page background and tags the pieces the intro moves
-         (.lk-shield, .lk-ch, .lk-gp). Without the intro they are inert, and this
-         is simply the logo.
-
-         The letters carry style="--i:N" so the stagger is COMPUTED from the
-         index rather than hand-listed: the wordmark has exactly as many glyphs
-         as the artwork says it has, and a hardcoded list would silently drift. -->
-    <div class="hero-lockup fade-up fade-up-1" role="img" aria-label="Unity Life Group">
-      <!-- ULG:LOCKUP:START -->
-<svg class="lockup-svg" viewBox="170.503899 123.371094 265.670553 154.74217499999995" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="170.503899 123.371094 265.670553 154.74217499999995">
 <defs>
 <filter id="filter-remove-color" x="0%" y="0%" width="100%" height="100%">
 <feColorMatrix color-interpolation-filters="sRGB" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
@@ -274,142 +178,61 @@
 </g>
 </g>
 </defs>
-
-<g class="lk-shield lk-shield-l" mask="url(#mask-0)">
+<g id="art">
+<g mask="url(#mask-0)">
 <use xlink:href="#source-5" transform="matrix(1, 0, 0, 1, 261, 132)"/>
 </g>
-<g class="lk-shield lk-shield-r" mask="url(#mask-1)">
+<g mask="url(#mask-1)">
 <use xlink:href="#source-8" transform="matrix(1, 0, 0, 1, 317, 132)"/>
 </g>
-<path class="lk-shield lk-shield-m" fill-rule="nonzero" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1" d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 "/>
-<path class="lk-shield lk-shield-g" fill-rule="nonzero" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1" d="M 306.355469 136.289062 L 318.054688 139.875 L 318.054688 155.007812 C 318.054688 165.144531 313.375 171.382812 306.355469 176.0625 C 299.339844 171.382812 294.660156 165.144531 294.660156 155.007812 L 294.660156 139.875 Z M 306.355469 136.289062 "/>
-<g class="lk-ch" style="--i:0" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-0" x="171.140618" y="242.24999"/>
+<path fill-rule="nonzero" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1" d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 "/>
+<path fill-rule="nonzero" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1" d="M 306.355469 136.289062 L 318.054688 139.875 L 318.054688 155.007812 C 318.054688 165.144531 313.375 171.382812 306.355469 176.0625 C 299.339844 171.382812 294.660156 165.144531 294.660156 155.007812 L 294.660156 139.875 Z M 306.355469 136.289062 "/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-0" x="171.140618" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:1" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-1" x="205.822806" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-1" x="205.822806" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:2" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-2" x="242.016759" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-2" x="242.016759" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:3" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-3" x="261.640206" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-3" x="261.640206" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:4" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-4" x="292.397003" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-4" x="292.397003" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:5" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-5" x="323.320289" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-5" x="323.320289" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:6" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-6" x="338.029196" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-6" x="338.029196" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:7" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-2" x="365.691956" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-2" x="365.691956" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:8" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-7" x="385.315391" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-7" x="385.315391" y="242.24999"/>
 </g>
-<g class="lk-ch" style="--i:9" fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1"><use xlink:href="#glyph-0-8" x="412.436171" y="242.24999"/>
+<g fill="rgb(99.21875%, 99.21875%, 98.81897%)" fill-opacity="1">
+<use xlink:href="#glyph-0-8" x="412.436171" y="242.24999"/>
 </g>
-<path class="lk-gp" fill-rule="nonzero" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1" d="M 195.75 269.25 L 246 269.25 L 246 270 L 195.75 270 Z M 195.75 269.25 "/>
-<g class="lk-gp" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1"><use xlink:href="#glyph-1-0" x="260.249989" y="275.999988"/>
+<path fill-rule="nonzero" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1" d="M 195.75 269.25 L 246 269.25 L 246 270 L 195.75 270 Z M 195.75 269.25 "/>
+<g fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1">
+<use xlink:href="#glyph-1-0" x="260.249989" y="275.999988"/>
 </g>
-<g class="lk-gp" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1"><use xlink:href="#glyph-1-1" x="279.742172" y="275.999988"/>
+<g fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1">
+<use xlink:href="#glyph-1-1" x="279.742172" y="275.999988"/>
 </g>
-<g class="lk-gp" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1"><use xlink:href="#glyph-1-2" x="296.859259" y="275.999988"/>
+<g fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1">
+<use xlink:href="#glyph-1-2" x="296.859259" y="275.999988"/>
 </g>
-<g class="lk-gp" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1"><use xlink:href="#glyph-1-3" x="316.531629" y="275.999988"/>
+<g fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1">
+<use xlink:href="#glyph-1-3" x="316.531629" y="275.999988"/>
 </g>
-<g class="lk-gp" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1"><use xlink:href="#glyph-1-4" x="334.828077" y="275.999988"/>
+<g fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1">
+<use xlink:href="#glyph-1-4" x="334.828077" y="275.999988"/>
 </g>
-<path class="lk-gp" fill-rule="nonzero" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1" d="M 366 269.25 L 416.25 269.25 L 416.25 270 L 366 270 Z M 366 269.25 "/>
-
+<path fill-rule="nonzero" fill="rgb(78.42865%, 60.778809%, 23.529053%)" fill-opacity="1" d="M 366 269.25 L 416.25 269.25 L 416.25 270 L 366 270 Z M 366 269.25 "/>
+</g>
 </svg>
-      <!-- ULG:LOCKUP:END -->
-
-      <!-- THE PULSE: the single beat of energy that fires once the lockup has
-           assembled. It is positioned on the SHIELD'S HEART — measured from the
-           real geometry, not eyeballed — so it fires from the mark itself rather
-           than from the middle of the screen. Inert unless the intro is armed. -->
-      <span class="lk-ring" aria-hidden="true"></span>
-      <span class="lk-flash" aria-hidden="true"></span>
-    </div>
-
-    <!-- ---------- Gold hairline + tagline ---------- -->
-    <hr class="hero-rule fade-up fade-up-2" />
-    <p class="hero-tagline fade-up fade-up-2">Built on People &mdash; Driven by Purpose</p>
-
-
-    <!-- ================= THE TWO WORLDS ================= -->
-    <div class="worlds">
-
-      <!-- ---------- LEFT: the journey. About BECOMING. ---------- -->
-      <section class="world world-new fade-up fade-up-3" aria-labelledby="w-new">
-
-        <!-- The shield progression: the mark completing itself as the agent
-             advances — outline, then half, then the finished mark with its gold.
-             Real artwork; generated, not drawn. -->
-        <div class="world-motif" aria-hidden="true">
-          <!-- ULG:MOTIF:START -->
-<svg class="stage-icon" viewBox="284.578125 123.871094 43.55859400000003 65.390625" fill="none" aria-hidden="true" focusable="false">
-            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="none" stroke="#FDFDFC" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/>
-          </svg>
-          <svg class="stage-icon" viewBox="284.578125 123.871094 68.515625 65.390625" fill="none" aria-hidden="true" focusable="false">
-            <path d="M 17.433594 1.167969 L 34.59375 6.628906 L 34.59375 24.566406 C 34.59375 37.824219 27.574219 45.625 17.433594 51.082031 C 7.296875 45.625 0.277344 37.824219 0.277344 24.566406 L 0.277344 6.628906 Z M 17.433594 1.167969 " transform="translate(317 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)" opacity="0.5"/>
-            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="rgb(99.21875%, 99.21875%, 98.81897%)" opacity="0.92"/>
-          </svg>
-          <svg class="stage-icon" viewBox="259.621094 123.871094 93.47265599999997 65.390625" fill="none" aria-hidden="true" focusable="false">
-            <path d="M 17.28125 1.167969 L 34.4375 6.628906 L 34.4375 24.566406 C 34.4375 37.824219 27.417969 45.625 17.28125 51.082031 C 7.140625 45.625 0.121094 37.824219 0.121094 24.566406 L 0.121094 6.628906 Z M 17.28125 1.167969 " transform="translate(261 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)"/>
-            <path d="M 17.433594 1.167969 L 34.59375 6.628906 L 34.59375 24.566406 C 34.59375 37.824219 27.574219 45.625 17.433594 51.082031 C 7.296875 45.625 0.277344 37.824219 0.277344 24.566406 L 0.277344 6.628906 Z M 17.433594 1.167969 " transform="translate(317 132)" fill="rgb(56.079102%, 62.748718%, 74.119568%)"/>
-            <path d="M 306.355469 125.371094 L 326.636719 131.609375 L 326.636719 155.007812 C 326.636719 171.382812 318.054688 181.523438 306.355469 187.761719 C 294.660156 181.523438 286.078125 171.382812 286.078125 155.007812 L 286.078125 131.609375 Z M 306.355469 125.371094 " fill="rgb(99.21875%, 99.21875%, 98.81897%)"/>
-            <path d="M 306.355469 136.289062 L 318.054688 139.875 L 318.054688 155.007812 C 318.054688 165.144531 313.375 171.382812 306.355469 176.0625 C 299.339844 171.382812 294.660156 165.144531 294.660156 155.007812 L 294.660156 139.875 Z M 306.355469 136.289062 " fill="rgb(78.42865%, 60.778809%, 23.529053%)"/>
-          </svg>
-      <!-- ULG:MOTIF:END -->
-        </div>
-
-        <p class="world-eyebrow">I'm New Here</p>
-        <h2 class="world-line" id="w-new">
-          Get licensed, contracted, and to your first sale.
-        </h2>
-
-        <a href="/new-agents" class="btn-gold btn-lg world-cta">
-          Begin <span class="btn-arrow" aria-hidden="true">&rarr;</span>
-        </a>
-
-        <!-- For the agent already mid-journey who knows where they left off. -->
-        <nav class="world-jump" aria-label="Jump to a stage">
-          <a href="/new-agents/licensing">Get Licensed</a>
-          <a href="/new-agents/contracting">Get Contracted</a>
-          <a href="/new-agents/launch">Launch</a>
-        </nav>
-      </section>
-
-
-      <!-- ---------- RIGHT: the toolkit. About DOING. ---------- -->
-      <section class="world world-work fade-up fade-up-3" aria-labelledby="w-work">
-        <p class="world-eyebrow">I'm Producing</p>
-        <h2 class="world-line" id="w-work">
-          Day to day resources.
-        </h2>
-
-        <a href="/agents" class="btn-gold btn-lg world-cta">
-          Agent Portal <span class="btn-arrow" aria-hidden="true">&rarr;</span>
-        </a>
-      </section>
-
-    </div>
-
-
-    <!-- The homepage ends on the two choices. "The Vision" still lives in the
-         top nav of every section page; it just no longer competes for attention
-         down here. -->
-    <p class="home-note fade-up fade-up-4">Internal use only</p>
-
-  </main>
-
-  <!-- THE CURTAIN. A single sheet in the site's own background gradient, sitting
-       over everything except the lockup. Because it is the SAME gradient as the
-       page beneath it, its exit isn't a curtain lifting off a different-coloured
-       page — there is nothing to "reveal" but the content itself. The tagline,
-       the two worlds and the embers simply arrive, and the intro has already
-       become the homepage.
-
-       display:none unless the intro is armed. -->
-  <div class="intro" id="intro" aria-hidden="true"></div>
-
-  <script src="/js/main.js"></script>
-  <script src="/js/intro.js"></script>
-</body>
-</html>
