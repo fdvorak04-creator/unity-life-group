@@ -505,6 +505,173 @@ img {
 
 
 /* ==========================================================================
+   4b. THE "CHOOSE YOUR STAGE" PAGES  (/new-agents and its three stages)
+   These sit on the navy gradient, exactly like the landing page, so the
+   whole new-agent journey feels like one continuous experience.
+
+   The stage cards deliberately REUSE the landing page's .fork-card classes
+   rather than copying them. That way the hover (lift + gold glow) can never
+   drift out of sync with the landing page — there is only one set of rules.
+   ========================================================================== */
+.page-dark {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--navy-gradient);
+  background-attachment: fixed;   /* the gradient stays put if the page scrolls */
+  color: var(--white);
+}
+
+/* The heading block, on navy instead of white. */
+.page-dark .page-head {
+  border-bottom-color: rgba(253, 253, 252, 0.14);
+}
+.page-dark .page-title {
+  color: var(--white);
+}
+.page-dark .page-sub {
+  color: rgba(253, 253, 252, 0.66);
+}
+
+/* -- The three stage cards, side by side -- */
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+/* -- THE STAGE PICKER (/new-agents): one full screen, nothing scrolls --
+   These rules are scoped to ".page-picker" so they only affect the picker.
+   The three stage pages use ".page-dark" WITHOUT ".page-picker", so they keep
+   their normal scrolling layout and are untouched by any of this. */
+.page-picker {
+  overflow: hidden;   /* guarantees the no-scroll rule */
+}
+
+/* Centres the heading + cards in the space between header and footer, so
+   there's no dead band at the bottom of the screen. */
+.page-picker .site-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(14px, 2.2vh, 32px) 0;
+}
+
+.page-picker .page-head {
+  margin-bottom: clamp(22px, 3.6vh, 44px);
+  padding-bottom: clamp(16px, 2.2vh, 26px);
+}
+
+.page-picker .page-sub {
+  max-width: 720px;   /* keeps the longer subline to a comfortable reading width */
+}
+
+.page-picker .stage-grid {
+  gap: clamp(18px, 1.8vw, 28px);
+}
+
+/* Hero-scale cards: they grow with the screen instead of sitting at a fixed
+   size, which is what lets the page fill the viewport at any height. */
+.page-picker .fork-card {
+  min-height: clamp(300px, 52vh, 540px);
+  padding: clamp(28px, 4vh, 48px) clamp(26px, 2.4vw, 40px) clamp(24px, 3.2vh, 38px);
+}
+
+.page-picker .fork-title {
+  font-size: clamp(1.75rem, 2.2vw, 2.35rem);
+}
+
+.page-picker .fork-sub {
+  font-size: clamp(0.95rem, 1.02vw, 1.06rem);
+}
+
+/* The shield icon at the top of each card. Built from the real logo's shield
+   shapes, and revealed one shield at a time across the three stages, so the
+   mark "completes itself" as the agent progresses. */
+.stage-icon {
+  /* Sized by HEIGHT, not width. Each icon's viewBox is cropped tight to its
+     own shields, and all three are the same 42 units tall — so fixing the
+     height makes the centre shield render identically on all three cards,
+     while the side shields simply add width as the mark completes. */
+  height: clamp(72px, 8vh, 104px);
+  width: auto;
+  /* Without this the SVG stretches to the full card width and centres its
+     drawing — which would leave the icon centred while the text is left-aligned. */
+  align-self: flex-start;
+  margin-bottom: clamp(10px, 1.6vh, 20px);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* The icon lifts slightly with the card. */
+.fork-card:hover .stage-icon,
+.fork-card:focus-visible .stage-icon {
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* -- Breadcrumb back to the stage picker -- */
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(253, 253, 252, 0.6);
+  transition: color 0.3s ease, gap 0.3s ease;
+}
+.crumb:hover {
+  color: var(--gold);
+  gap: 12px;   /* the arrow eases back a touch on hover */
+}
+
+/* -- The "content is coming" empty state on each stage page -- */
+.empty-state {
+  border: 1px dashed rgba(253, 253, 252, 0.22);
+  border-radius: var(--radius);
+  background: rgba(253, 253, 252, 0.04);
+  padding: 64px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.empty-pill {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(198, 161, 91, 0.12);
+  border: 1px solid rgba(198, 161, 91, 0.45);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+.empty-title {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+.empty-note {
+  color: rgba(253, 253, 252, 0.6);
+  max-width: 460px;
+  font-size: 0.98rem;
+}
+
+/* Stage cards stack on narrower screens. */
+@media (max-width: 980px) {
+  .stage-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================================
    5. SMALLER SCREENS
    The site is built desktop-first (that's ~95% of the traffic), but these
    rules keep it from breaking on a laptop-in-half-screen, tablet, or phone.

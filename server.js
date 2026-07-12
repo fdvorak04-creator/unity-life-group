@@ -39,6 +39,16 @@ app.get("/agents", (req, res) => {
   res.sendFile(path.join(PUBLIC_DIR, "agents.html"));
 });
 
+// The three "new agent" stage pages, e.g. /new-agents/licensing.
+// Listing the allowed names explicitly means a made-up address like
+// /new-agents/anything-else can't reach for a file it shouldn't.
+const STAGES = ["licensing", "contracting", "launch"];
+
+app.get("/new-agents/:stage", (req, res, next) => {
+  if (!STAGES.includes(req.params.stage)) return next();   // falls through to the 404 below
+  res.sendFile(path.join(PUBLIC_DIR, "new-agents", `${req.params.stage}.html`));
+});
+
 // If someone types an address that doesn't exist, send them home rather than
 // showing them a bare browser error page.
 app.use((req, res) => {

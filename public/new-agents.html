@@ -1,7 +1,15 @@
 <!-- ==========================================================================
      new-agents.html  —  "START HERE"  (lives at the address /new-agents)
-     A skeleton for now: the real header and layout, with EMPTY category
-     cards waiting to be filled in. Nothing here is clickable yet.
+     A "choose your stage" fork: the agent picks where they are in the journey
+     and is routed to one of three stage pages. Fills one screen, no scrolling.
+
+     THE ICONS: these are built from the SAME shield shapes as the real logo
+     mark (public/logos/mark-white-for-dark-bg -vector-.svg), so they match the
+     brand exactly. The mark is three shields; the icons reveal them one stage
+     at a time, so the logo "completes itself" as the agent progresses:
+        stage 1 -> the centre shield alone, outlined
+        stage 2 -> the centre shield filled, plus one side shield
+        stage 3 -> the finished three-shield mark, with the gold
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -22,13 +30,10 @@
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 
-<body class="page-section">
+<!-- "page-picker" is what makes this page fill exactly one screen. -->
+<body class="page-dark page-picker">
 
-  <!-- ===================== SLIM HEADER (on every section page) ============
-       The shield mark on the left is a link back to the homepage.
-       The %20 in the file name below is simply how a web address writes a
-       space — the logo file itself has a space in its name.
-       ====================================================================== -->
+  <!-- ===================== SLIM HEADER ===================== -->
   <header class="site-header">
     <div class="container header-inner">
 
@@ -43,7 +48,6 @@
       </a>
 
       <nav class="main-nav">
-        <!-- "is-active" gives this link the gold underline, because we ARE on this page. -->
         <a href="/new-agents" class="is-active" aria-current="page">Start Here</a>
         <a href="/agents">Agent Portal</a>
       </nav>
@@ -56,51 +60,79 @@
   <main class="site-main">
     <div class="container">
 
-      <div class="page-head">
-        <h1 class="page-title">Start Here</h1>
+      <div class="page-head fade-up fade-up-1">
+        <h1 class="page-title">Your Path Starts Here</h1>
         <p class="page-sub">
-          For new agents — onboarding, licensing, and training.
+          Everything you need to go from brand new to writing business — in three
+          stages. Pick the stage you're in right now.
         </p>
       </div>
 
-      <!-- The empty category cards. Each one is a plain box (not a link), so
-           there is nothing misleading to click. Fill these in later. -->
-      <div class="card-grid">
+      <div class="stage-grid">
 
-        <div class="cat-card">
-          <h2 class="cat-name">Onboarding Checklist</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <!-- ---------- STAGE 1: the centre shield alone, outlined ---------- -->
+        <a href="/new-agents/licensing" class="fork-card fade-up fade-up-2">
+          <!-- The viewBox is cropped tight to just the centre shield, so this ONE
+               shield renders at the same size as the centre shield in stages 2
+               and 3. (Sharing the wide 3-shield viewBox would shrink it.) -->
+          <svg class="stage-icon" viewBox="17 1 28 42" fill="none" aria-hidden="true" focusable="false">
+            <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z"
+                  fill="none" stroke="#FDFDFC" stroke-width="1.4" stroke-linejoin="round" opacity="0.55"/>
+          </svg>
+          <h2 class="fork-title">Get Licensed</h2>
+          <p class="fork-sub">
+            You haven't taken your state exam yet. Your pre-licensing course, state
+            requirements, how to study, and booking your test.
+          </p>
+          <span class="fork-enter">
+            Enter <span class="fork-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </a>
 
-        <div class="cat-card">
-          <h2 class="cat-name">Licensing</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <!-- ---------- STAGE 2: centre shield filled + one side shield ---------- -->
+        <a href="/new-agents/contracting" class="fork-card fade-up fade-up-3">
+          <!-- Cropped to the centre shield PLUS the one side shield. -->
+          <svg class="stage-icon" viewBox="17 1 44 42" fill="none" aria-hidden="true" focusable="false">
+            <!-- one side shield has arrived -->
+            <path d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z"
+                  fill="#FDFDFC" opacity="0.3"/>
+            <!-- the centre shield is now solid -->
+            <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z"
+                  fill="#FDFDFC" opacity="0.9"/>
+          </svg>
+          <h2 class="fork-title">Get Contracted</h2>
+          <p class="fork-sub">
+            You passed your exam. Buying your state license, finding your NPN, and
+            completing contracting to get your carriers.
+          </p>
+          <span class="fork-enter">
+            Enter <span class="fork-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </a>
 
-        <div class="cat-card">
-          <h2 class="cat-name">Call Vault</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
-
-        <div class="cat-card">
-          <h2 class="cat-name">Video Vault</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
-
-        <div class="cat-card">
-          <h2 class="cat-name">Scripts</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
-
-        <div class="cat-card">
-          <h2 class="cat-name">Lead Vendors</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
-
-        <div class="cat-card">
-          <h2 class="cat-name">Discord</h2>
-          <span class="cat-soon">Coming soon</span>
-        </div>
+        <!-- ---------- STAGE 3: the complete mark, exactly as the logo ---------- -->
+        <a href="/new-agents/launch" class="fork-card fade-up fade-up-4">
+          <!-- The complete mark: all three shields, exactly as the logo. -->
+          <svg class="stage-icon" viewBox="1 1 60 42" fill="none" aria-hidden="true" focusable="false">
+            <path d="M13 7 L24 10.5 L24 22 C24 30.5 19.5 35.5 13 39 C6.5 35.5 2 30.5 2 22 L2 10.5 Z"
+                  fill="#FDFDFC" opacity="0.45"/>
+            <path d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z"
+                  fill="#FDFDFC" opacity="0.45"/>
+            <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z"
+                  fill="#FDFDFC"/>
+            <!-- the gold arrives only at the final stage -->
+            <path d="M31 9 L38.5 11.3 L38.5 21 C38.5 27.5 35.5 31.5 31 34.5 C26.5 31.5 23.5 27.5 23.5 21 L23.5 11.3 Z"
+                  fill="#C6A15B"/>
+          </svg>
+          <h2 class="fork-title">Launch</h2>
+          <p class="fork-sub">
+            You're contracted with carriers. Training, scripts, leads, and everything
+            to make your first sale.
+          </p>
+          <span class="fork-enter">
+            Enter <span class="fork-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </a>
 
       </div>
 
