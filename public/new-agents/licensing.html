@@ -1,6 +1,14 @@
 <!-- ==========================================================================
      licensing.html  —  STAGE 1  (lives at the address /new-agents/licensing)
-     Real page, intentionally empty: the content gets added later.
+
+     The complete, self-serve walkthrough from "brand new" to exam day. It is a
+     LONG-FORM SCROLLING page (unlike the one-screen stage picker), so the agent
+     can work straight down it in order.
+
+     The step numbers are NOT written in this file — they're drawn automatically
+     by a counter in the stylesheet. That's why section C's single step correctly
+     shows "6" even though it's in a separate list: add or remove a step anywhere
+     above it and everything below renumbers itself.
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +29,8 @@
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 
-<body class="page-dark">
+<!-- "page-flow" switches on the numbered-walkthrough styling. -->
+<body class="page-dark page-flow">
 
   <!-- ===================== SLIM HEADER ===================== -->
   <header class="site-header">
@@ -57,18 +66,208 @@
 
       <div class="page-head fade-up fade-up-1">
         <h1 class="page-title">Get Licensed</h1>
-        <p class="page-sub">From day one to exam day — your complete roadmap.</p>
-      </div>
-
-      <!-- The empty state. Real content replaces this later. -->
-      <div class="empty-state fade-up fade-up-2">
-        <span class="empty-pill">Coming soon</span>
-        <h2 class="empty-title">This stage is being built</h2>
-        <p class="empty-note">
-          The licensing roadmap will live here — step-by-step, from your first
-          day to passing the exam.
+        <p class="page-sub flow-intro">
+          Follow these steps in order. By the end, you'll be walking into your
+          exam ready to pass.
         </p>
       </div>
+
+
+      <!-- ============ SECTION A — the pre-licensing course (steps 1-5) ============ -->
+      <section class="flow-section fade-up fade-up-2">
+        <h2 class="flow-section-title">Start Your Pre-Licensing Course</h2>
+
+        <ol class="step-flow">
+
+          <!-- ---------- STEP 1 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Fill Out Your Intake Form</h3>
+              <p class="step-text">
+                You'll receive your course signup link after submitting.
+              </p>
+              <a
+                class="btn-gold"
+                href="https://form.jotform.com/260148033292148"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open the Intake Form
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- ---------- STEP 2 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Sign Up for XCEL</h3>
+              <p class="step-text">
+                Use the link you were sent. Click Get License, choose
+                <!-- The single most common and most expensive mistake on this page,
+                     so it gets the gold highlight. -->
+                <span class="mark-gold">LIFE ONLY &mdash; not Life &amp; Health</span>,
+                then select your resident state.
+              </p>
+            </div>
+          </li>
+
+          <!-- ---------- STEP 3 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Add the Pre-Course to Your Cart &amp; Check Out</h3>
+            </div>
+          </li>
+
+          <!-- ---------- STEP 4 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Check Your State's Requirements</h3>
+              <p class="step-text">
+                Every state is different &mdash; some require webinars, fingerprints,
+                or extra steps. Know yours before you book.
+              </p>
+              <a
+                class="btn-gold"
+                href="https://www.xcelsolutions.com/insurance-license/requirements"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View State Requirements
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- ---------- STEP 5 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Launch Your Student Portal &amp; Bookmark It</h3>
+              <p class="step-text">
+                This is where your course lives. Bookmark it now.
+              </p>
+            </div>
+          </li>
+
+        </ol>
+      </section>
+
+
+      <!-- ============ SECTION B — the ULG study method (the featured block) ============ -->
+      <section class="method fade-up fade-up-3">
+        <span class="method-eyebrow">The ULG Method</span>
+        <h2 class="method-title">How to Study</h2>
+
+        <ul class="method-list">
+          <li>
+            Your course has ~28 modules (varies by state). Move through them
+            efficiently &mdash; the modules unlock what actually matters.
+          </li>
+          <li>
+            <strong>The simulated exams are your real studying.</strong> There are
+            3&ndash;4 of them. Take them over and over &mdash; they are the only
+            study tool you need.
+          </li>
+          <li>
+            The bar: consistently passing <strong>EVERY</strong> simulated exam at
+            <strong>90%+</strong>.
+          </li>
+          <li>
+            Don't memorize answers. Every question you miss, look it up and
+            understand <strong>WHY</strong> the right answer is right.
+          </li>
+        </ul>
+
+        <p class="method-close">
+          <strong>If you can consistently pass at 90%, you will pass your state exam.</strong>
+        </p>
+      </section>
+
+
+      <!-- ============ SECTION C — book the exam (step 6) ============ -->
+      <section class="flow-section fade-up fade-up-4">
+        <h2 class="flow-section-title">Book Your Exam</h2>
+
+        <!-- start="6" keeps the number correct for screen readers; the visible
+             number comes from the stylesheet's running counter. -->
+        <ol class="step-flow" start="6">
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Find Your State's Exam Vendor &amp; Book</h3>
+              <p class="step-text">
+                Book through your state's exam vendor below.
+              </p>
+
+              <!-- The picker. Everything below is wired up in /js/licensing.js. -->
+              <div class="exam-picker">
+                <span class="select-wrap">
+                  <label class="sr-only" for="state-select">Choose your resident state</label>
+                  <select id="state-select" class="state-select">
+                    <option value="">Select your state&hellip;</option>
+                    <!-- The 50 states + DC are filled in by licensing.js, straight
+                         from the same list that maps each one to its vendor. Keeping
+                         one list instead of two means the dropdown and the answers
+                         can never drift out of sync. -->
+                  </select>
+                  <span class="select-chevron" aria-hidden="true">
+                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none">
+                      <path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </span>
+              </div>
+
+              <!-- The answer. Starts hidden; licensing.js fills it in and reveals it.
+                   aria-live means a screen reader announces the vendor the moment it
+                   changes, rather than leaving the user to go hunting for it. -->
+              <div id="exam-result" class="exam-result" aria-live="polite">
+                <div>
+                  <span class="exam-label">Your exam vendor</span>
+                  <p id="exam-vendor" class="exam-vendor"></p>
+                </div>
+                <a
+                  id="exam-link"
+                  class="btn-gold"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span id="exam-link-text">Book Your Exam</span>
+                  <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+
+            </div>
+          </li>
+        </ol>
+      </section>
+
+
+      <!-- ============ SECTION D — Discord ============ -->
+      <section class="discord-card fade-up fade-up-4">
+        <div>
+          <h2 class="discord-title">Join the Discord</h2>
+          <p class="discord-sub">
+            Plug in from day one. Questions, support, and the team.
+          </p>
+        </div>
+        <a
+          class="btn-gold"
+          href="https://discord.gg/DwRRhbwJQ"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Join the Discord
+          <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </section>
 
     </div>
   </main>
@@ -83,5 +282,6 @@
   </footer>
 
   <script src="/js/main.js"></script>
+  <script src="/js/licensing.js"></script>
 </body>
 </html>

@@ -60,6 +60,21 @@ img {
   display: block;
 }
 
+/* Text that is READ ALOUD to screen-reader users but never drawn on screen.
+   Used for labels where the visual design already makes the meaning obvious
+   (e.g. the state dropdown) but a screen reader would otherwise find nothing. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* A reusable centered column that keeps content off the screen edges. */
 .container {
   width: 100%;
@@ -78,7 +93,16 @@ img {
   color: var(--white);
   min-height: 100vh;
   min-height: 100dvh;   /* the more accurate "screen height" in modern browsers */
-  overflow: hidden;     /* guarantees the no-scroll rule */
+
+  /* THE NO-SCROLL RULE, DONE SAFELY.
+     "auto" means "scroll ONLY if the content genuinely doesn't fit". On a
+     full desktop screen everything fits, so no scrollbar ever appears and the
+     page looks exactly as designed. But the moment the window is narrowed or
+     shortened and the cards stack, the page can be scrolled instead of having
+     its bottom half silently cut off. (The old rule here was
+     "overflow: hidden", which clipped that overflow away for good.) */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* A soft pool of gold light behind the logo. This is what gives the flat
@@ -102,9 +126,18 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;   /* the whole group sits balanced on the screen */
   gap: clamp(16px, 2.2vh, 28px);
   padding: clamp(32px, 5vh, 64px) 32px clamp(28px, 4vh, 48px);
+
+  /* "SAFE" CENTRING — the whole group sits balanced on the screen.
+     Plain "justify-content: center" has a trap: as soon as the content is
+     taller than the screen, it overflows off BOTH ends equally, and the part
+     that spills off the top can never be scrolled back to. "safe center"
+     centres while there's room and quietly falls back to top-aligned once
+     there isn't, so nothing is ever stranded above the top edge.
+     The plain "center" on the first line is the fallback for older browsers. */
+  justify-content: center;
+  justify-content: safe center;
 }
 
 /* -- The logo: the centerpiece, BUILT IN CODE (not a picture) --
@@ -545,15 +578,24 @@ img {
    The three stage pages use ".page-dark" WITHOUT ".page-picker", so they keep
    their normal scrolling layout and are untouched by any of this. */
 .page-picker {
-  overflow: hidden;   /* guarantees the no-scroll rule */
+  /* Scroll ONLY if it's actually needed — see the note on .page-home. A full
+     desktop screen still fits on one page with no scrollbar; a narrow window
+     (where the three cards stack into a tall column) can now be scrolled
+     rather than having its lower cards clipped off and made unreachable. */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Centres the heading + cards in the space between header and footer, so
-   there's no dead band at the bottom of the screen. */
+   there's no dead band at the bottom of the screen. "safe center" keeps that
+   balance while the content fits, but stops centring once it doesn't — which
+   is what prevents the top of a tall stacked column from being pushed above
+   the screen where it can't be scrolled back to. */
 .page-picker .site-main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  justify-content: safe center;
   padding: clamp(14px, 2.2vh, 32px) 0;
 }
 
@@ -668,6 +710,420 @@ img {
   .stage-grid {
     grid-template-columns: 1fr;
   }
+
+  /* Once they're stacked, the picker can no longer be a one-screen page — three
+     hero-scale cards in a column will never fit. So it stops trying: the cards
+     shrink to the height of their own content, and the page becomes an ordinary
+     scrolling page. Without this, each card would still demand 52% of the screen
+     height and the column would be needlessly, absurdly tall. */
+  .page-picker .site-main {
+    justify-content: flex-start;
+    padding: 48px 0 64px;
+  }
+  .page-picker .fork-card {
+    min-height: 0;
+    padding: 30px 28px 26px;
+  }
+}
+
+/* The same escape hatch for SHORT screens (a laptop with lots of toolbars, or a
+   phone in landscape): below this height the hero-scale cards can't fit either,
+   so let them size to their content and let the page scroll. */
+@media (max-height: 620px) {
+  .page-picker .site-main {
+    justify-content: flex-start;
+    padding: 36px 0 48px;
+  }
+  .page-picker .fork-card {
+    min-height: 0;
+  }
+}
+
+
+/* ==========================================================================
+   4c. THE "GET LICENSED" STAGE PAGE  (/new-agents/licensing)
+   Unlike the picker, this one is a LONG-FORM page: a numbered walkthrough the
+   agent scrolls top-to-bottom, from intake form to exam day. It keeps the navy
+   gradient and the slim header so it still feels like the same journey.
+   ========================================================================== */
+
+/* ONE counter runs across the whole page, not per-section. That's what lets the
+   numbering carry on from section A (steps 1-5) into section C (step 6) even
+   though they're two separate lists — nobody has to hand-number anything, and
+   inserting a step later renumbers everything below it automatically. */
+.page-flow .site-main {
+  counter-reset: step;
+}
+
+.flow-intro {
+  max-width: 640px;
+  font-size: 1.06rem;
+  color: rgba(253, 253, 252, 0.72);
+}
+
+/* -- A titled section of the walkthrough -- */
+.flow-section {
+  margin-top: clamp(46px, 6vh, 76px);
+}
+
+.flow-section-title {
+  font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+  color: var(--white);
+  padding-bottom: 14px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid rgba(253, 253, 252, 0.14);
+}
+
+/* A real <ol>, so the steps are announced in order by a screen reader too —
+   the visible numbers below are just the visual half of the same idea. */
+.step-flow {
+  list-style: none;
+  display: grid;
+  gap: 20px;
+}
+
+.step {
+  counter-increment: step;
+  display: flex;
+  gap: 22px;
+  padding: 28px 30px;
+  border: 1px solid rgba(253, 253, 252, 0.16);
+  border-radius: var(--radius);
+  background: rgba(253, 253, 252, 0.05);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1),
+              border-color 0.45s ease,
+              background-color 0.45s ease;
+}
+
+.step:hover {
+  transform: translateY(-3px);
+  border-color: rgba(198, 161, 91, 0.5);
+  background: rgba(253, 253, 252, 0.07);
+}
+
+/* The gold number medallion. The digit is drawn by the counter, so the HTML
+   never hard-codes it. */
+.step-num {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(198, 161, 91, 0.55);
+  background: rgba(198, 161, 91, 0.12);
+  color: var(--gold);
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.step-num::before {
+  content: counter(step);
+}
+
+.step-body {
+  /* Take up all the card's width left over beside the number medallion. Without
+     this the body would shrink-wrap to its longest line, and anything inside it
+     that wants the full width (the exam-vendor panel) would be boxed into that
+     same narrow column. min-width: 0 lets it shrink below its content's natural
+     width too, so long text wraps instead of forcing the card wider. */
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;   /* keeps the button hugging its text, not stretched */
+  gap: 10px;
+  padding-top: 7px;          /* optically lines the title up with the medallion */
+}
+
+.step-title {
+  font-size: 1.3rem;
+  color: var(--white);
+}
+
+.step-text {
+  color: rgba(253, 253, 252, 0.68);
+  font-size: 1rem;
+  max-width: 62ch;   /* a comfortable reading measure */
+}
+
+/* -- The gold call-to-action button -- */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--navy-deep);   /* dark text on gold: the high-contrast pairing */
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* On hover the fill drops away and the button becomes a glowing gold outline. */
+.btn-gold:hover,
+.btn-gold:focus-visible {
+  background: transparent;
+  color: var(--gold);
+  outline: none;
+  box-shadow: 0 0 26px rgba(198, 161, 91, 0.3);
+}
+
+.btn-arrow {
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.btn-gold:hover .btn-arrow,
+.btn-gold:focus-visible .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Inline gold emphasis, for the one phrase on the page people most often get
+   wrong (LIFE ONLY, not Life & Health). */
+.mark-gold {
+  color: var(--gold);
+  font-weight: 600;
+  background: rgba(198, 161, 91, 0.14);
+  border-bottom: 1px solid rgba(198, 161, 91, 0.55);
+  padding: 1px 7px;
+  border-radius: 4px;
+  /* The phrase is long enough to wrap onto a second line. By default the
+     highlight would then be drawn as ONE box torn in half — padding and rounded
+     corners only on the outer ends, and a raw cut where it wraps. "clone" gives
+     each line its own complete box instead, so both halves look intentional. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+
+/* -- SECTION B: "The ULG Method" — the featured, gold-bordered block ------
+   This is the most important advice on the page, so it deliberately does NOT
+   look like the step cards: heavier gold border, warm gold wash, its own glow. */
+.method {
+  margin-top: clamp(46px, 6vh, 76px);
+  padding: clamp(32px, 4vh, 46px) clamp(28px, 3vw, 44px);
+  border: 1px solid rgba(198, 161, 91, 0.5);
+  border-left: 4px solid var(--gold);   /* the accent edge */
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(198, 161, 91, 0.11) 0%, rgba(198, 161, 91, 0.02) 100%);
+  box-shadow: 0 0 46px rgba(198, 161, 91, 0.08);
+}
+
+.method-eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(198, 161, 91, 0.45);
+  background: rgba(198, 161, 91, 0.12);
+  color: var(--gold);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.method-title {
+  font-size: clamp(1.6rem, 2.4vw, 2.05rem);
+  color: var(--white);
+}
+
+.method-list {
+  list-style: none;
+  display: grid;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.method-list li {
+  position: relative;
+  padding-left: 30px;
+  color: rgba(253, 253, 252, 0.78);
+  font-size: 1.02rem;
+  max-width: 74ch;
+}
+
+/* A small gold diamond instead of a bullet — a square, rotated 45°. */
+.method-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 9px;
+  height: 9px;
+  transform: rotate(45deg);
+  background: var(--gold);
+}
+
+/* The closing promise, set apart above its own gold hairline. */
+.method-close {
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(198, 161, 91, 0.35);
+  font-family: var(--font-head);
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  color: var(--white);
+}
+
+
+/* -- SECTION C: the state -> exam vendor picker --------------------------- */
+.exam-picker {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.select-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+/* "appearance: none" strips the operating system's default dropdown chrome so
+   the control can wear the brand's own styling instead. */
+.state-select {
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 290px;
+  padding: 13px 48px 13px 18px;   /* the big right pad leaves room for the chevron */
+  border-radius: 10px;
+  border: 1px solid rgba(253, 253, 252, 0.28);
+  background: rgba(253, 253, 252, 0.07);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.state-select:hover,
+.state-select:focus-visible {
+  border-color: var(--gold);
+  background: rgba(253, 253, 252, 0.1);
+  outline: none;
+}
+
+/* The open dropdown list is drawn by the OS, not by us — it ignores the styling
+   above. Without these two colors the options would inherit white text and land
+   white-on-white (unreadable) on Windows and most Linux browsers. */
+.state-select option {
+  color: var(--ink);
+  background: var(--white);
+}
+
+.select-chevron {
+  position: absolute;
+  right: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  pointer-events: none;   /* the arrow must never swallow a click meant for the select */
+}
+
+/* The answer panel. Hidden until a state is actually chosen, so the page never
+   shows an empty or half-finished result. */
+.exam-result {
+  display: none;
+  /* The step card lays its contents out with align-items: flex-start, so without
+     this the panel would shrink-wrap to its text and sit as a narrow box. Stretch
+     it to the card's full width, which is what lets the vendor name sit at the
+     left and the booking button at the far right. */
+  align-self: stretch;
+  margin-top: 22px;
+  padding: 26px 30px;
+  border: 1px solid rgba(198, 161, 91, 0.5);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  background: rgba(198, 161, 91, 0.08);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.exam-result.is-visible {
+  display: flex;
+  animation: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.exam-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(253, 253, 252, 0.55);
+}
+
+.exam-vendor {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  color: var(--white);
+  margin-top: 4px;
+}
+
+
+/* -- SECTION D: the Discord card, full width ------------------------------ */
+.discord-card {
+  margin-top: clamp(46px, 6vh, 76px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 26px;
+  padding: clamp(30px, 3.8vh, 42px) clamp(28px, 3vw, 44px);
+  border: 1px solid rgba(198, 161, 91, 0.5);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  background: linear-gradient(120deg, rgba(198, 161, 91, 0.13) 0%, rgba(253, 253, 252, 0.04) 100%);
+  box-shadow: 0 0 46px rgba(198, 161, 91, 0.08);
+}
+
+.discord-title {
+  font-size: clamp(1.45rem, 2.1vw, 1.8rem);
+  color: var(--white);
+}
+
+.discord-sub {
+  margin-top: 8px;
+  color: rgba(253, 253, 252, 0.7);
+  max-width: 52ch;
+}
+
+
+/* -- The licensing page on narrow screens -------------------------------- */
+@media (max-width: 720px) {
+  /* The number medallion moves above the text instead of beside it, so the
+     step's words get the full width of the card on a phone. */
+  .step {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 22px;
+  }
+  .step-body {
+    padding-top: 0;
+  }
+  .state-select {
+    min-width: 0;
+    width: 100%;
+  }
+  .select-wrap {
+    display: block;
+  }
+  /* Stacked, left-aligned, and the button goes full width — the comfortable
+     shape for a thumb. */
+  .exam-result,
+  .discord-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 
@@ -684,12 +1140,10 @@ img {
   }
 }
 
-/* Phones: everything stacks, and the homepage is allowed to scroll if the
-   two cards can no longer fit on one small screen. */
+/* Phones: everything stacks. (The homepage no longer needs an "allow scrolling"
+   rule here — it's now allowed to scroll at every width, but only ever does so
+   when the content actually overflows.) */
 @media (max-width: 720px) {
-  .page-home {
-    overflow: auto;
-  }
   .fork {
     grid-template-columns: 1fr;
     gap: 18px;
