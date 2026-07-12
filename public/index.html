@@ -1,8 +1,14 @@
 <!-- ==========================================================================
-     index.html  —  THE HOMEPAGE ("fork in the road")
-     Its only job is to send an agent to one of two places:
-     "Start Here" (/new-agents) or "Agent Portal" (/agents).
+     index.html  —  THE HOMEPAGE
+     One commanding screen. The lockup, the tagline, and three doors:
+     "Start Here" (/new-agents), "Agent Portal" (/agents), "The Vision" (/vision).
      Everything fits on one screen — there is nothing to scroll to.
+
+     This is the only page that runs the Ember Drift background at FULL strength
+     (data-bg="full" on the body below): more embers, brighter, and the shield
+     watermark behind the hero. Every other page runs the ambient version, where
+     there is real content that the background must never compete with.
+     See /js/main.js.
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -24,10 +30,37 @@
 
   <link rel="icon" href="/logos/ulg-monogram-navy.png" />
   <link rel="stylesheet" href="/css/styles.css" />
+
+  <!-- ---------- ARMING THE LOGO INTRO ----------
+       This has to run HERE, in the head, and it has to be inline: it decides
+       whether the intro plays, and that decision must be made before the browser
+       paints a single frame. Deferred to the end of <body> (where all our other
+       scripts live) the hero would flash on screen for a frame before the intro
+       overlay covered it — which is precisely the thing an intro is for.
+
+       ONCE PER SESSION. The flag is written the moment the intro is armed, not
+       when it finishes, so a visitor who lands and immediately clicks through to
+       another page doesn't get the intro again when they come back.
+
+       No class = no intro: the overlay is display:none by default, so the "not
+       playing" path costs nothing and the page is just the page. sessionStorage
+       throws in some locked-down/private modes, so a failure quietly means
+       "no intro" rather than a broken homepage. -->
+  <script>
+    try {
+      if (!sessionStorage.getItem("ulg-intro-played")) {
+        sessionStorage.setItem("ulg-intro-played", "1");
+        document.documentElement.classList.add("intro-armed");
+      }
+    } catch (e) {
+      /* no sessionStorage (private mode, blocked cookies) — just skip the intro */
+    }
+  </script>
 </head>
 
-<!-- "page-home" switches on the navy gradient background and the no-scroll rule. -->
-<body class="page-home">
+<!-- "page-home" switches on the midnight gradient and the no-scroll rule.
+     'data-bg="full"' is what turns the background layer up to full strength. -->
+<body class="page-home" data-bg="full">
 
   <main class="hero">
 
@@ -36,22 +69,42 @@
          are real text, so the whole lockup stays perfectly sharp at any size
          and on any screen — no blur, ever.
          The proportions below were measured from the original logo file so it
-         matches the artwork. -->
+         matches the artwork.
+
+         THE BRAND TREATMENT ON DARK: light shields, gold centre. The two outer
+         shields sit back, but they must still read as LIGHT — at the half
+         strength they used to carry, they went muddy grey against the deeper
+         midnight. The main shield is full white, and the gold is spent on the
+         one shield in the middle — the same restraint the rest of the palette
+         now follows. -->
     <div class="hero-lockup fade-up fade-up-1" role="img" aria-label="Unity Life Group">
 
-      <!-- The shield: the same vector art as the logo package's SVG file. -->
+      <!-- The shield: the same vector art as the logo package's SVG file.
+           Each path carries a class so the intro animation can drop the four
+           shields in one at a time. Without the intro they do nothing. -->
       <svg class="lockup-shield" viewBox="2 2 58 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
         <!-- the two faded shields behind -->
-        <path d="M13 7 L24 10.5 L24 22 C24 30.5 19.5 35.5 13 39 C6.5 35.5 2 30.5 2 22 L2 10.5 Z" fill="#FDFDFC" opacity="0.45"/>
-        <path d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z" fill="#FDFDFC" opacity="0.45"/>
+        <path class="lk-shield lk-shield-l" d="M13 7 L24 10.5 L24 22 C24 30.5 19.5 35.5 13 39 C6.5 35.5 2 30.5 2 22 L2 10.5 Z" fill="#FDFDFC" opacity="0.62"/>
+        <path class="lk-shield lk-shield-r" d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z" fill="#FDFDFC" opacity="0.62"/>
         <!-- the main white shield -->
-        <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z" fill="#FDFDFC"/>
+        <path class="lk-shield lk-shield-m" d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z" fill="#FDFDFC"/>
         <!-- the gold shield inside it -->
-        <path d="M31 9 L38.5 11.3 L38.5 21 C38.5 27.5 35.5 31.5 31 34.5 C26.5 31.5 23.5 27.5 23.5 21 L23.5 11.3 Z" fill="#C6A15B"/>
+        <path class="lk-shield lk-shield-g" d="M31 9 L38.5 11.3 L38.5 21 C38.5 27.5 35.5 31.5 31 34.5 C26.5 31.5 23.5 27.5 23.5 21 L23.5 11.3 Z" fill="#C6A15B"/>
       </svg>
 
-      <!-- The wordmark, as live text in Marcellus. -->
-      <div class="lockup-word">Unity Life</div>
+      <!-- The wordmark, as live text in Marcellus.
+
+           IT IS SPLIT INTO LETTERS so the intro can drop them in one at a time.
+           A transform can't be applied to a plain inline box, so each letter has
+           to be its own inline-block — which is why they're spans and not just
+           text. The whole word is still selectable, still real text, and still
+           announced correctly (the lockup carries aria-label="Unity Life Group").
+
+           THE SPANS MUST TOUCH. Any whitespace between them in the source — even
+           a newline — renders as a real space between the letters, so this line
+           deliberately has none, and the gap between the two words is an explicit
+           empty span sized to match a real space. -->
+      <div class="lockup-word" aria-hidden="true"><span class="lk-ch">U</span><span class="lk-ch">n</span><span class="lk-ch">i</span><span class="lk-ch">t</span><span class="lk-ch">y</span><span class="lk-ch lk-gap">&nbsp;</span><span class="lk-ch">L</span><span class="lk-ch">i</span><span class="lk-ch">f</span><span class="lk-ch">e</span></div>
 
       <!-- The gold "GROUP" line, with a rule on each side. -->
       <div class="lockup-group">
@@ -60,13 +113,20 @@
         <span class="lockup-rule" aria-hidden="true"></span>
       </div>
 
+      <!-- THE PULSE: the single beat of energy that fires once the lockup has
+           assembled. It lives INSIDE the lockup, centred on the shield, so it
+           fires from the mark itself rather than from the middle of the screen.
+           Both are inert (and invisible) unless the intro is armed. -->
+      <span class="lk-ring" aria-hidden="true"></span>
+      <span class="lk-flash" aria-hidden="true"></span>
+
     </div>
 
     <!-- ---------- Gold hairline + tagline ---------- -->
     <hr class="hero-rule fade-up fade-up-2" />
     <p class="hero-tagline fade-up fade-up-2">Built on People &mdash; Driven by Purpose</p>
 
-    <!-- ---------- THE FORK: two cards, side by side ---------- -->
+    <!-- ---------- THE THREE DOORS ---------- -->
     <div class="fork">
 
       <!-- CARD 1 — for brand-new agents -->
@@ -81,10 +141,21 @@
       </a>
 
       <!-- CARD 2 — for agents already up and running -->
-      <a href="/agents" class="fork-card fade-up fade-up-4">
+      <a href="/agents" class="fork-card fade-up fade-up-3">
         <h2 class="fork-title">Agent Portal</h2>
         <p class="fork-sub">
           For active agents — carriers, tools, and resources.
+        </p>
+        <span class="fork-enter">
+          Enter <span class="fork-arrow" aria-hidden="true">&rarr;</span>
+        </span>
+      </a>
+
+      <!-- CARD 3 — who we are -->
+      <a href="/vision" class="fork-card fade-up fade-up-4">
+        <h2 class="fork-title">The Vision</h2>
+        <p class="fork-sub">
+          Who we are, what we're building, and the people behind it.
         </p>
         <span class="fork-enter">
           Enter <span class="fork-arrow" aria-hidden="true">&rarr;</span>
@@ -97,6 +168,17 @@
 
   </main>
 
+  <!-- THE CURTAIN. A single sheet in the site's own background gradient, sitting
+       over everything except the lockup. Because it is the SAME gradient as the
+       page beneath it, its exit isn't a curtain lifting off a different-coloured
+       page — there is nothing to "reveal" but the content itself. The tagline,
+       the cards and the embers simply arrive, and the intro has already become
+       the homepage.
+
+       display:none unless the intro is armed. -->
+  <div class="intro" id="intro" aria-hidden="true"></div>
+
   <script src="/js/main.js"></script>
+  <script src="/js/intro.js"></script>
 </body>
 </html>

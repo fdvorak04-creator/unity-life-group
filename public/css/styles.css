@@ -6,21 +6,63 @@
    ========================================================================== */
 
 /* ---- 1. THE COLOR & FONT "DIALS" ----------------------------------------
-   The exact brand values from the logo package README. */
-:root {
-  --navy:        #16305E;  /* core brand navy                                */
-  --navy-light:  #1B3A70;  /* top of the "shiny navy" gradient               */
-  --navy-deep:   #0B1D3E;  /* bottom of the "shiny navy" gradient            */
-  --gold:        #C6A15B;  /* accent — borders, glows, small highlights      */
-  --white:       #FDFDFC;  /* matte white — text on navy, page background    */
-  --grey:        #E8EAED;  /* light grey — hairlines, borders, muted panels  */
+   THE THREE METALS. The whole site is built from exactly three colours, and
+   each one has a job it does not share:
 
-  /* Greys mixed from the brand navy, for body text on light pages. */
+     MIDNIGHT  the ground everything stands on. Deep, hard, almost black-blue.
+     STEEL     the logo's side shields. This is the structural colour — every
+               card, edge, rail and quiet chip is steel. It carries the site.
+     GOLD      the weapon. It is NOT a surface colour and never wallpaper: it
+               marks the thing you should do next (a CTA), the number that
+               matters, and whatever you're currently touching. Used sparingly,
+               it can afford to hit bright — hence --gold-bright, which is
+               reserved for exactly those moments.
+
+   If you find yourself reaching for gold to fill a large area, reach for steel
+   instead. That restraint is what makes the gold land. */
+:root {
+  /* -- MIDNIGHT: the base ------------------------------------------------- */
+  --navy-light:  #12274C;  /* top of the gradient — the lifted corner        */
+  --navy:        #0A1830;  /* the body base                                  */
+  --navy-deep:   #081428;  /* the deepest midnight — the bottom of the page  */
+
+  /* -- STEEL: the mid-tone, from the logo's side shields ------------------- */
+  --steel:       #2B4470;  /* solid steel — opaque fills that must hide a rail */
+  --steel-light: #5D80B8;  /* the light the surfaces and edges are mixed from  */
+
+  /* -- GOLD: the accent, and its bright form ------------------------------ */
+  --gold:        #C6A15B;  /* the brand gold — accents, labels, hairlines    */
+  --gold-bright: #E2BE79;  /* CTAs, hover, key highlights. Nothing else.     */
+
+  --white:       #FDFDFC;  /* matte white — text on midnight                 */
+  --grey:        #E8EAED;  /* light grey — the few remaining light surfaces  */
+
+  /* Greys mixed from the brand navy, for body text on light surfaces. */
   --ink:         #16305E;  /* headings on light backgrounds (brand navy)     */
   --ink-soft:    #5A6982;  /* softer supporting text                         */
 
-  /* The signature background: the "shiny navy" gradient from the logo pack. */
-  --navy-gradient: linear-gradient(150deg, var(--navy-light) 0%, var(--navy) 45%, var(--navy-deep) 100%);
+  /* -- SURFACES & EDGES ---------------------------------------------------
+     Built once here, used everywhere. Every card on the site is --surface on
+     --edge; every card that lifts under the cursor goes to --surface-hover on
+     --edge-strong. Because they're steel rather than plain white-on-navy, the
+     cards read as a defined object cut out of the dark rather than as a patch
+     of slightly-less-dark. */
+  --surface:       rgba(93, 128, 184, 0.10);
+  --surface-hover: rgba(93, 128, 184, 0.17);
+  --surface-sunk:  rgba(4, 10, 22, 0.55);   /* wells: code blocks, credentials */
+  --edge:          rgba(93, 128, 184, 0.30);
+  --edge-strong:   rgba(93, 128, 184, 0.52);
+  --hairline:      rgba(93, 128, 184, 0.20);  /* rules between rows           */
+
+  /* -- TEXT ---------------------------------------------------------------
+     Brighter than they used to be, across the board. The ground got much
+     darker, so the type can afford to — and has to — come up to meet it. */
+  --text:      rgba(253, 253, 252, 0.96);  /* headings, and anything that leads */
+  --text-soft: rgba(253, 253, 252, 0.78);  /* body copy                         */
+  --text-mute: rgba(253, 253, 252, 0.58);  /* labels, captions, asides          */
+
+  /* The signature background: the midnight gradient. */
+  --navy-gradient: linear-gradient(160deg, var(--navy-light) 0%, var(--navy) 48%, var(--navy-deep) 100%);
 
   --font-head: "Marcellus", Georgia, serif;                  /* headings/wordmark */
   --font-body: "Albert Sans", Arial, Helvetica, sans-serif;  /* body/supporting   */
@@ -29,6 +71,131 @@
   --radius:   14px;     /* rounded-corner amount                             */
 }
 
+
+/* ==========================================================================
+   1b. THE EMBER DRIFT BACKGROUND  (every page)
+   One shared layer, built by /js/main.js, sitting behind the entire site.
+
+   It has four parts, back to front:
+     the gradient  — on the layer itself: the midnight ground
+     the glow      — a pool of gold light
+     the shield    — the ULG mark, as a watermark. HOMEPAGE ONLY.
+     the embers    — drifting gold and steel flecks, rising forever
+     the veil      — a dark gradient over all of it, so text always wins
+
+   Two intensities. The homepage runs it at full strength; every other page
+   runs an "ambient" version — fewer embers, dimmer, no shield — because on
+   those pages there is real content to read and the background's only job is
+   to be felt. The mode is set by data-bg on <body>; see /js/main.js.
+   ========================================================================== */
+.ulg-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;              /* behind the content, in front of the body colour */
+  overflow: hidden;
+  pointer-events: none;    /* purely decoration — it must never eat a click   */
+  background: var(--navy-gradient);
+}
+
+/* Everything that isn't the background sits above it. The header already has
+   its own z-index (it's sticky), so it isn't listed — and the lightbox keeps
+   its own z-index: 200, so it still covers the page. */
+.site-main,
+.site-footer,
+.hero {
+  position: relative;
+  z-index: 1;
+}
+
+/* The pool of gold light. This is what stops the flat midnight reading as a
+   dead rectangle — the page looks lit rather than printed. */
+.ulg-bg-glow {
+  position: absolute;
+  top: -18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1100px, 130vw);
+  aspect-ratio: 1;
+  background: radial-gradient(circle,
+              rgba(198, 161, 91, 0.10) 0%,
+              rgba(198, 161, 91, 0) 62%);
+}
+
+/* On the homepage the light is stronger and sits behind the lockup. */
+[data-bg="full"] .ulg-bg-glow {
+  background: radial-gradient(circle,
+              rgba(198, 161, 91, 0.16) 0%,
+              rgba(198, 161, 91, 0) 64%);
+}
+
+/* THE SHIELD WATERMARK — the real three-shield ULG mark, homepage only.
+   It is deliberately at the very edge of visible. You should not notice it;
+   you should notice that the hero feels anchored. */
+.ulg-bg-shield {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Sized to sit BEHIND the lockup, not to sprawl across the cards underneath
+     it. At 92vw the outline ran straight through all three cards and read as a
+     stray line rather than a watermark. */
+  width: min(760px, 68vw);
+  height: auto;
+  fill: none;
+  stroke: var(--steel-light);
+  stroke-width: 0.35;
+  opacity: 0.11;
+}
+
+/* THE EMBERS. Each one is a small round div that rises the full height of the
+   screen and starts again — an endless, seamless loop, because the animation
+   simply never ends and every ember is already mid-flight on the first frame
+   (see the negative animation-delay in main.js).
+
+   Only `transform` and `opacity` are animated. Those are the two properties a
+   browser can hand to the GPU and animate without re-doing layout or repaint,
+   which is why 34 of these cost effectively nothing. */
+.ulg-p {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  animation: ulgRise linear infinite;
+}
+
+@keyframes ulgRise {
+  0%   { transform: translate3d(0, 0, 0);       opacity: 0; }
+  8%   {                                        opacity: var(--po, 0.5); }
+  88%  {                                        opacity: var(--po, 0.5); }
+  100% { transform: translate3d(0, -105vh, 0);  opacity: 0; }
+}
+
+/* THE VEIL — the legibility guarantee.
+   The embers are bright by design, and a bright fleck drifting under a line of
+   body text is a readability problem. So a dark gradient is laid over the whole
+   effect: lightest at the very top (where the hero's big type can look after
+   itself) and heavier down the page (where the paragraphs are). Text never has
+   to compete. */
+.ulg-bg-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+              rgba(8, 20, 40, 0.20) 0%,
+              rgba(8, 20, 40, 0.55) 55%,
+              rgba(8, 20, 40, 0.80) 100%);
+}
+
+/* The homepage has almost no small text on it, so it gets a much lighter veil —
+   this is what lets the embers actually read as an effect there. */
+[data-bg="full"] .ulg-bg-veil {
+  background: radial-gradient(ellipse at 50% 42%,
+              rgba(8, 20, 40, 0.10) 0%,
+              rgba(8, 20, 40, 0.55) 100%);
+}
+
+/* Reduced motion: main.js builds no embers at all, so there is nothing here to
+   stop. The gradient, glow and shield stay — they were never moving. */
+
 /* ---- 2. BASELINE RESET -------------------------------------------------- */
 * {
   box-sizing: border-box;
@@ -36,10 +203,23 @@
   padding: 0;
 }
 
+/* THE ANTI-FLASH BASE. Every page on the site is a dark page now, so midnight is
+   what the browser should paint on the very first frame — before the ember layer
+   exists, before anything else has rendered. Otherwise every navigation starts
+   with a white flash.
+
+   This has to live on <html>, not <body>. The page classes (.page-home,
+   .page-dark) all set `background:` — the shorthand — which silently resets
+   background-color to transparent, so a base colour on <body> would be wiped out
+   by the very rules that need it. Nothing overrides <html>. */
+html {
+  background-color: var(--navy-deep);
+}
+
 body {
   font-family: var(--font-body);
-  color: var(--ink);
-  background-color: var(--white);
+  color: var(--text);
+  background-color: var(--navy-deep);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -105,19 +285,8 @@ img {
   overflow-y: auto;
 }
 
-/* A soft pool of gold light behind the logo. This is what gives the flat
-   navy some depth and makes the page feel lit rather than printed. */
-.page-home::before {
-  content: "";
-  position: fixed;
-  top: -10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 900px;
-  height: 900px;
-  background: radial-gradient(circle, rgba(198, 161, 91, 0.13) 0%, rgba(198, 161, 91, 0) 62%);
-  pointer-events: none;   /* purely decorative — never blocks a click */
-}
+/* (The pool of gold light that used to live here is now part of the shared
+   Ember Drift layer — see .ulg-bg-glow. One glow, every page.) */
 
 .hero {
   position: relative;   /* sits above the glow */
@@ -149,13 +318,18 @@ img {
    whole lockup together, proportions locked.
 
    The dial is the smallest of three limits:
-     44vw            -> the target: just under half the screen's width
-     760px           -> stops it getting silly on an ultra-wide monitor
-     42vh x 1.4857   -> a height guard (1.4857 is the lockup's true
+     52vw            -> the target: the lockup now takes over half the screen.
+                        This is the "commanding scale" — it is the first thing
+                        you see, and it is meant to be the ONLY thing you see
+                        for a moment.
+     880px           -> stops it getting silly on an ultra-wide monitor
+     38vh x 1.4857   -> a height guard (1.4857 is the lockup's true
                         width-to-height ratio), which is what keeps the whole
-                        page on one screen on a short laptop. */
+                        page — logo, tagline, AND the three cards — on one
+                        screen on a short laptop. It's tighter than it was,
+                        because there's a third card to find room for now. */
 .hero-lockup {
-  --lockup-width: min(44vw, 760px, calc(42vh * 1.4857));
+  --lockup-width: min(52vw, 880px, calc(38vh * 1.4857));
 
   /* 6.1 is measured from the real logo: the lockup is ~6.1x as wide as the
      wordmark's text size. So this gives the wordmark the right size to make
@@ -220,30 +394,34 @@ img {
 
 /* -- Gold hairline + tagline -- */
 .hero-rule {
-  width: 190px;
+  width: clamp(190px, 22vw, 280px);
   height: 1px;
   border: 0;
   /* Fades in from nothing at both ends, so it reads as light, not a hard line. */
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.85;
+  background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+  opacity: 0.9;
 }
 
 .hero-tagline {
   font-family: var(--font-head);
-  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
-  letter-spacing: 0.16em;
+  font-size: clamp(1.1rem, 1.7vw, 1.6rem);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;   /* offsets the trailing letter-space so it stays centred */
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.9);
+  color: var(--text);
   text-align: center;
 }
 
-/* -- The two cards -- */
+/* -- The three cards --
+   Start Here / Agent Portal / The Vision. Three across on a desktop, and the
+   row is wide enough that they read as the page's foundation rather than three
+   buttons floating under a logo. */
 .fork {
   display: grid;
-  grid-template-columns: 1fr 1fr;   /* side by side on desktop */
-  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(18px, 1.8vw, 26px);
   width: 100%;
-  max-width: 980px;
+  max-width: 1180px;
   /* A deliberate, measured gap under the tagline — enough to separate the
      cards from the logo, but not so much that they're stranded at the bottom
      of the screen. */
@@ -251,11 +429,11 @@ img {
 }
 
 .fork-card {
-  /* Translucent navy glass, so the gradient behind still shows through. */
-  background: rgba(253, 253, 252, 0.05);
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  /* Steel glass, so the gradient and the embers behind still show through. */
+  background: var(--surface);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
-  padding: 40px 38px 34px;
+  padding: clamp(26px, 3.2vh, 38px) clamp(24px, 2.2vw, 34px) clamp(22px, 2.6vh, 30px);
   color: var(--white);
   display: flex;
   flex-direction: column;
@@ -267,36 +445,37 @@ img {
               background-color 0.45s ease;
 }
 
-/* The "expensive" hover: the card lifts, its edge turns gold, and a soft gold
-   light blooms out from underneath it. */
+/* The "expensive" hover: the card lifts, its edge turns bright gold, and a
+   pool of gold light blooms out from underneath it. This is one of the few
+   places the gold is allowed to be loud — it's the thing you're touching. */
 .fork-card:hover {
   transform: translateY(-6px);
-  border-color: var(--gold);
-  background: rgba(253, 253, 252, 0.08);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.34),
-              0 0 0 1px rgba(198, 161, 91, 0.5),
-              0 0 34px rgba(198, 161, 91, 0.28);
+  border-color: var(--gold-bright);
+  background: var(--surface-hover);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45),
+              0 0 0 1px rgba(226, 190, 121, 0.55),
+              0 0 38px rgba(198, 161, 91, 0.30);
 }
 
 /* Keyboard users get the exact same treatment as mouse users. */
 .fork-card:focus-visible {
   outline: none;
   transform: translateY(-6px);
-  border-color: var(--gold);
-  box-shadow: 0 0 0 2px var(--gold), 0 0 34px rgba(198, 161, 91, 0.28);
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 0 2px var(--gold-bright), 0 0 38px rgba(198, 161, 91, 0.30);
 }
 
 .fork-title {
   font-family: var(--font-head);
-  font-size: 2rem;
-  color: var(--white);
+  font-size: clamp(1.5rem, 1.9vw, 1.95rem);
+  color: var(--text);
 }
 
 .fork-sub {
-  color: rgba(253, 253, 252, 0.68);
-  font-size: 1rem;
+  color: var(--text-soft);
+  font-size: clamp(0.92rem, 0.95vw, 1rem);
   line-height: 1.55;
-  flex: 1;   /* pushes "Enter" to the bottom, so both cards line up */
+  flex: 1;   /* pushes "Enter" to the bottom, so all three cards line up */
 }
 
 .fork-enter {
@@ -309,6 +488,13 @@ img {
   align-items: center;
   gap: 9px;
   margin-top: 8px;
+  transition: color 0.45s ease;
+}
+
+/* Touch the card and its gold comes up to full brightness. */
+.fork-card:hover .fork-enter,
+.fork-card:focus-visible .fork-enter {
+  color: var(--gold-bright);
 }
 
 /* The little arrow slides forward on hover. */
@@ -324,8 +510,17 @@ img {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.38);
+  color: rgba(253, 253, 252, 0.4);
   margin-top: 4px;
+}
+
+/* THREE cards need more width than two did. Below this they'd be three thin
+   columns of wrapped text, so they become one column and the page scrolls. */
+@media (max-width: 900px) {
+  .fork {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
 }
 
 /* SHORT SCREENS (e.g. a 1366x768 laptop): the logo stays big, so the cards
@@ -333,13 +528,13 @@ img {
    rule holds even when the screen isn't very tall. */
 @media (max-height: 820px) {
   .fork-card {
-    padding: 26px 30px 24px;
+    padding: 22px 26px 20px;
   }
   .fork-title {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
   }
   .fork-sub {
-    font-size: 0.94rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -365,24 +560,326 @@ img {
 
 
 /* ==========================================================================
+   3b. THE LOGO INTRO  (homepage, first arrival in a session only)
+   The shields drop in, the letters land one by one, GROUP arrives, a single
+   pulse of energy fires from the mark — and the curtain goes. About 2 seconds.
+
+   THE WHOLE IDEA: it animates the REAL LOCKUP. Not a copy of it built for the
+   intro, and not a separate "intro logo" that then has to be matched up with
+   the page's one — the actual .hero-lockup, in its actual final position, at
+   its actual final size. So there is no handoff to get wrong: when the curtain
+   goes, the logo is already exactly where it lives. The intro doesn't hand over
+   to the homepage. It IS the homepage, assembling itself.
+
+   Everything below is scoped to `html.intro-armed`, which is set (or not) by an
+   inline script in the head of index.html. That has two consequences worth
+   knowing:
+     - NOT PLAYING COSTS NOTHING. Without the class there are no animations to
+       run and the curtain is display:none. Other pages never even load this.
+     - SKIPPING IS JUST REMOVING THE CLASS. Every piece's animation ends at
+       exactly the element's natural resting state (opacity 1, no transform), so
+       dropping the class mid-flight snaps everything to where it was always
+       going to end up. There is no "skip to the end" state to maintain, and no
+       way for the skipped page to differ from the played one.
+   ========================================================================== */
+
+/* The curtain. The site's OWN background gradient — not a black screen, not a
+   different colour — so its exit reveals no seam. */
+.intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--navy-gradient);
+  pointer-events: none;   /* it must never eat a click, even mid-fade */
+}
+
+.intro-armed .intro {
+  display: block;
+  animation: introCurtain 0.5s ease 1.38s both;
+}
+
+@keyframes introCurtain {
+  from { opacity: 1; }
+  to   { opacity: 0; visibility: hidden; }
+}
+
+/* The hero is lifted above the curtain so the lockup can assemble ON it. That
+   lifts the tagline and the cards too — so they're held back until the curtain
+   goes (see the reveal below). */
+.intro-armed .hero {
+  z-index: 320;
+}
+
+/* The lockup's own entrance is cancelled: its PIECES are the entrance now. */
+.intro-armed .hero-lockup {
+  animation: none;
+}
+
+/* Everything in the hero that isn't the lockup waits, then arrives with the
+   curtain. Their normal .fade-up is replaced, not delayed, so there's no chance
+   of the two fighting over the same element. */
+.intro-armed .hero-rule,
+.intro-armed .hero-tagline,
+.intro-armed .fork-card,
+.intro-armed .home-note {
+  animation: introReveal 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+/* These delays and the RUNTIME_MS in /js/intro.js are a pair. The last thing to
+   finish here is the note, at 1.66 + 0.55 = 2.21s — and intro.js must not swap
+   the class out before then, or it will clip the final reveals mid-fade and snap
+   them to full opacity. Change one, change the other. */
+.intro-armed .hero-rule     { animation-delay: 1.42s; }
+.intro-armed .hero-tagline  { animation-delay: 1.46s; }
+.intro-armed .fork-card:nth-child(1) { animation-delay: 1.52s; }
+.intro-armed .fork-card:nth-child(2) { animation-delay: 1.57s; }
+.intro-armed .fork-card:nth-child(3) { animation-delay: 1.62s; }
+.intro-armed .home-note     { animation-delay: 1.66s; }
+
+@keyframes introReveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* -- THE PIECES ------------------------------------------------------------
+   Each letter is its own inline-block so it can be transformed at all (a plain
+   inline box can't be). At rest — which is to say, on every visit after the
+   first — they are simply the wordmark, and none of this exists. */
+.lk-ch {
+  display: inline-block;
+
+  /* letter-spacing: normal — AND THIS IS LOad-BEARING.
+     The wordmark's 0.12em tracking is set on .lockup-word and inherits down. A
+     browser applies letter-spacing after every "typographic character unit" —
+     and an inline-block counts as one. So each span was being spaced TWICE: once
+     after the letter inside it, and again after the span itself as an atomic box.
+     Ten letters, ten extra 10px gaps: the wordmark came out 55px wider than the
+     text it replaced.
+
+     Killing the tracking INSIDE each span leaves each one exactly as wide as its
+     glyph, and lets the parent's tracking do the spacing between them — which is
+     what it was doing before the split. Measured: the split wordmark and the
+     plain text node are now the same width to the pixel. */
+  letter-spacing: normal;
+}
+
+/* The gap between UNITY and LIFE. It holds a real (non-breaking) space rather
+   than a width we guessed at, so it is EXACTLY as wide as the space it replaced
+   — the font decides, not us. */
+.lk-gap {
+  white-space: pre;
+}
+
+/* SVG paths need this to rotate/scale about their own middle rather than about
+   the top-left corner of the whole SVG canvas. */
+.lk-shield {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* EACH SHIELD FADES IN TO ITS OWN OPACITY, NOT TO 1.
+   The two outer shields are held at 0.62 in the artwork — as an `opacity`
+   attribute on the SVG path. A CSS opacity beats a presentation attribute, so a
+   keyframe ending at `opacity: 1` doesn't just look wrong mid-flight: it lands
+   the outer shields at full white, and then the moment the intro class comes off
+   and the CSS stops applying, they snap back down to 0.62. A visible pop, right
+   at the handoff — the one place the whole design cannot afford one.
+
+   So each shield declares the opacity it belongs at, and the keyframe animates to
+   THAT. The animation now ends at exactly the value the attribute would have
+   given anyway, and removing the class changes nothing on screen. */
+.lk-shield-l,
+.lk-shield-r { --lk-o: 0.62; }
+.lk-shield-m,
+.lk-shield-g { --lk-o: 1; }
+
+/* The shields fall in, in the order the logo is built: the two behind, then the
+   white shield over them, then the gold. The overshoot in the easing is what
+   makes it read as "landing" rather than "arriving". */
+.intro-armed .lk-shield {
+  animation: lkShieldDrop 0.36s cubic-bezier(0.2, 1.5, 0.35, 1) both;
+}
+.intro-armed .lk-shield-l { animation-delay: 0.06s; }
+.intro-armed .lk-shield-r { animation-delay: 0.13s; }
+.intro-armed .lk-shield-m { animation-delay: 0.20s; }
+
+/* The gold centre is the one piece that doesn't drop — it ignites in place, so
+   the mark's heart is the last thing to arrive and it arrives differently. */
+.intro-armed .lk-shield-g {
+  animation: lkGoldIgnite 0.42s cubic-bezier(0.2, 1.5, 0.35, 1) 0.30s both;
+}
+
+@keyframes lkShieldDrop {
+  from { opacity: 0;            transform: translateY(-26px) scale(0.86); }
+  to   { opacity: var(--lk-o);  transform: translateY(0) scale(1); }
+}
+
+@keyframes lkGoldIgnite {
+  from { opacity: 0;            transform: scale(0.35); }
+  to   { opacity: var(--lk-o);  transform: scale(1); }
+}
+
+/* The letters land one after another, left to right. */
+.intro-armed .lk-ch {
+  animation: lkLetterDrop 0.34s cubic-bezier(0.2, 1.4, 0.35, 1) both;
+}
+.intro-armed .lk-ch:nth-child(1)  { animation-delay: 0.28s; }
+.intro-armed .lk-ch:nth-child(2)  { animation-delay: 0.33s; }
+.intro-armed .lk-ch:nth-child(3)  { animation-delay: 0.38s; }
+.intro-armed .lk-ch:nth-child(4)  { animation-delay: 0.43s; }
+.intro-armed .lk-ch:nth-child(5)  { animation-delay: 0.48s; }
+.intro-armed .lk-ch:nth-child(6)  { animation-delay: 0.53s; }  /* the gap */
+.intro-armed .lk-ch:nth-child(7)  { animation-delay: 0.58s; }
+.intro-armed .lk-ch:nth-child(8)  { animation-delay: 0.63s; }
+.intro-armed .lk-ch:nth-child(9)  { animation-delay: 0.68s; }
+.intro-armed .lk-ch:nth-child(10) { animation-delay: 0.73s; }
+
+@keyframes lkLetterDrop {
+  from { opacity: 0; transform: translateY(22px); filter: blur(5px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+/* GROUP is the last piece of the logo to arrive, and the pulse fires off it. */
+.intro-armed .lockup-group {
+  animation: introReveal 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) 0.96s both;
+}
+
+
+/* -- THE PULSE -------------------------------------------------------------
+   One beat, once, fired from the centre of the shield — which is why both of
+   these live inside .hero-lockup rather than in the middle of the screen. A ring
+   that expands and thins, and a wash of gold light behind it. */
+.lk-ring,
+.lk-flash {
+  position: absolute;
+  left: 50%;
+  /* 0.85em down from the top of the lockup is the centre of the shield: the
+     shield is 2.47em wide on a 58x40 viewBox, so it stands 1.70em tall. */
+  top: 0.85em;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;   /* the resting state — and where both animations end */
+}
+
+.lk-ring {
+  width: 2.2em;
+  height: 2.2em;
+  margin: -1.1em 0 0 -1.1em;
+  border: 1px solid var(--gold-bright);
+}
+
+.lk-flash {
+  width: 5.5em;
+  height: 5.5em;
+  margin: -2.75em 0 0 -2.75em;
+  background: radial-gradient(circle, rgba(226, 190, 121, 0.34) 0%, rgba(226, 190, 121, 0) 62%);
+}
+
+.intro-armed .lk-ring  { animation: lkRing  0.75s ease-out 1.15s both; }
+.intro-armed .lk-flash { animation: lkFlash 0.70s ease-out 1.15s both; }
+
+@keyframes lkRing {
+  0%   { opacity: 0;    transform: scale(0.35); }
+  14%  { opacity: 0.9;  }
+  100% { opacity: 0;    transform: scale(3.2); }
+}
+
+@keyframes lkFlash {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* The lockup takes the pulse: one quick, tight recoil. It settles at exactly
+   scale(1) — NOT at 1.02 or anything else — because the size it ends at is the
+   size the homepage's logo is. Anything else and the intro would end with a
+   visible snap as the logo resized itself. */
+.intro-armed .hero-lockup {
+  animation: lkPop 0.5s cubic-bezier(0.3, 1.7, 0.4, 1) 1.15s both;
+}
+
+@keyframes lkPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+
+/* The lockup needs to be a positioning parent for the ring and the flash. */
+.hero-lockup {
+  position: relative;
+}
+
+
+/* WHEN IT'S OVER (and when it's skipped) — /js/intro.js swaps .intro-armed for
+   .intro-done. This kills the .fade-up entrances too: by the time the intro is
+   finished those elements have already been revealed by introReveal above, and
+   without this, dropping .intro-armed would hand them back their fade-up and
+   they would fade in a second time. */
+.intro-done .intro {
+  display: none;
+}
+
+.intro-done .fade-up {
+  animation: none;
+}
+
+/* Someone who has asked their computer to stop animating things does not want a
+   two-second logo animation, however good it is. They get the homepage. The
+   curtain never shows, and every piece sits at its resting state — which, by
+   design, is exactly where the intro would have put it anyway. */
+@media (prefers-reduced-motion: reduce) {
+  .intro-armed .intro {
+    display: none;
+  }
+  .intro-armed .hero-lockup,
+  .intro-armed .lk-shield,
+  .intro-armed .lk-ch,
+  .intro-armed .lockup-group,
+  .intro-armed .lk-ring,
+  .intro-armed .lk-flash,
+  .intro-armed .hero-rule,
+  .intro-armed .hero-tagline,
+  .intro-armed .fork-card,
+  .intro-armed .home-note {
+    animation: none;
+  }
+}
+
+
+/* ==========================================================================
    4. THE SECTION PAGES  (/new-agents and /agents)
    Navy header for brand continuity, light body so a wall of cards stays
    easy to read.
    ========================================================================== */
+/* The agent portal used to be the site's one LIGHT page — navy header, white
+   body. On the new palette that made it the odd one out, and it would have sat
+   as a white slab on top of the ember layer, hiding it completely. It's a dark
+   page now like everything else (it wears .page-dark), and the card styles below
+   were rebuilt to match. Nothing on it moved or was removed. */
 .page-section {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--white);
+  background: var(--navy-gradient);
+  color: var(--white);
 }
 
-/* -- Slim sticky header -- */
+/* -- Slim sticky header --
+   Translucent midnight with a blur behind it, rather than an opaque bar. The
+   embers keep drifting behind the header instead of being cut off by it, which
+   is what makes the background read as ONE layer under the whole site rather
+   than a panel that starts below the nav. The blur is what keeps the nav
+   readable while the page scrolls content underneath it. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--navy-gradient);
-  border-bottom: 1px solid rgba(198, 161, 91, 0.45);   /* thin gold underline */
+  background: rgba(8, 20, 40, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
+  border-bottom: 1px solid rgba(198, 161, 91, 0.4);   /* thin gold underline */
 }
 
 .header-inner {
@@ -424,7 +921,7 @@ img {
 
 .main-nav a {
   position: relative;
-  color: rgba(253, 253, 252, 0.72);
+  color: var(--text-soft);
   font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -481,11 +978,13 @@ img {
 }
 
 /* These are deliberately NOT links. Nothing here is clickable yet, so there's
-   nothing to click that would lead to a dead end. */
+   nothing to click that would lead to a dead end. The dashed edge is what says
+   "this is a space held open", as opposed to the solid edge every real card on
+   the site wears. */
 .cat-card {
-  border: 1px dashed #CDD4DD;
+  border: 1px dashed var(--edge-strong);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, #FFFFFF 0%, var(--grey) 100%);
+  background: var(--surface);
   padding: 30px 28px;
   min-height: 150px;
   display: flex;
@@ -497,7 +996,7 @@ img {
 .cat-name {
   font-family: var(--font-head);
   font-size: 1.3rem;
-  color: var(--ink);
+  color: var(--text);
 }
 
 /* The small gold "coming soon" pill. */
@@ -507,18 +1006,23 @@ img {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #8A6D33;                              /* darker gold, readable on light */
-  background: rgba(198, 161, 91, 0.14);
+  color: var(--gold);
+  background: rgba(198, 161, 91, 0.12);
   border: 1px solid rgba(198, 161, 91, 0.4);
   padding: 5px 12px;
   border-radius: 999px;
 }
 
-/* -- Slim footer -- */
+/* -- Slim footer --
+   Translucent, for the same reason as the header: the ember layer runs behind
+   it, all the way to the bottom of the page. */
 .site-footer {
   flex-shrink: 0;
-  background: var(--navy-deep);
-  color: rgba(253, 253, 252, 0.55);
+  background: rgba(6, 15, 32, 0.72);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--hairline);
+  color: var(--text-mute);
   padding: 26px 0;
 }
 
@@ -533,7 +1037,7 @@ img {
   font-family: var(--font-head);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.8);
+  color: var(--text);
 }
 
 
@@ -557,13 +1061,13 @@ img {
 
 /* The heading block, on navy instead of white. */
 .page-dark .page-head {
-  border-bottom-color: rgba(253, 253, 252, 0.14);
+  border-bottom-color: var(--hairline);
 }
 .page-dark .page-title {
   color: var(--white);
 }
 .page-dark .page-sub {
-  color: rgba(253, 253, 252, 0.66);
+  color: var(--text-soft);
 }
 
 /* -- The three stage cards, side by side -- */
@@ -660,7 +1164,7 @@ img {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.6);
+  color: var(--text-mute);
   transition: color 0.3s ease, gap 0.3s ease;
 }
 .crumb:hover {
@@ -670,9 +1174,9 @@ img {
 
 /* -- The "content is coming" empty state on each stage page -- */
 .empty-state {
-  border: 1px dashed rgba(253, 253, 252, 0.22);
+  border: 1px dashed var(--edge-strong);
   border-radius: var(--radius);
-  background: rgba(253, 253, 252, 0.04);
+  background: var(--surface);
   padding: 64px 40px;
   text-align: center;
   display: flex;
@@ -700,7 +1204,7 @@ img {
 }
 
 .empty-note {
-  color: rgba(253, 253, 252, 0.6);
+  color: var(--text-mute);
   max-width: 460px;
   font-size: 0.98rem;
 }
@@ -758,7 +1262,7 @@ img {
 .flow-intro {
   max-width: 640px;
   font-size: 1.06rem;
-  color: rgba(253, 253, 252, 0.72);
+  color: var(--text-soft);
 }
 
 /* -- A titled section of the walkthrough -- */
@@ -771,7 +1275,7 @@ img {
   color: var(--white);
   padding-bottom: 14px;
   margin-bottom: 28px;
-  border-bottom: 1px solid rgba(253, 253, 252, 0.14);
+  border-bottom: 1px solid var(--edge);
 }
 
 /* A real <ol>, so the steps are announced in order by a screen reader too —
@@ -787,9 +1291,9 @@ img {
   display: flex;
   gap: 22px;
   padding: 28px 30px;
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
-  background: rgba(253, 253, 252, 0.05);
+  background: var(--surface);
   transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1),
               border-color 0.45s ease,
               background-color 0.45s ease;
@@ -798,7 +1302,7 @@ img {
 .step:hover {
   transform: translateY(-3px);
   border-color: rgba(198, 161, 91, 0.5);
-  background: rgba(253, 253, 252, 0.07);
+  background: var(--surface-hover);
 }
 
 /* The gold number medallion. The digit is drawn by the counter, so the HTML
@@ -843,7 +1347,7 @@ img {
 }
 
 .step-text {
-  color: rgba(253, 253, 252, 0.68);
+  color: var(--text-soft);
   font-size: 1rem;
   max-width: 62ch;   /* a comfortable reading measure */
 }
@@ -856,8 +1360,8 @@ img {
   margin-top: 8px;
   padding: 12px 24px;
   border-radius: 999px;
-  border: 1px solid var(--gold);
-  background: var(--gold);
+  border: 1px solid var(--gold-bright);
+  background: var(--gold-bright);
   color: var(--navy-deep);   /* dark text on gold: the high-contrast pairing */
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -872,9 +1376,9 @@ img {
 .btn-gold:hover,
 .btn-gold:focus-visible {
   background: transparent;
-  color: var(--gold);
+  color: var(--gold-bright);
   outline: none;
-  box-shadow: 0 0 26px rgba(198, 161, 91, 0.3);
+  box-shadow: 0 0 26px rgba(226, 190, 121, 0.35);
 }
 
 /* The real button, greyed out: it's the button this thing WILL have, shown in
@@ -882,7 +1386,7 @@ img {
    carries the `disabled` attribute too, so it's genuinely unclickable and
    skipped by the keyboard — not just painted to look that way. */
 .btn-gold.is-disabled {
-  background: rgba(253, 253, 252, 0.08);
+  background: var(--surface-hover);
   border-color: rgba(253, 253, 252, 0.22);
   color: rgba(253, 253, 252, 0.42);
   cursor: not-allowed;
@@ -893,7 +1397,7 @@ img {
    rule above would still fire and flash it gold. */
 .btn-gold.is-disabled:hover,
 .btn-gold.is-disabled:focus-visible {
-  background: rgba(253, 253, 252, 0.08);
+  background: var(--surface-hover);
   color: rgba(253, 253, 252, 0.42);
   box-shadow: none;
 }
@@ -934,11 +1438,11 @@ img {
 .method {
   margin-top: clamp(46px, 6vh, 76px);
   padding: clamp(32px, 4vh, 46px) clamp(28px, 3vw, 44px);
-  border: 1px solid rgba(198, 161, 91, 0.5);
+  border: 1px solid var(--edge);
   border-left: 4px solid var(--gold);   /* the accent edge */
   border-radius: var(--radius);
-  background: linear-gradient(160deg, rgba(198, 161, 91, 0.11) 0%, rgba(198, 161, 91, 0.02) 100%);
-  box-shadow: 0 0 46px rgba(198, 161, 91, 0.08);
+  background: linear-gradient(160deg, rgba(93, 128, 184, 0.15) 0%, rgba(93, 128, 184, 0.05) 100%);
+  box-shadow: 0 0 46px rgba(0, 0, 0, 0.25);
 }
 
 .method-eyebrow {
@@ -970,7 +1474,7 @@ img {
 .method-list li {
   position: relative;
   padding-left: 30px;
-  color: rgba(253, 253, 252, 0.78);
+  color: var(--text-soft);
   font-size: 1.02rem;
   max-width: 74ch;
 }
@@ -1021,7 +1525,7 @@ img {
   padding: 13px 48px 13px 18px;   /* the big right pad leaves room for the chevron */
   border-radius: 10px;
   border: 1px solid rgba(253, 253, 252, 0.28);
-  background: rgba(253, 253, 252, 0.07);
+  background: var(--surface-hover);
   color: var(--white);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -1064,10 +1568,10 @@ img {
   align-self: stretch;
   margin-top: 22px;
   padding: 26px 30px;
-  border: 1px solid rgba(198, 161, 91, 0.5);
+  border: 1px solid var(--edge);
   border-left: 4px solid var(--gold);
   border-radius: var(--radius);
-  background: rgba(198, 161, 91, 0.08);
+  background: var(--surface);
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -1084,7 +1588,7 @@ img {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.55);
+  color: var(--text-mute);
 }
 
 .exam-vendor {
@@ -1104,11 +1608,11 @@ img {
   flex-wrap: wrap;
   gap: 26px;
   padding: clamp(30px, 3.8vh, 42px) clamp(28px, 3vw, 44px);
-  border: 1px solid rgba(198, 161, 91, 0.5);
+  border: 1px solid var(--edge);
   border-left: 4px solid var(--gold);
   border-radius: var(--radius);
-  background: linear-gradient(120deg, rgba(198, 161, 91, 0.13) 0%, rgba(253, 253, 252, 0.04) 100%);
-  box-shadow: 0 0 46px rgba(198, 161, 91, 0.08);
+  background: linear-gradient(120deg, rgba(93, 128, 184, 0.16) 0%, rgba(93, 128, 184, 0.05) 100%);
+  box-shadow: 0 0 46px rgba(0, 0, 0, 0.25);
 }
 
 .discord-title {
@@ -1118,7 +1622,7 @@ img {
 
 .discord-sub {
   margin-top: 8px;
-  color: rgba(253, 253, 252, 0.7);
+  color: var(--text-soft);
   max-width: 52ch;
 }
 
@@ -1176,7 +1680,7 @@ img {
 .phase-head {
   padding-bottom: 16px;
   margin-bottom: 28px;
-  border-bottom: 1px solid rgba(253, 253, 252, 0.14);
+  border-bottom: 1px solid var(--edge);
 }
 
 /* "Phase 1" + the optional timing tag ("24-48 hours later") sit on one line
@@ -1205,7 +1709,7 @@ img {
 .phase-when {
   font-size: 0.78rem;
   letter-spacing: 0.06em;
-  color: rgba(253, 253, 252, 0.5);
+  color: var(--text-mute);
 }
 
 .phase-title {
@@ -1215,7 +1719,7 @@ img {
 
 .phase-note {
   margin-top: 10px;
-  color: rgba(253, 253, 252, 0.66);
+  color: var(--text-soft);
   max-width: 62ch;
 }
 
@@ -1223,14 +1727,22 @@ img {
    Used inside a step, for the moments where the instruction isn't an action but
    a set of exact values ("Application type: Initial"). Getting one of these
    wrong means starting the form again, so the values wear the gold. */
+/* THE ACCENT-EDGE PATTERN, used by every "pay attention to this" block on the
+   site (.ref-card, .callout, .exam-result, .method, .discord-card).
+
+   All five used to be a gold box: gold border, gold wash, gold bar. That is a
+   lot of gold for something that appears five times a page. Now the BOX is
+   steel — the same steel as every other card — and the gold is spent on one
+   thing: the 4px bar down the left edge. The eye still goes straight to it,
+   because it's the only gold in the paragraph. */
 .ref-card {
   align-self: stretch;   /* .step-body is align-items:flex-start; fill the card */
   margin-top: 4px;
   padding: 20px 24px;
-  border: 1px solid rgba(198, 161, 91, 0.4);
+  border: 1px solid var(--edge);
   border-left: 4px solid var(--gold);
   border-radius: 12px;
-  background: rgba(198, 161, 91, 0.07);
+  background: var(--surface);
   display: grid;
   gap: 12px;
 }
@@ -1247,7 +1759,7 @@ img {
    paragraph of text that happens to have gold in it. */
 .ref-row + .ref-row {
   padding-top: 12px;
-  border-top: 1px solid rgba(253, 253, 252, 0.1);
+  border-top: 1px solid var(--hairline);
 }
 
 .ref-label {
@@ -1255,7 +1767,7 @@ img {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.55);
+  color: var(--text-mute);
 }
 
 /* The "have these ready" variant: no labels, just the things themselves. */
@@ -1266,11 +1778,12 @@ img {
   gap: 10px;
 }
 
+/* Steel chips, gold ink. The chip is a surface; the words on it are the point. */
 .ref-chips li {
   padding: 7px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(198, 161, 91, 0.45);
-  background: rgba(198, 161, 91, 0.12);
+  border: 1px solid var(--edge-strong);
+  background: var(--surface);
   color: var(--gold);
   font-size: 0.85rem;
   font-weight: 600;
@@ -1284,11 +1797,11 @@ img {
   gap: 14px;
   margin-bottom: 22px;
   padding: 18px 22px;
-  border: 1px solid rgba(198, 161, 91, 0.4);
+  border: 1px solid var(--edge);
   border-left: 4px solid var(--gold);
   border-radius: 12px;
-  background: rgba(198, 161, 91, 0.08);
-  color: rgba(253, 253, 252, 0.82);
+  background: var(--surface);
+  color: var(--text);
 }
 
 .callout-icon {
@@ -1303,13 +1816,16 @@ img {
    agent has to hand something to another human, and contracting cannot start
    until they do — so it gets a full 2px gold border, a solid gold eyebrow, and
    a glow, which nothing else on the site has. It should stop the eye. */
+/* The one block on the page still allowed to be a gold box — and now that it is
+   very nearly the ONLY one, it can afford the brighter gold. Everything around
+   it is steel, so this stops the eye without having to shout. */
 .action-card {
   margin-top: 26px;
   padding: clamp(30px, 4vh, 44px) clamp(26px, 3vw, 42px);
-  border: 2px solid var(--gold);
+  border: 2px solid var(--gold-bright);
   border-radius: var(--radius);
-  background: linear-gradient(160deg, rgba(198, 161, 91, 0.17) 0%, rgba(198, 161, 91, 0.04) 100%);
-  box-shadow: 0 0 60px rgba(198, 161, 91, 0.18);
+  background: linear-gradient(160deg, rgba(226, 190, 121, 0.16) 0%, rgba(198, 161, 91, 0.03) 100%);
+  box-shadow: 0 0 60px rgba(198, 161, 91, 0.20);
 }
 
 /* Solid gold, navy text — the method block's eyebrow is a gold OUTLINE, so this
@@ -1319,7 +1835,7 @@ img {
   margin-bottom: 14px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: var(--gold);
+  background: var(--gold-bright);
   color: var(--navy-deep);
   font-size: 0.66rem;
   font-weight: 600;
@@ -1334,14 +1850,14 @@ img {
 
 .action-text {
   margin-top: 12px;
-  color: rgba(253, 253, 252, 0.8);
+  color: var(--text);
   max-width: 62ch;
 }
 
 .action-note {
   margin-top: 18px;
   font-size: 0.9rem;
-  color: rgba(253, 253, 252, 0.6);
+  color: var(--text-mute);
   max-width: 62ch;
 }
 
@@ -1364,7 +1880,7 @@ img {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.55);
+  color: var(--text-mute);
 }
 
 /* Monospace and a dark well, so it reads as "a thing to be copied verbatim"
@@ -1373,8 +1889,8 @@ img {
   margin: 0;
   padding: 22px 24px;
   border-radius: 12px;
-  border: 1px solid rgba(253, 253, 252, 0.16);
-  background: rgba(11, 29, 62, 0.55);
+  border: 1px solid var(--edge);
+  background: var(--surface-sunk);
   color: var(--white);
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   font-size: 0.95rem;
@@ -1412,10 +1928,11 @@ img {
 .copy-btn:focus-visible,
 .btn-ghost:hover,
 .btn-ghost:focus-visible {
-  background: var(--gold);
+  background: var(--gold-bright);
+  border-color: var(--gold-bright);
   color: var(--navy-deep);
   outline: none;
-  box-shadow: 0 0 22px rgba(198, 161, 91, 0.32);
+  box-shadow: 0 0 22px rgba(226, 190, 121, 0.36);
 }
 
 /* A ghost button sized to stand next to a .btn-gold as its equal. Used where the
@@ -1448,7 +1965,7 @@ img {
 .check-list li {
   position: relative;
   padding-left: 32px;
-  color: rgba(253, 253, 252, 0.78);
+  color: var(--text-soft);
   max-width: 62ch;
 }
 
@@ -1496,9 +2013,9 @@ img {
 
   counter-reset: guide;
   padding: clamp(30px, 4vh, 44px) clamp(28px, 3vw, 44px);
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
-  background: rgba(253, 253, 252, 0.05);
+  background: var(--surface);
 }
 
 .guide-part {
@@ -1512,7 +2029,7 @@ img {
    not as four boxes stacked up. */
 .guide-part + .guide-part {
   padding-top: var(--guide-gap);
-  border-top: 1px solid rgba(253, 253, 252, 0.1);
+  border-top: 1px solid var(--hairline);
 }
 
 .guide-part:last-child {
@@ -1589,7 +2106,7 @@ img {
 
 .guide-text {
   margin-top: 14px;
-  color: rgba(253, 253, 252, 0.72);
+  color: var(--text-soft);
   max-width: 68ch;
 }
 
@@ -1612,10 +2129,10 @@ img {
 .guide-warn {
   margin-top: 22px;
   padding: 20px 24px;
-  border: 2px solid var(--gold);
+  border: 2px solid var(--gold-bright);
   border-radius: 12px;
-  background: linear-gradient(160deg, rgba(198, 161, 91, 0.17) 0%, rgba(198, 161, 91, 0.04) 100%);
-  box-shadow: 0 0 40px rgba(198, 161, 91, 0.12);
+  background: linear-gradient(160deg, rgba(226, 190, 121, 0.16) 0%, rgba(198, 161, 91, 0.03) 100%);
+  box-shadow: 0 0 40px rgba(198, 161, 91, 0.14);
 }
 
 .guide-warn-text {
@@ -1649,9 +2166,9 @@ img {
   gap: 20px;
   margin-top: clamp(46px, 6vh, 76px);
   padding: 28px 32px;
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
-  background: rgba(253, 253, 252, 0.05);
+  background: var(--surface);
   transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1),
               border-color 0.45s ease,
               background-color 0.45s ease,
@@ -1661,9 +2178,9 @@ img {
 .next-card:hover,
 .next-card:focus-visible {
   transform: translateY(-3px);
-  border-color: var(--gold);
-  background: rgba(253, 253, 252, 0.08);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+  border-color: var(--gold-bright);
+  background: var(--surface-hover);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
   outline: none;
 }
 
@@ -1789,8 +2306,8 @@ img {
   padding: 30px 30px 26px;
   cursor: pointer;
 
-  background: rgba(253, 253, 252, 0.05);
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  background: var(--surface);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
   color: var(--white);
 
@@ -1804,7 +2321,7 @@ img {
 .sec-card:focus-visible {
   transform: translateY(-6px);
   border-color: var(--gold);
-  background: rgba(253, 253, 252, 0.08);
+  background: var(--surface-hover);
   outline: none;
   box-shadow: 0 22px 50px rgba(0, 0, 0, 0.34),
               0 0 0 1px rgba(198, 161, 91, 0.5),
@@ -1883,38 +2400,44 @@ img {
   pointer-events: none;
 }
 
+/* The gold here is now HALF what it was. Six cards each carrying a visible gold
+   wash added up to a gold grid — which is exactly the wallpaper the palette is
+   trying to get away from. Dialled down this far, the wash is a difference you
+   feel rather than a colour you see, and the ICON is what actually tells the six
+   cards apart. That was always its job; it just had to stop competing. */
 .sec-card.is-a1::before {
-  background: linear-gradient(150deg, rgba(198, 161, 91, 0.16) 0%, rgba(198, 161, 91, 0) 62%);
+  background: linear-gradient(150deg, rgba(198, 161, 91, 0.08) 0%, rgba(198, 161, 91, 0) 62%);
 }
 .sec-card.is-a2::before {
-  background: linear-gradient(115deg, rgba(198, 161, 91, 0.11) 0%, rgba(198, 161, 91, 0) 58%);
+  background: linear-gradient(115deg, rgba(198, 161, 91, 0.05) 0%, rgba(198, 161, 91, 0) 58%);
 }
 .sec-card.is-a3::before {
-  background: linear-gradient(200deg, rgba(198, 161, 91, 0.15) 0%, rgba(198, 161, 91, 0) 66%);
+  background: linear-gradient(200deg, rgba(198, 161, 91, 0.075) 0%, rgba(198, 161, 91, 0) 66%);
 }
 .sec-card.is-a4::before {
-  background: linear-gradient(165deg, rgba(198, 161, 91, 0.09) 0%, rgba(198, 161, 91, 0) 54%);
+  background: linear-gradient(165deg, rgba(198, 161, 91, 0.045) 0%, rgba(198, 161, 91, 0) 54%);
 }
 .sec-card.is-a5::before {
-  background: linear-gradient(135deg, rgba(198, 161, 91, 0.13) 0%, rgba(198, 161, 91, 0) 64%);
+  background: linear-gradient(135deg, rgba(198, 161, 91, 0.065) 0%, rgba(198, 161, 91, 0) 64%);
 }
 .sec-card.is-a6::before {
-  background: linear-gradient(190deg, rgba(198, 161, 91, 0.18) 0%, rgba(198, 161, 91, 0) 70%);
+  background: linear-gradient(190deg, rgba(198, 161, 91, 0.09) 0%, rgba(198, 161, 91, 0) 70%);
 }
 
-/* The resting edge picks up a little of the same gold, at the same tier — so a
-   card reads as one object rather than a gold wash inside a grey box. */
-.sec-card.is-a1 { border-color: rgba(198, 161, 91, 0.34); }
-.sec-card.is-a2 { border-color: rgba(198, 161, 91, 0.24); }
-.sec-card.is-a3 { border-color: rgba(198, 161, 91, 0.32); }
-.sec-card.is-a4 { border-color: rgba(198, 161, 91, 0.2);  }
-.sec-card.is-a5 { border-color: rgba(198, 161, 91, 0.28); }
-.sec-card.is-a6 { border-color: rgba(198, 161, 91, 0.38); }
+/* The resting edge is STEEL — the same steel as every other card on the site —
+   varied a little per tier so the cards still don't look stamped. The gold edge
+   is now something a card only earns by being hovered. */
+.sec-card.is-a1 { border-color: rgba(93, 128, 184, 0.42); }
+.sec-card.is-a2 { border-color: rgba(93, 128, 184, 0.28); }
+.sec-card.is-a3 { border-color: rgba(93, 128, 184, 0.40); }
+.sec-card.is-a4 { border-color: rgba(93, 128, 184, 0.24); }
+.sec-card.is-a5 { border-color: rgba(93, 128, 184, 0.34); }
+.sec-card.is-a6 { border-color: rgba(93, 128, 184, 0.46); }
 
 /* Hover beats all six tiers — the same target every time. */
 .sec-card:hover,
 .sec-card:focus-visible {
-  border-color: var(--gold);
+  border-color: var(--gold-bright);
 }
 
 .sec-title {
@@ -1925,7 +2448,7 @@ img {
 }
 
 .sec-sub {
-  color: rgba(253, 253, 252, 0.66);
+  color: var(--text-soft);
   font-size: 0.95rem;
   line-height: 1.55;
   flex: 1;   /* pushes "Open" to the bottom, so all six line up */
@@ -2038,15 +2561,19 @@ img {
   min-width: 0;
 }
 
+/* STEEL, not gold. Seven gold pills in a row was the single biggest patch of
+   gold on the site — a whole sentence of wallpaper. The pills are the map, not
+   the destination, so they're steel. The only gold left in the path is the
+   numbered medallion inside each one. */
 .path-pill {
   display: inline-flex;
   align-items: center;
   gap: clamp(6px, 0.6vw, 9px);
   padding: 10px clamp(11px, 1.1vw, 16px) 10px clamp(7px, 0.7vw, 9px);
   border-radius: 999px;
-  border: 1px solid rgba(198, 161, 91, 0.5);
-  background: rgba(198, 161, 91, 0.1);
-  color: var(--white);
+  border: 1px solid var(--edge-strong);
+  background: var(--surface);
+  color: var(--text);
   font-size: clamp(0.68rem, 0.78vw, 0.82rem);
   font-weight: 600;
   white-space: nowrap;
@@ -2118,7 +2645,7 @@ img {
   grid-template-columns: 210px 1fr;
   gap: 4px 24px;
   padding: 15px 0;
-  border-bottom: 1px solid rgba(253, 253, 252, 0.08);
+  border-bottom: 1px solid var(--hairline);
 }
 
 .path-key li:last-child {
@@ -2133,7 +2660,7 @@ img {
 }
 
 .path-key-desc {
-  color: rgba(253, 253, 252, 0.72);
+  color: var(--text-soft);
   max-width: 64ch;
 }
 
@@ -2155,9 +2682,9 @@ img {
   align-items: flex-start;
   gap: 6px;
   padding: 24px 26px;
-  border: 1px solid rgba(253, 253, 252, 0.14);
+  border: 1px solid var(--edge);
   border-radius: 12px;
-  background: rgba(253, 253, 252, 0.04);
+  background: var(--surface);
 }
 
 /* The button already carries a top margin of its own; inside a resource card it
@@ -2167,7 +2694,7 @@ img {
 }
 
 .res-note {
-  color: rgba(253, 253, 252, 0.62);
+  color: var(--text-mute);
   font-size: 0.92rem;
   max-width: 46ch;
 }
@@ -2190,9 +2717,9 @@ img {
   flex-direction: column;
   margin: 0;
   padding: clamp(12px, 1.2vw, 16px);
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
-  background: rgba(253, 253, 252, 0.05);
+  background: var(--surface);
 }
 
 /* The caption is pinned to the bottom of the card, so the two captions sit on
@@ -2252,7 +2779,7 @@ img {
   bottom: 10px;
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(11, 29, 62, 0.88);
+  background: rgba(8, 20, 40, 0.92);
   border: 1px solid rgba(198, 161, 91, 0.6);
   color: var(--gold);
   font-size: 0.66rem;
@@ -2274,7 +2801,7 @@ img {
   margin-top: 14px;
   text-align: center;
   font-size: 0.9rem;
-  color: rgba(253, 253, 252, 0.6);
+  color: var(--text-mute);
 }
 
 /* -- The lightbox: the comp charts at full size -----------------------------
@@ -2288,7 +2815,7 @@ img {
   align-items: center;
   justify-content: center;
   padding: clamp(20px, 4vw, 56px);
-  background: rgba(6, 15, 32, 0.9);
+  background: rgba(4, 10, 22, 0.94);
   cursor: zoom-out;
   animation: lightboxIn 0.25s ease both;
 }
@@ -2323,7 +2850,7 @@ img {
   place-items: center;
   border-radius: 50%;
   border: 1px solid rgba(198, 161, 91, 0.5);
-  background: rgba(11, 29, 62, 0.8);
+  background: rgba(8, 20, 40, 0.88);
   color: var(--gold);
   font-size: 1.7rem;
   line-height: 1;
@@ -2356,8 +2883,8 @@ img {
   margin-top: 30px;
   padding: 26px 28px;
   border-radius: 12px;
-  border: 1px solid rgba(253, 253, 252, 0.16);
-  background: rgba(11, 29, 62, 0.55);
+  border: 1px solid var(--edge);
+  background: var(--surface-sunk);
 }
 
 .example-eyebrow {
@@ -2367,11 +2894,11 @@ img {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.55);
+  color: var(--text-mute);
 }
 
 .example-text {
-  color: rgba(253, 253, 252, 0.82);
+  color: var(--text);
   max-width: 66ch;
 }
 
@@ -2389,11 +2916,11 @@ img {
   flex-wrap: wrap;
   gap: 6px 20px;
   padding: 12px 0;
-  border-top: 1px solid rgba(253, 253, 252, 0.1);
+  border-top: 1px solid var(--hairline);
 }
 
 .example-label {
-  color: rgba(253, 253, 252, 0.6);
+  color: var(--text-mute);
   font-size: 0.92rem;
 }
 
@@ -2423,7 +2950,7 @@ img {
 
 .sub-lead {
   margin-top: 12px;
-  color: rgba(253, 253, 252, 0.72);
+  color: var(--text-soft);
   max-width: 68ch;
 }
 
@@ -2457,7 +2984,7 @@ img {
 }
 
 .tl-item + .tl-item {
-  border-top: 1px solid rgba(253, 253, 252, 0.08);
+  border-top: 1px solid var(--hairline);
 }
 
 /* THE RAIL — same trick as the contracting page's guide block: each row draws
@@ -2502,7 +3029,7 @@ img {
 }
 
 .tl-what {
-  color: rgba(253, 253, 252, 0.75);
+  color: var(--text-soft);
   max-width: 62ch;
 }
 
@@ -2518,11 +3045,14 @@ img {
   margin-top: 20px;
 }
 
+/* Steel cards with a gold eyebrow. Six of these appear on the launch page (the
+   lead ramp and the training day), and as gold boxes they turned two whole
+   sections gold. The eyebrow keeps the accent; the box gives it back. */
 .trio-card {
   padding: 24px 26px;
-  border: 1px solid rgba(198, 161, 91, 0.35);
+  border: 1px solid var(--edge);
   border-radius: 12px;
-  background: rgba(198, 161, 91, 0.07);
+  background: var(--surface);
 }
 
 .trio-eyebrow {
@@ -2536,7 +3066,7 @@ img {
 }
 
 .trio-text {
-  color: rgba(253, 253, 252, 0.78);
+  color: var(--text-soft);
   font-size: 0.98rem;
 }
 
@@ -2545,9 +3075,9 @@ img {
 .sub-card {
   margin-top: clamp(30px, 4vh, 42px);
   padding: clamp(26px, 3.4vh, 34px) clamp(24px, 2.6vw, 32px);
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
-  background: rgba(253, 253, 252, 0.05);
+  background: var(--surface);
 }
 
 .sub-card-title {
@@ -2557,7 +3087,7 @@ img {
 
 .sub-card-text {
   margin-top: 10px;
-  color: rgba(253, 253, 252, 0.72);
+  color: var(--text-soft);
   max-width: 68ch;
 }
 
@@ -2599,7 +3129,7 @@ img {
 }
 
 .vault-text {
-  color: rgba(253, 253, 252, 0.7);
+  color: var(--text-soft);
   max-width: 62ch;
 }
 
@@ -2620,11 +3150,11 @@ img {
 }
 
 .video-row + .video-row {
-  border-top: 1px solid rgba(253, 253, 252, 0.08);
+  border-top: 1px solid var(--hairline);
 }
 
 .video-title {
-  color: rgba(253, 253, 252, 0.85);
+  color: var(--text);
   font-size: 1rem;
   max-width: 64ch;
 }
@@ -2647,9 +3177,9 @@ img {
   align-items: flex-start;
   gap: 12px;
   padding: 28px 30px;
-  border: 1px solid rgba(253, 253, 252, 0.16);
+  border: 1px solid var(--edge);
   border-radius: var(--radius);
-  background: rgba(253, 253, 252, 0.05);
+  background: var(--surface);
 }
 
 .tool-card.is-wide {
@@ -2671,7 +3201,7 @@ img {
 }
 
 .tool-text {
-  color: rgba(253, 253, 252, 0.7);
+  color: var(--text-soft);
   font-size: 0.96rem;
   max-width: 62ch;
 }
@@ -2690,8 +3220,8 @@ img {
   margin-top: 4px;
   padding: 16px 20px;
   border-radius: 10px;
-  border: 1px solid rgba(253, 253, 252, 0.16);
-  background: rgba(11, 29, 62, 0.55);
+  border: 1px solid var(--edge);
+  background: var(--surface-sunk);
   display: grid;
   gap: 8px;
 }
@@ -2706,7 +3236,7 @@ img {
 
 .cred-key {
   min-width: 88px;
-  color: rgba(253, 253, 252, 0.5);
+  color: var(--text-mute);
 }
 
 .cred-val {

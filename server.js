@@ -39,6 +39,10 @@ app.get("/agents", (req, res) => {
   res.sendFile(path.join(PUBLIC_DIR, "agents.html"));
 });
 
+app.get("/vision", (req, res) => {
+  res.sendFile(path.join(PUBLIC_DIR, "vision.html"));
+});
+
 // The three "new agent" stage pages, e.g. /new-agents/licensing.
 // Listing the allowed names explicitly means a made-up address like
 // /new-agents/anything-else can't reach for a file it shouldn't.
