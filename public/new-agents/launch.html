@@ -1,6 +1,19 @@
 <!-- ==========================================================================
-     launch.html  —  STAGE 3  (address: /new-agents/launch)
-     Real page, intentionally empty: the content gets added later.
+     launch.html  —  STAGE 3  (lives at the address /new-agents/launch)
+
+     The agent lands here the moment their carriers go in for processing, with
+     3-4 dead days in front of them. The whole page exists to fill those days.
+
+     It is built differently from the first two stages on purpose. Licensing and
+     contracting are ORDERED ERRANDS — do step 1, then step 2, then you're done
+     and you never open the page again. This one isn't. These six sections are
+     reference: the agent will come back for the schedule, for how the advance
+     works, for the Toolkits login, over and over for months.
+
+     So the page is a MENU, not a scroll. It opens on six cards; picking one
+     swaps that section in on its own (see /js/launch.js — no page reload, and
+     the open section's id lives in the URL hash, so #get-paid can be linked
+     and the browser Back button returns to the grid).
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +34,10 @@
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 
-<body class="page-dark">
+<!-- "page-flow" switches on the numbered-walkthrough styling, the same as the
+     other two stages. Here it's used by one list only — the three points in
+     "After the Sale" — so those come out 1, 2, 3. -->
+<body class="page-dark page-flow">
 
   <!-- ===================== SLIM HEADER ===================== -->
   <header class="site-header">
@@ -50,26 +66,915 @@
   <main class="site-main">
     <div class="container">
 
+      <!-- Breadcrumb: back up to the three stages. -->
       <a href="/new-agents" class="crumb fade-up fade-up-1">
         <span aria-hidden="true">&larr;</span> All Stages
       </a>
 
       <div class="page-head fade-up fade-up-1">
         <h1 class="page-title">Launch</h1>
-        <p class="page-sub">Contracted and ready — tools, training, and your first sale.</p>
+        <p class="page-sub flow-intro">
+          Your carriers are processing. Most agents waste this window &mdash;
+          you won't.
+        </p>
       </div>
 
-      <div class="empty-state fade-up fade-up-2">
-        <span class="empty-pill">Coming soon</span>
-        <h2 class="empty-title">This stage is being built</h2>
-        <p class="empty-note">
-          Your launch kit will live here — the tools, the training, and the path
-          to your first sale.
-        </p>
+
+      <!-- ===================== THE SECTION MENU =====================
+           The six cards the page opens on. Each one carries the id of the
+           section it opens; /js/launch.js does the swap. They're <button>s and
+           not links because nothing here navigates — the content is already on
+           the page, a card just brings it forward.
+
+           Each card carries its own icon and its own accent tier (is-a1 … is-a6
+           — see styles.css). The tiers are all the same gold at different
+           strengths and gradient angles, so the six read as one family that you
+           can still tell apart at a glance. -->
+      <div class="launch-menu fade-up fade-up-2" id="launch-menu">
+
+        <!-- 01 — the path: pins joined by a route. -->
+        <button type="button" class="sec-card is-a1" data-panel="sales-process">
+          <span class="sec-head">
+            <span class="sec-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="5" cy="6" r="2.2" stroke="currentColor" stroke-width="1.4"/>
+                <circle cx="19" cy="18" r="2.2" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M7.2 6h6.3a3.3 3.3 0 0 1 0 6.6h-3a3.3 3.3 0 0 0 0 6.6h6.3"
+                      stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="sec-index">01</span>
+          </span>
+          <h2 class="sec-title">The Sales Process</h2>
+          <p class="sec-sub">
+            The seven-step path from hello to a written application &mdash; plus
+            the script and the client inventory sheet.
+          </p>
+          <span class="sec-enter">
+            Open <span class="sec-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </button>
+
+        <!-- 02 — the approved stamp: a check inside a seal. -->
+        <button type="button" class="sec-card is-a2" data-panel="after-the-sale">
+          <span class="sec-head">
+            <span class="sec-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 3.2 19.2 6v5.4c0 4.2-2.9 7.6-7.2 9.4-4.3-1.8-7.2-5.2-7.2-9.4V6L12 3.2Z"
+                      stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                <path d="m8.9 12.1 2.2 2.2 4.2-4.4"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="sec-index">02</span>
+          </span>
+          <h2 class="sec-title">After the Sale</h2>
+          <p class="sec-sub">
+            Getting instant approved, getting them drafting, and locking in the
+            relationship once they've said yes.
+          </p>
+          <span class="sec-enter">
+            Open <span class="sec-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </button>
+
+        <!-- 03 — the money. -->
+        <button type="button" class="sec-card is-a3" data-panel="get-paid">
+          <span class="sec-head">
+            <span class="sec-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M12 6.6v10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M14.8 9.3a2.9 2.9 0 0 0-2.6-1.3h-.6a2.2 2.2 0 0 0 0 4.4h.8a2.2 2.2 0 0 1 0 4.4h-.6a2.9 2.9 0 0 1-2.6-1.3"
+                      stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="sec-index">03</span>
+          </span>
+          <h2 class="sec-title">How You Get Paid</h2>
+          <p class="sec-sub">
+            The comp guide, the producer bonus, how the advance actually works
+            &mdash; and how chargebacks work.
+          </p>
+          <span class="sec-enter">
+            Open <span class="sec-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </button>
+
+        <!-- 04 — the clock: the schedule and the standard. -->
+        <button type="button" class="sec-card is-a4" data-panel="standards">
+          <span class="sec-head">
+            <span class="sec-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M12 6.9V12l3.4 2.1"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="sec-index">04</span>
+          </span>
+          <h2 class="sec-title">Standards &amp; Schedule</h2>
+          <p class="sec-sub">
+            The daily schedule, the production standard, and how your leads are
+            covered while you ramp.
+          </p>
+          <span class="sec-enter">
+            Open <span class="sec-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </button>
+
+        <!-- 05 — play: the vaults and the daily tools. -->
+        <button type="button" class="sec-card is-a5" data-panel="training">
+          <span class="sec-head">
+            <span class="sec-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="2.8" y="4.6" width="18.4" height="14.8" rx="2.6"
+                      stroke="currentColor" stroke-width="1.4"/>
+                <path d="M10.4 9.6l4.4 2.4-4.4 2.4V9.6Z"
+                      stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="sec-index">05</span>
+          </span>
+          <h2 class="sec-title">Training &amp; Daily Tools</h2>
+          <p class="sec-sub">
+            How we train, the video vault, the Quoter, and the tools you'll open
+            every single day.
+          </p>
+          <span class="sec-enter">
+            Open <span class="sec-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </button>
+
+        <!-- 06 — the summit: the climb, and the way you have to think to make it. -->
+        <button type="button" class="sec-card is-a6" data-panel="mindset">
+          <span class="sec-head">
+            <span class="sec-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M2.8 19.4 9.4 7.2l4 6.6 2.3-3.5 5.5 9.1H2.8Z"
+                      stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                <path d="M9.4 7.2 7.6 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <circle cx="18.4" cy="4.9" r="1.7" stroke="currentColor" stroke-width="1.4"/>
+              </svg>
+            </span>
+            <span class="sec-index">06</span>
+          </span>
+          <h2 class="sec-title">Mindset</h2>
+          <p class="sec-sub">
+            You are not taking a job. How to think about the seat, the
+            investment, and your leads.
+          </p>
+          <span class="sec-enter">
+            Open <span class="sec-arrow" aria-hidden="true">&rarr;</span>
+          </span>
+        </button>
+
+      </div>
+
+
+      <!-- ===================== THE SECTIONS =====================
+           All six live here at once, and all six are hidden until a card is
+           picked. Nothing below this line is new content — it is the same six
+           sections the page has always had, just no longer stacked into one
+           endless scroll. -->
+      <div class="launch-panels" id="launch-panels" hidden>
+
+        <!-- The way back to the grid. One control, above whichever section is
+             open, so it's in the same place every time. -->
+        <button type="button" class="crumb crumb-btn" id="launch-back">
+          <span aria-hidden="true">&larr;</span> All Sections
+        </button>
+
+
+        <!-- ================================================================
+             SECTION 1 — THE SALES PROCESS
+             ================================================================ -->
+        <section id="sales-process" class="flow-section launch-panel" hidden>
+          <h2 class="flow-section-title">The Sales Process</h2>
+
+          <p class="sub-lead">
+            This is how we sell. Learn the path until you can say it in your sleep.
+          </p>
+
+          <!-- The path itself. The numbers in the pills are drawn by a counter in
+               the stylesheet — nothing here is hand-numbered. -->
+          <ol class="sales-path">
+            <li class="path-step"><span class="path-pill">Intro</span></li>
+            <li class="path-step"><span class="path-pill">Income &amp; Expenses</span></li>
+            <li class="path-step"><span class="path-pill">Pre-Approval</span></li>
+            <li class="path-step"><span class="path-pill">Discovery</span></li>
+            <li class="path-step"><span class="path-pill">If/Then Close</span></li>
+            <li class="path-step"><span class="path-pill">The Quoter</span></li>
+            <li class="path-step"><span class="path-pill">Application &amp; Business Card</span></li>
+          </ol>
+
+          <ul class="path-key">
+            <li>
+              <span class="path-key-name">Intro</span>
+              <span class="path-key-desc">Open the call, take control, set the frame.</span>
+            </li>
+            <li>
+              <span class="path-key-name">Income &amp; Expenses</span>
+              <span class="path-key-desc">
+                Understand what they make and what they can afford.
+              </span>
+            </li>
+            <li>
+              <span class="path-key-name">Pre-Approval</span>
+              <span class="path-key-desc">
+                Health and criminal background &mdash; current and past 7 years,
+                including prescriptions and diagnoses.
+              </span>
+            </li>
+            <li>
+              <span class="path-key-name">Discovery</span>
+              <span class="path-key-desc">
+                The <strong>why</strong> behind their search for coverage. This is
+                where the sale actually happens.
+              </span>
+            </li>
+            <li>
+              <span class="path-key-name">If/Then Close</span>
+              <span class="path-key-desc">
+                The close before the close &mdash; lock in commitment before you
+                ever talk numbers.
+              </span>
+            </li>
+            <li>
+              <span class="path-key-name">The Quoter</span>
+              <span class="path-key-desc">
+                Present their options &mdash; the client makes their pick.
+              </span>
+            </li>
+            <li>
+              <span class="path-key-name">Application &amp; Business Card</span>
+              <span class="path-key-desc">
+                Transition into the application and build credibility.
+              </span>
+            </li>
+          </ul>
+
+          <div class="res-grid">
+            <div class="res-card">
+              <a
+                class="btn-gold"
+                href="https://docs.google.com/document/d/1LQmFAD_nJJI2h7v-4MrTz2rbA1hlDsas5yPnoOtwKzw/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                The Script
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+              <p class="res-note">The path above, written out word for word.</p>
+            </div>
+
+            <div class="res-card">
+              <a
+                class="btn-gold"
+                href="https://docs.google.com/document/d/1G9x0wsbV1q8tE2Wz0NEaapZf4UXtMdsliCTTttWIol8/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Client Inventory Sheet
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+              <p class="res-note">
+                Every piece of client info you need to write a policy.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ================================================================
+             SECTION 2 — AFTER THE SALE
+             ================================================================ -->
+        <section id="after-the-sale" class="flow-section launch-panel" hidden>
+          <h2 class="flow-section-title">After the Sale</h2>
+
+          <p class="sub-lead">
+            We don't submit business. We close business. It's not a client until
+            they're approved and on the books.
+          </p>
+
+          <ol class="step-flow">
+
+            <li class="step">
+              <div class="step-num" aria-hidden="true"></div>
+              <div class="step-body">
+                <h3 class="step-title">Instant Approval</h3>
+                <p class="step-text">
+                  Aim for instant approval &mdash; not underwriting, not home
+                  office. If a client won't instant-approve with one carrier,
+                  pivot to another carrier that fits their profile.
+                  <strong>Don't let deals die in underwriting.</strong>
+                </p>
+              </div>
+            </li>
+
+            <li class="step">
+              <div class="step-num" aria-hidden="true"></div>
+              <div class="step-body">
+                <h3 class="step-title">Draft ASAP</h3>
+                <p class="step-text">
+                  Get the client drafting as soon as they're able &mdash; it gets
+                  their family protected quicker and gets you paid quicker.
+                </p>
+              </div>
+            </li>
+
+            <li class="step">
+              <div class="step-num" aria-hidden="true"></div>
+              <div class="step-body">
+                <h3 class="step-title">Lock In the Relationship</h3>
+                <p class="step-text">
+                  Send every client your business card and their policy information.
+                </p>
+              </div>
+            </li>
+
+          </ol>
+
+          <div class="res-grid">
+            <div class="res-card">
+              <a
+                class="btn-gold"
+                href="https://canva.link/m6zbpalp02omxuy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Business Card Template
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+              <p class="res-note">Open it in Canva and make it your own.</p>
+            </div>
+
+            <div class="res-card">
+              <a
+                class="btn-gold"
+                href="https://docs.google.com/spreadsheets/d/1kZgN2axlU6WnEBRH-oPdtJRo6A2GIaEpetwkGHvTOk8/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Book of Business Template
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+              <p class="res-note">
+                Make a copy, make it yours. <strong>Every</strong> deal you write
+                gets logged here &mdash; this is how you track your clients and
+                protect your book.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ================================================================
+             SECTION 3 — HOW YOU GET PAID
+             ================================================================ -->
+        <section id="get-paid" class="flow-section launch-panel" hidden>
+          <h2 class="flow-section-title">How You Get Paid</h2>
+
+          <!-- The two charts sit side by side, so they can be compared without
+               scrolling. At this size they're a reference, not a readable
+               document — so each one is a button that opens the full-size image
+               (the lightbox at the bottom of the page; /js/launch.js drives it). -->
+          <div class="comp-figures">
+            <figure class="comp-figure">
+              <button type="button" class="comp-zoom" data-zoom="/images/ulg-comp-guide.png">
+                <img
+                  src="/images/ulg-comp-guide.png"
+                  alt="The Unity Life Group commission guide, showing each contract level and the production required to reach it."
+                  loading="lazy"
+                />
+                <span class="comp-zoom-hint" aria-hidden="true">Click to expand</span>
+              </button>
+              <figcaption class="comp-cap">
+                The ULG Comp Guide &mdash; your contract level and how to climb.
+              </figcaption>
+            </figure>
+
+            <figure class="comp-figure">
+              <button type="button" class="comp-zoom" data-zoom="/images/ulg-producer-bonus.png">
+                <img
+                  src="/images/ulg-producer-bonus.png"
+                  alt="The Unity Life Group monthly producer bonus chart, paid on issue-paid life volume."
+                  loading="lazy"
+                />
+                <span class="comp-zoom-hint" aria-hidden="true">Click to expand</span>
+              </button>
+              <figcaption class="comp-cap">
+                Monthly Producer Bonus &mdash; paid on issue-paid life volume.
+              </figcaption>
+            </figure>
+          </div>
+
+          <!-- Reuses the licensing page's featured gold block: this is the thing on
+               the page people most often get wrong, and it's about their money. -->
+          <section class="method">
+            <span class="method-eyebrow">The Money</span>
+            <h3 class="method-title">How Commission Actually Works</h3>
+
+            <ul class="method-list">
+              <li>
+                Every carrier we write &mdash;
+                <span class="mark-gold">except Ethos and Aetna</span> &mdash; pays a
+                <strong>9-month advance</strong>: 75% of your first-year commission,
+                paid up front when the client's first premium drafts.
+              </li>
+              <li>
+                Carriers apply <strong>comp hits</strong> ranging from
+                <strong>0&ndash;15%</strong> for immediate coverage products. For
+                graded or guaranteed issue products, comp hits can run
+                <span class="mark-gold">50% or more</span>.
+              </li>
+            </ul>
+
+            <div class="example-box">
+              <span class="example-eyebrow">Worked example</span>
+              <p class="example-text">
+                You write a <strong>$1,000 annual premium</strong> policy at a
+                <strong>100% contract</strong>. Your advance is 75% of the first-year
+                commission &mdash; so $750. With a 0% comp hit, that full $750 hits
+                your bank when the first premium drafts. With a 5% comp hit, it's
+                $750 minus 5%.
+              </p>
+
+              <ul class="example-rows">
+                <li>
+                  <span class="example-label">Annual premium, at a 100% contract</span>
+                  <span class="example-value">$1,000.00</span>
+                </li>
+                <li>
+                  <span class="example-label">Advance &mdash; 75%, paid on first draft</span>
+                  <span class="example-value">$750.00</span>
+                </li>
+                <li>
+                  <span class="example-label">With a 0% comp hit, you're paid</span>
+                  <span class="example-value">$750.00</span>
+                </li>
+                <li>
+                  <span class="example-label">With a 5% comp hit, you're paid</span>
+                  <span class="example-value">$712.50</span>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- The other half of the advance: what happens when it doesn't stick. -->
+          <section class="sub-card">
+            <h3 class="sub-card-title">Chargebacks &mdash; The Flip Side of the Advance</h3>
+            <p class="sub-card-text">
+              That 75% advance is the carrier paying you up front on premium the
+              client hasn't paid yet. If the client cancels or stops paying inside
+              the advance period, the unearned portion gets charged back &mdash; the
+              carrier takes it back from your future commissions.
+              <span class="mark-gold">
+                This is why the sale isn't done at the application:
+              </span>
+              write quality business, set honest expectations, get them drafting, and
+              keep your clients on the books.
+            </p>
+          </section>
+        </section>
+
+
+        <!-- ================================================================
+             SECTION 4 — STANDARDS & SCHEDULE
+             ================================================================ -->
+        <section id="standards" class="flow-section launch-panel" hidden>
+          <h2 class="flow-section-title">Standards &amp; Schedule</h2>
+
+          <p class="sub-lead">
+            This is what being part of ULG means. The standard is the standard.
+          </p>
+
+          <!-- ---------- A: The daily schedule ---------- -->
+          <div class="sub-block">
+            <h3 class="sub-title">The Daily Schedule</h3>
+
+            <ul class="timeline">
+              <li class="tl-item">
+                <span class="tl-time">9:00 AM</span>
+                <span class="tl-what">
+                  Morning meeting &mdash; stats, goals for the day, key topics.
+                </span>
+              </li>
+              <li class="tl-item">
+                <span class="tl-time">After meeting &ndash; 1:00 PM</span>
+                <span class="tl-what">Dials. On the phones.</span>
+              </li>
+              <li class="tl-item">
+                <span class="tl-time">1:00 PM</span>
+                <span class="tl-what">
+                  Lunch and back office &mdash; eat, call carriers, call clients,
+                  handle your business.
+                </span>
+              </li>
+              <li class="tl-item">
+                <span class="tl-time">2:30 PM</span>
+                <span class="tl-what">
+                  Back in the office, <strong>mandatory</strong>. Daily training,
+                  then back on the phones.
+                </span>
+              </li>
+              <li class="tl-item">
+                <span class="tl-time">8:30 PM</span>
+                <span class="tl-what">
+                  Breakout sessions with leaders &mdash; go over what you struggled
+                  with today and plan for tomorrow.
+                </span>
+              </li>
+              <li class="tl-item">
+                <span class="tl-time">9:00 PM</span>
+                <span class="tl-what">
+                  Day ends. No less than this. More if you want it.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ---------- B: Production standard ---------- -->
+          <div class="sub-block">
+            <h3 class="sub-title">Production Standard</h3>
+            <p class="sub-lead">
+              Your first two weeks are your learning period. From week three on, the
+              goal is a minimum of
+              <span class="mark-gold">$5,000 in submitted business each week</span>.
+            </p>
+          </div>
+
+          <!-- ---------- C: Lead coverage ---------- -->
+          <div class="sub-block">
+            <h3 class="sub-title">Lead Coverage Ramp</h3>
+
+            <div class="trio">
+              <div class="trio-card">
+                <span class="trio-eyebrow">Week 1</span>
+                <p class="trio-text">
+                  Leads provided <strong>completely free</strong> for your first week.
+                </p>
+              </div>
+              <div class="trio-card">
+                <span class="trio-eyebrow">Weeks 2&ndash;3</span>
+                <p class="trio-text">
+                  Your upline <strong>matches your lead spend</strong> up to $500.
+                </p>
+              </div>
+              <div class="trio-card">
+                <span class="trio-eyebrow">Week 4+</span>
+                <p class="trio-text">
+                  You buy your own leads &mdash; <strong>fully independent</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ================================================================
+             SECTION 5 — TRAINING & DAILY TOOLS
+             ================================================================ -->
+        <section id="training" class="flow-section launch-panel" hidden>
+          <h2 class="flow-section-title">Training &amp; Daily Tools</h2>
+
+          <!-- ---------- A: How we train ---------- -->
+          <div class="sub-block">
+            <h3 class="sub-title">How We Train</h3>
+
+            <div class="trio">
+              <div class="trio-card">
+                <span class="trio-eyebrow">9:00 AM</span>
+                <p class="trio-text">
+                  Morning meetings &mdash; stats, goals, and the topic of the day.
+                </p>
+              </div>
+              <div class="trio-card">
+                <span class="trio-eyebrow">2:30 PM</span>
+                <p class="trio-text">
+                  Daily leader trainings. Not just sales &mdash; faith, vision,
+                  recruiting, fitness, mindset.
+                </p>
+              </div>
+              <div class="trio-card">
+                <span class="trio-eyebrow">8:30 PM</span>
+                <p class="trio-text">
+                  Nightly breakouts with leaders, to work through what you struggled
+                  with that day.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---------- B: Call Vault ----------
+               The vault itself isn't wired up yet, so the button has nowhere to
+               go — but the card is treated as a real, permanent part of the page
+               (same solid card as everything else here), not as an empty
+               placeholder. The disabled button is the only thing that says
+               "not yet". -->
+          <div class="sub-block">
+            <h3 class="sub-title">Call Vault</h3>
+            <p class="sub-lead">
+              Real ULG sales calls, broken down. Full sales, appointment sets, and
+              objection work.
+            </p>
+
+            <section class="sub-card">
+              <div class="vault-live">
+                <svg class="vault-icon" width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="3.75" y="10.25" width="16.5" height="10" rx="2.5"
+                        stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M7.5 10.25V7.5a4.5 4.5 0 0 1 9 0v2.75"
+                        stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <circle cx="12" cy="15.25" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+                </svg>
+
+                <div class="vault-body">
+                  <h4 class="vault-title">Real ULG calls, broken down</h4>
+                  <p class="vault-text">
+                    Recorded on our own floor and picked apart line by line.
+                  </p>
+                </div>
+
+                <!-- No href yet, so this is a <button>, not an <a> — a disabled
+                     link is not a thing the browser has. -->
+                <button type="button" class="btn-gold is-disabled" disabled aria-disabled="true">
+                  Open Call Vault
+                  <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <!-- ---------- C: Video Vault ---------- -->
+          <div class="sub-block">
+            <h3 class="sub-title">Video Vault</h3>
+            <p class="sub-lead">
+              Hand-picked training from the best in the game &mdash; study how top
+              producers open, control, and close.
+            </p>
+
+            <section class="sub-card">
+              <ul class="video-list">
+
+                <li class="video-row">
+                  <span class="video-title">
+                    Watch Me Cold Call 300 Leads Until I Close a Sale (Realistic Results)
+                  </span>
+                  <a
+                    class="btn-ghost"
+                    href="https://www.youtube.com/watch?v=OJfIY7-4nW0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                </li>
+
+                <li class="video-row">
+                  <span class="video-title">
+                    Watch Me LIVE Cold Call &amp; Close $11K in Commissions
+                  </span>
+                  <a
+                    class="btn-ghost"
+                    href="https://www.youtube.com/watch?v=MdEZy8xVMUU"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                </li>
+
+                <li class="video-row">
+                  <span class="video-title">
+                    He Went From $0&ndash;$70k/mo Using 1 Secret Tactic Anyone Can Learn
+                  </span>
+                  <a
+                    class="btn-ghost"
+                    href="https://www.youtube.com/watch?v=xDDBm8MIAE0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                </li>
+
+                <li class="video-row">
+                  <span class="video-title">
+                    The &ldquo;5 Why Framework&rdquo; Is So Good Prospects Will Close Themselves
+                  </span>
+                  <a
+                    class="btn-ghost"
+                    href="https://www.youtube.com/watch?v=ugiIhL5jDIA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                </li>
+
+                <li class="video-row">
+                  <span class="video-title">
+                    The ULTIMATE Insurance Sales Training for 2026 (Live Calls)
+                  </span>
+                  <a
+                    class="btn-ghost"
+                    href="https://www.youtube.com/watch?v=UDJh61qDQoI"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                </li>
+
+                <li class="video-row">
+                  <span class="video-title">
+                    The Best Cold Call You've Ever Seen ($40k/mo insurance agent)
+                  </span>
+                  <a
+                    class="btn-ghost"
+                    href="https://www.youtube.com/watch?v=-mxrQGJBJOs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                </li>
+
+              </ul>
+            </section>
+          </div>
+
+          <!-- ---------- D: Daily tools ---------- -->
+          <div class="sub-block">
+            <h3 class="sub-title">Daily Tools</h3>
+
+            <div class="tool-grid">
+
+              <!-- The Quoter carries two buttons and the shared login, so it takes
+                   the full width rather than stretching the other two cards to
+                   match a height they have nothing to fill with. -->
+              <div class="tool-card is-wide">
+                <h4 class="tool-name">Insurance Toolkits &mdash; The Quoter</h4>
+                <p class="tool-text">
+                  Plug in your client's info, get exact-to-the-cent quotes, and see
+                  which carriers fit them best. Get your own account once you're
+                  rolling &mdash; until then, use the team login.
+                </p>
+
+                <div class="tool-actions">
+                  <a
+                    class="btn-gold"
+                    href="https://insurancetoolkits.com/login"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open Toolkits
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                  <!-- Same size and shape as "Open Toolkits" beside it — the two
+                       are a pair, so "btn-lg" lifts the ghost button up to the
+                       gold button's scale. It stays outlined: still the second
+                       thing you'd click, just not a smaller thing. -->
+                  <a
+                    class="btn-ghost btn-lg"
+                    href="https://youtu.be/VWv5vEqqx5o"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    How to Use Toolkits (Video)
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                </div>
+
+                <div class="cred">
+                  <div class="cred-row">
+                    <span class="cred-key">Username</span>
+                    <span class="cred-val">rosstonkaib@gmail.com</span>
+                  </div>
+                  <div class="cred-row">
+                    <span class="cred-key">Password</span>
+                    <span class="cred-val">Viper101!</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-card is-soon">
+                <span class="empty-pill">Coming soon</span>
+                <h4 class="tool-name">Underwriting Cheat Sheets</h4>
+                <p class="tool-text">
+                  Carrier-by-carrier health knockouts and niches &mdash; know
+                  instantly which carrier takes which client.
+                </p>
+              </div>
+
+              <div class="tool-card">
+                <h4 class="tool-name">State Licenses: Costs &amp; Requirements</h4>
+                <p class="tool-text">
+                  You can't write business in a state you're not licensed in. Smart
+                  agents stack 5&ndash;10 non-resident licenses fast, so they always
+                  have states to work.
+                </p>
+                <a
+                  class="btn-gold"
+                  href="https://docs.google.com/spreadsheets/d/1OQwERNd8eJmstkDgf6vW6EuicMkmTgKGMvjKphaelow/edit?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Costs &amp; Requirements
+                  <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ================================================================
+             SECTION 6 — MINDSET
+             Last, on purpose: everything above is what to do, and this is the
+             head you have to be in to do it.
+             ================================================================ -->
+        <section id="mindset" class="flow-section launch-panel" hidden>
+          <h2 class="flow-section-title">Mindset</h2>
+
+          <p class="sub-lead">
+            How you think about this opportunity decides whether you make it.
+          </p>
+
+          <section class="method">
+            <span class="method-eyebrow">Read This Twice</span>
+            <h3 class="method-title">You Are Not Taking a Job</h3>
+
+            <ul class="method-list">
+              <li>
+                This is not a 9-to-5, and it is not just a sales job. That's how it
+                starts. But this seat gives you the chance to build a brand and
+                become a business owner in every sense of the word.
+              </li>
+              <li>
+                There has never been a successful business without a barrier to
+                entry &mdash; money invested before the return comes, and time
+                invested before the results show.
+                <strong>This business is no different.</strong>
+              </li>
+              <li>
+                So here is the expectation: you invest, consistently, in leads, in
+                licenses, and in your own growth. Leads are not an expense.
+                <span class="mark-gold">They are your inventory.</span>
+              </li>
+            </ul>
+          </section>
+
+          <section class="sub-card">
+            <h3 class="sub-card-title">Treat Your Leads Like Assets</h3>
+            <p class="sub-card-text">
+              Every lead you buy is inventory you own. Organize them, work them, and
+              never let one rot.
+            </p>
+          </section>
+
+          <div class="res-grid">
+            <div class="res-card">
+              <a
+                class="btn-gold"
+                href="https://docs.google.com/spreadsheets/d/1B6IKG8DjgWcycmY6StU_shgPaEu9RmQJ05hTXsbtYD4/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Organization Tracker
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+              <p class="res-note">
+                How to organize and manage your lead sheet &mdash; the how-to video
+                is linked inside the tracker.
+              </p>
+            </div>
+          </div>
+        </section>
+
       </div>
 
     </div>
   </main>
+
+
+  <!-- ===================== THE LIGHTBOX =====================
+       Empty until a comp image is clicked; /js/launch.js fills in the src and
+       unhides it. It lives outside <main> so it can cover the whole page. -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close image">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+  </div>
 
 
   <!-- ===================== FOOTER ===================== -->
@@ -81,5 +986,6 @@
   </footer>
 
   <script src="/js/main.js"></script>
+  <script src="/js/launch.js"></script>
 </body>
 </html>
