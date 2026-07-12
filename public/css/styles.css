@@ -1,196 +1,550 @@
 /* ==========================================================================
-   styles.css  —  "Modern Slate" theme
-   All the colors, fonts, and spacing live here. To recolor the whole site
-   later, you mostly just change the values in the ":root" block below.
+   styles.css  —  Unity Life Group brand theme
+   Colors and fonts come straight from the logo package, so the site always
+   matches the logos. To recolor the whole site, change the values in the
+   ":root" block below — everything else follows automatically.
    ========================================================================== */
 
 /* ---- 1. THE COLOR & FONT "DIALS" ----------------------------------------
-   These named values are reused everywhere. Change one here and it updates
-   across the entire site. (The #hex codes are exact color names for the computer.) */
+   The exact brand values from the logo package README. */
 :root {
-  --color-slate:      #2b3440;  /* charcoal/slate — header background        */
-  --color-slate-deep: #1f2933;  /* a darker slate — footer background        */
-  --color-bg:         #f7f8f9;  /* soft off-white — page background          */
-  --color-surface:    #ffffff;  /* pure white — cards/boxes                  */
-  --color-text:       #232b33;  /* dark slate — main text                    */
-  --color-text-soft:  #5b6773;  /* muted gray — secondary text               */
-  --color-accent:     #14958a;  /* teal — buttons, highlights, links         */
-  --color-accent-dk:  #0f7a71;  /* darker teal — hover state                 */
-  --color-border:     #e2e6ea;  /* light gray — thin dividing lines          */
+  --navy:        #16305E;  /* core brand navy                                */
+  --navy-light:  #1B3A70;  /* top of the "shiny navy" gradient               */
+  --navy-deep:   #0B1D3E;  /* bottom of the "shiny navy" gradient            */
+  --gold:        #C6A15B;  /* accent — borders, glows, small highlights      */
+  --white:       #FDFDFC;  /* matte white — text on navy, page background    */
+  --grey:        #E8EAED;  /* light grey — hairlines, borders, muted panels  */
 
-  --font-head: "Lora", Georgia, serif;               /* serif for headings   */
-  --font-body: "Inter", Arial, Helvetica, sans-serif; /* sans for everything else */
+  /* Greys mixed from the brand navy, for body text on light pages. */
+  --ink:         #16305E;  /* headings on light backgrounds (brand navy)     */
+  --ink-soft:    #5A6982;  /* softer supporting text                         */
+
+  /* The signature background: the "shiny navy" gradient from the logo pack. */
+  --navy-gradient: linear-gradient(150deg, var(--navy-light) 0%, var(--navy) 45%, var(--navy-deep) 100%);
+
+  --font-head: "Marcellus", Georgia, serif;                  /* headings/wordmark */
+  --font-body: "Albert Sans", Arial, Helvetica, sans-serif;  /* body/supporting   */
 
   --maxwidth: 1140px;   /* how wide content stretches on big desktop screens */
-  --radius:   10px;     /* rounded-corner amount                             */
+  --radius:   14px;     /* rounded-corner amount                             */
 }
 
-/* ---- 2. BASELINE RESET --------------------------------------------------
-   A few sensible defaults so the page looks consistent across browsers. */
+/* ---- 2. BASELINE RESET -------------------------------------------------- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   font-family: var(--font-body);
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  color: var(--ink);
+  background-color: var(--white);
   line-height: 1.6;
-
-  /* Make the footer sit at the bottom even when the page is short. */
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-head);
+  font-weight: 400;   /* Marcellus only comes in one weight, and it's elegant as-is */
   line-height: 1.2;
-  color: var(--color-text);
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--gold);
   text-decoration: none;
 }
-a:hover {
-  color: var(--color-accent-dk);
+
+img {
+  max-width: 100%;
+  display: block;
 }
 
-/* ---- 3. THE "CONTAINER" --------------------------------------------------
-   A reusable centered column that keeps content from touching screen edges.
-   Every section wraps its content in a .container. */
+/* A reusable centered column that keeps content off the screen edges. */
 .container {
   width: 100%;
   max-width: var(--maxwidth);
-  margin: 0 auto;      /* centers it horizontally */
-  padding: 0 24px;     /* breathing room on the left and right */
+  margin: 0 auto;
+  padding: 0 32px;
 }
 
-/* ---- 4. HEADER / NAV BAR ------------------------------------------------- */
+
+/* ==========================================================================
+   3. THE HOMEPAGE  ("fork in the road")
+   One full screen: logo, tagline, two cards. Nothing scrolls.
+   ========================================================================== */
+.page-home {
+  background: var(--navy-gradient);
+  color: var(--white);
+  min-height: 100vh;
+  min-height: 100dvh;   /* the more accurate "screen height" in modern browsers */
+  overflow: hidden;     /* guarantees the no-scroll rule */
+}
+
+/* A soft pool of gold light behind the logo. This is what gives the flat
+   navy some depth and makes the page feel lit rather than printed. */
+.page-home::before {
+  content: "";
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(198, 161, 91, 0.13) 0%, rgba(198, 161, 91, 0) 62%);
+  pointer-events: none;   /* purely decorative — never blocks a click */
+}
+
+.hero {
+  position: relative;   /* sits above the glow */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* the whole group sits balanced on the screen */
+  gap: clamp(16px, 2.2vh, 28px);
+  padding: clamp(32px, 5vh, 64px) 32px clamp(28px, 4vh, 48px);
+}
+
+/* -- The logo: the centerpiece, BUILT IN CODE (not a picture) --
+   Because it's a vector shield plus real text, it is always razor sharp.
+
+   How the sizing works: one "dial" below sets the overall lockup width, and
+   every part of the lockup (shield, wordmark, GROUP line) is measured in "em"
+   — meaning "a share of the text size". So changing the one dial scales the
+   whole lockup together, proportions locked.
+
+   The dial is the smallest of three limits:
+     44vw            -> the target: just under half the screen's width
+     760px           -> stops it getting silly on an ultra-wide monitor
+     42vh x 1.4857   -> a height guard (1.4857 is the lockup's true
+                        width-to-height ratio), which is what keeps the whole
+                        page on one screen on a short laptop. */
+.hero-lockup {
+  --lockup-width: min(44vw, 760px, calc(42vh * 1.4857));
+
+  /* 6.1 is measured from the real logo: the lockup is ~6.1x as wide as the
+     wordmark's text size. So this gives the wordmark the right size to make
+     the lockup come out at --lockup-width. */
+  font-size: calc(var(--lockup-width) / 6.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.38));
+}
+
+/* The shield sits above the words. 2.47em = 40.4% of the lockup width,
+   measured from the original artwork. */
+.lockup-shield {
+  width: 2.47em;
+  height: auto;
+  margin-bottom: 0.85em;   /* the 58px gap in the original, as a share of the text size */
+}
+
+/* "UNITY LIFE" — live text in Marcellus. */
+.lockup-word {
+  font-family: var(--font-head);
+  font-size: 1em;            /* this IS the dial set above */
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-indent: 0.12em;       /* offsets the trailing letter-space so it stays centred */
+  text-transform: uppercase;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+/* The gold "— GROUP —" line underneath. */
+.lockup-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  align-self: stretch;       /* stretches to match the wordmark's width */
+  margin-top: 0.53em;        /* the 36px gap in the original */
+}
+
+.lockup-group-text {
+  font-family: var(--font-body);
+  font-size: 0.31em;         /* small caps line, sized from the original */
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* The thin gold rules either side of the word GROUP. */
+.lockup-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.9;
+}
+
+/* -- Gold hairline + tagline -- */
+.hero-rule {
+  width: 190px;
+  height: 1px;
+  border: 0;
+  /* Fades in from nothing at both ends, so it reads as light, not a hard line. */
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.85;
+}
+
+.hero-tagline {
+  font-family: var(--font-head);
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(253, 253, 252, 0.9);
+  text-align: center;
+}
+
+/* -- The two cards -- */
+.fork {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* side by side on desktop */
+  gap: 30px;
+  width: 100%;
+  max-width: 980px;
+  /* A deliberate, measured gap under the tagline — enough to separate the
+     cards from the logo, but not so much that they're stranded at the bottom
+     of the screen. */
+  margin-top: clamp(10px, 2.2vh, 26px);
+}
+
+.fork-card {
+  /* Translucent navy glass, so the gradient behind still shows through. */
+  background: rgba(253, 253, 252, 0.05);
+  border: 1px solid rgba(253, 253, 252, 0.16);
+  border-radius: var(--radius);
+  padding: 40px 38px 34px;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Animate only the properties that actually change — keeps the hover smooth. */
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1),
+              border-color 0.45s ease,
+              box-shadow 0.45s ease,
+              background-color 0.45s ease;
+}
+
+/* The "expensive" hover: the card lifts, its edge turns gold, and a soft gold
+   light blooms out from underneath it. */
+.fork-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  background: rgba(253, 253, 252, 0.08);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.34),
+              0 0 0 1px rgba(198, 161, 91, 0.5),
+              0 0 34px rgba(198, 161, 91, 0.28);
+}
+
+/* Keyboard users get the exact same treatment as mouse users. */
+.fork-card:focus-visible {
+  outline: none;
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold), 0 0 34px rgba(198, 161, 91, 0.28);
+}
+
+.fork-title {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  color: var(--white);
+}
+
+.fork-sub {
+  color: rgba(253, 253, 252, 0.68);
+  font-size: 1rem;
+  line-height: 1.55;
+  flex: 1;   /* pushes "Enter" to the bottom, so both cards line up */
+}
+
+.fork-enter {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 8px;
+}
+
+/* The little arrow slides forward on hover. */
+.fork-arrow {
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.fork-card:hover .fork-arrow,
+.fork-card:focus-visible .fork-arrow {
+  transform: translateX(6px);
+}
+
+.home-note {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(253, 253, 252, 0.38);
+  margin-top: 4px;
+}
+
+/* SHORT SCREENS (e.g. a 1366x768 laptop): the logo stays big, so the cards
+   give up a little padding instead. This is what guarantees the "no scroll"
+   rule holds even when the screen isn't very tall. */
+@media (max-height: 820px) {
+  .fork-card {
+    padding: 26px 30px 24px;
+  }
+  .fork-title {
+    font-size: 1.7rem;
+  }
+  .fork-sub {
+    font-size: 0.94rem;
+  }
+}
+
+/* A calm fade-up on load, so the page assembles itself instead of just appearing. */
+.fade-up {
+  animation: fadeUp 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.fade-up-1 { animation-delay: 0.05s; }
+.fade-up-2 { animation-delay: 0.20s; }
+.fade-up-3 { animation-delay: 0.34s; }
+.fade-up-4 { animation-delay: 0.48s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Respect people who've asked their computer to reduce motion. */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { animation: none; }
+  .fork-card, .fork-arrow { transition: none; }
+}
+
+
+/* ==========================================================================
+   4. THE SECTION PAGES  (/new-agents and /agents)
+   Navy header for brand continuity, light body so a wall of cards stays
+   easy to read.
+   ========================================================================== */
+.page-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--white);
+}
+
+/* -- Slim sticky header -- */
 .site-header {
-  background-color: var(--color-slate);
-  color: #ffffff;
-  border-bottom: 3px solid var(--color-accent);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--navy-gradient);
+  border-bottom: 1px solid rgba(198, 161, 91, 0.45);   /* thin gold underline */
 }
 
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;  /* name on the left, menu on the right */
-  height: 74px;
+  justify-content: space-between;
+  height: 66px;
 }
 
-.brand {
-  font-family: var(--font-head);
-  font-size: 1.55rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.3px;
+/* The shield mark on the left — clicking it goes home. */
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-.brand:hover {
-  color: #ffffff;
-  opacity: 0.9;
+
+.brand-mark {
+  height: 34px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+.brand-lockup:hover .brand-mark {
+  transform: scale(1.06);
+}
+
+.brand-word {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
 }
 
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 34px;
 }
+
 .main-nav a {
-  color: #e8ebee;
-  font-size: 0.98rem;
+  position: relative;
+  color: rgba(253, 253, 252, 0.72);
+  font-size: 0.85rem;
   font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 0;
+  transition: color 0.3s ease;
 }
 .main-nav a:hover {
-  color: #ffffff;
+  color: var(--white);
 }
 
-/* The temporary "Menu links go here" hint text. Delete this style later. */
-.nav-placeholder {
-  color: #9aa6b2;
-  font-size: 0.9rem;
-  font-style: italic;
+/* The gold underline that marks which section you're currently in. */
+.main-nav a.is-active {
+  color: var(--white);
+}
+.main-nav a.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--gold);
 }
 
-/* ---- 5. MAIN CONTENT AREA ------------------------------------------------ */
+/* -- Page heading -- */
 .site-main {
-  flex: 1 0 auto;          /* lets the main area grow and push footer down */
-  padding: 56px 0;
+  flex: 1 0 auto;
+  padding: 64px 0 80px;
 }
 
-/* Placeholder sections — these EXIST ONLY to show you where content goes.
-   You'll replace them with real content later. */
-.placeholder-section {
-  background-color: var(--color-surface);
-  border: 1px dashed var(--color-border);
+.page-head {
+  margin-bottom: 44px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--grey);
+}
+
+.page-title {
+  font-size: clamp(2.1rem, 3.4vw, 2.9rem);
+  color: var(--ink);
+}
+
+.page-sub {
+  margin-top: 10px;
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+}
+
+/* -- The grid of placeholder category cards -- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* three across on desktop */
+  gap: 24px;
+}
+
+/* These are deliberately NOT links. Nothing here is clickable yet, so there's
+   nothing to click that would lead to a dead end. */
+.cat-card {
+  border: 1px dashed #CDD4DD;
   border-radius: var(--radius);
-  padding: 48px 40px;
-  margin-bottom: 28px;
-  min-height: 180px;
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--grey) 100%);
+  padding: 30px 28px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
 }
 
-.placeholder-tag {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.72rem;
+.cat-name {
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  color: var(--ink);
+}
+
+/* The small gold "coming soon" pill. */
+.cat-soon {
+  align-self: flex-start;
+  font-size: 0.66rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
-  background-color: rgba(20, 149, 138, 0.09);
+  color: #8A6D33;                              /* darker gold, readable on light */
+  background: rgba(198, 161, 91, 0.14);
+  border: 1px solid rgba(198, 161, 91, 0.4);
   padding: 5px 12px;
   border-radius: 999px;
-  margin-bottom: 16px;
 }
 
-.placeholder-note {
-  color: var(--color-text-soft);
-  max-width: 620px;
-}
-
-/* ---- 6. FOOTER ----------------------------------------------------------- */
+/* -- Slim footer -- */
 .site-footer {
   flex-shrink: 0;
-  background-color: var(--color-slate-deep);
-  color: #c6ced6;
-  padding: 32px 0;
+  background: var(--navy-deep);
+  color: rgba(253, 253, 252, 0.55);
+  padding: 26px 0;
 }
 
 .footer-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 0.8rem;
 }
 
 .footer-brand {
   font-family: var(--font-head);
-  font-weight: 600;
-  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(253, 253, 252, 0.8);
 }
 
-.footer-note {
-  font-size: 0.9rem;
-  color: #8a95a1;
+
+/* ==========================================================================
+   5. SMALLER SCREENS
+   The site is built desktop-first (that's ~95% of the traffic), but these
+   rules keep it from breaking on a laptop-in-half-screen, tablet, or phone.
+   ========================================================================== */
+
+/* Narrower laptops / tablets: category cards drop to two across. */
+@media (max-width: 980px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-/* ---- 7. SMALL-SCREEN FALLBACK -------------------------------------------
-   You design mostly for desktop, but this keeps it from breaking on a phone
-   by stacking the header and footer items vertically on narrow screens. */
-@media (max-width: 640px) {
-  .header-inner,
+/* Phones: everything stacks, and the homepage is allowed to scroll if the
+   two cards can no longer fit on one small screen. */
+@media (max-width: 720px) {
+  .page-home {
+    overflow: auto;
+  }
+  .fork {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .fork-card {
+    padding: 26px 24px;
+  }
+  .fork-title {
+    font-size: 1.6rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .main-nav {
+    gap: 18px;
+  }
+  .brand-word {
+    display: none;   /* on a phone, the shield mark alone carries the brand */
+  }
   .footer-inner {
     flex-direction: column;
-    gap: 12px;
-    height: auto;
-    padding-top: 18px;
-    padding-bottom: 18px;
+    gap: 8px;
+    text-align: center;
   }
 }

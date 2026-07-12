@@ -1,89 +1,102 @@
 <!-- ==========================================================================
-     index.html
-     This is the actual web page. It is the SKELETON only: a header at the top,
-     an empty main area in the middle, and a footer at the bottom.
-     The empty placeholder boxes show you where future content will go.
+     index.html  —  THE HOMEPAGE ("fork in the road")
+     Its only job is to send an agent to one of two places:
+     "Start Here" (/new-agents) or "Agent Portal" (/agents).
+     Everything fits on one screen — there is nothing to scroll to.
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Basic settings the browser needs -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unity Life Group</title>
+  <title>Unity Life Group — Agent Hub</title>
 
-  <!-- Fonts (Lora for headings, Inter for body text) loaded from Google -->
+  <!-- Internal hub: ask search engines not to list it publicly. -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Brand fonts: Marcellus (headings) and Albert Sans (body). -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Marcellus&display=swap"
     rel="stylesheet"
   />
 
-  <!-- Our styling file -->
+  <link rel="icon" href="/logos/ulg-monogram-navy.png" />
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 
-<body>
+<!-- "page-home" switches on the navy gradient background and the no-scroll rule. -->
+<body class="page-home">
 
-  <!-- ===================== HEADER / NAV BAR ===================== -->
-  <!-- The strip across the very top: your name on the left, menu on the right. -->
-  <header class="site-header">
-    <div class="container header-inner">
+  <main class="hero">
 
-      <!-- Your brand / business name -->
-      <a href="/" class="brand">Unity Life Group</a>
+    <!-- ---------- THE CENTERPIECE: the logo, rebuilt in code ----------
+         This is NOT a picture. The shield is a vector drawing and the words
+         are real text, so the whole lockup stays perfectly sharp at any size
+         and on any screen — no blur, ever.
+         The proportions below were measured from the original logo file so it
+         matches the artwork. -->
+    <div class="hero-lockup fade-up fade-up-1" role="img" aria-label="Unity Life Group">
 
-      <!-- The navigation menu. Empty for now — add links here later. -->
-      <nav class="main-nav">
-        <!-- Example of what a link will look like (kept as a comment for now):
-        <a href="/about">About</a>
-        <a href="/services">Services</a>
-        <a href="/contact">Contact</a>
-        -->
-        <span class="nav-placeholder">Menu links go here</span>
-      </nav>
+      <!-- The shield: the same vector art as the logo package's SVG file. -->
+      <svg class="lockup-shield" viewBox="2 2 58 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <!-- the two faded shields behind -->
+        <path d="M13 7 L24 10.5 L24 22 C24 30.5 19.5 35.5 13 39 C6.5 35.5 2 30.5 2 22 L2 10.5 Z" fill="#FDFDFC" opacity="0.45"/>
+        <path d="M49 7 L60 10.5 L60 22 C60 30.5 55.5 35.5 49 39 C42.5 35.5 38 30.5 38 22 L38 10.5 Z" fill="#FDFDFC" opacity="0.45"/>
+        <!-- the main white shield -->
+        <path d="M31 2 L44 6 L44 21 C44 31.5 38.5 38 31 42 C23.5 38 18 31.5 18 21 L18 6 Z" fill="#FDFDFC"/>
+        <!-- the gold shield inside it -->
+        <path d="M31 9 L38.5 11.3 L38.5 21 C38.5 27.5 35.5 31.5 31 34.5 C26.5 31.5 23.5 27.5 23.5 21 L23.5 11.3 Z" fill="#C6A15B"/>
+      </svg>
 
-    </div>
-  </header>
+      <!-- The wordmark, as live text in Marcellus. -->
+      <div class="lockup-word">Unity Life</div>
 
-
-  <!-- ===================== MAIN CONTENT AREA ===================== -->
-  <!-- The big middle section. Everything you build lives inside <main>. -->
-  <main class="site-main">
-    <div class="container">
-
-      <!-- SECTION 1 placeholder -->
-      <section class="placeholder-section">
-        <span class="placeholder-tag">Section 1</span>
-        <p class="placeholder-note">
-          This is an empty content section. Tell Claude what to put here
-          (for example: a welcome headline and a short intro).
-        </p>
-      </section>
-
-      <!-- SECTION 2 placeholder -->
-      <section class="placeholder-section">
-        <span class="placeholder-tag">Section 2</span>
-        <p class="placeholder-note">
-          Another empty section, ready for content whenever you are.
-        </p>
-      </section>
+      <!-- The gold "GROUP" line, with a rule on each side. -->
+      <div class="lockup-group">
+        <span class="lockup-rule" aria-hidden="true"></span>
+        <span class="lockup-group-text">Group</span>
+        <span class="lockup-rule" aria-hidden="true"></span>
+      </div>
 
     </div>
+
+    <!-- ---------- Gold hairline + tagline ---------- -->
+    <hr class="hero-rule fade-up fade-up-2" />
+    <p class="hero-tagline fade-up fade-up-2">Built on People &mdash; Driven by Purpose</p>
+
+    <!-- ---------- THE FORK: two cards, side by side ---------- -->
+    <div class="fork">
+
+      <!-- CARD 1 — for brand-new agents -->
+      <a href="/new-agents" class="fork-card fade-up fade-up-3">
+        <h2 class="fork-title">Start Here</h2>
+        <p class="fork-sub">
+          For new agents — onboarding, licensing, and training.
+        </p>
+        <span class="fork-enter">
+          Enter <span class="fork-arrow" aria-hidden="true">&rarr;</span>
+        </span>
+      </a>
+
+      <!-- CARD 2 — for agents already up and running -->
+      <a href="/agents" class="fork-card fade-up fade-up-4">
+        <h2 class="fork-title">Agent Portal</h2>
+        <p class="fork-sub">
+          For active agents — carriers, tools, and resources.
+        </p>
+        <span class="fork-enter">
+          Enter <span class="fork-arrow" aria-hidden="true">&rarr;</span>
+        </span>
+      </a>
+
+    </div>
+
+    <p class="home-note fade-up fade-up-4">Internal use only</p>
+
   </main>
 
-
-  <!-- ===================== FOOTER ===================== -->
-  <!-- The strip across the bottom: copyright and small links later. -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <span class="footer-brand">Unity Life Group</span>
-      <span class="footer-note">Footer content goes here</span>
-    </div>
-  </footer>
-
-  <!-- Our JavaScript file (empty for now, ready for future interactivity) -->
   <script src="/js/main.js"></script>
 </body>
 </html>
