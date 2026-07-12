@@ -1,6 +1,14 @@
 <!-- ==========================================================================
-     contracting.html  —  STAGE 2  (address: /new-agents/contracting)
-     Real page, intentionally empty: the content gets added later.
+     contracting.html  —  STAGE 2  (lives at the address /new-agents/contracting)
+
+     Picks the agent up the moment they pass their exam and walks them all the
+     way to carrier contracts. Like the licensing page, it is a LONG-FORM
+     SCROLLING page, worked straight down in order.
+
+     THE NUMBERING IS NOT WRITTEN HERE. The stylesheet draws it from a counter,
+     which restarts inside each <section class="flow-phase">. That's why phase 3
+     runs 1-11 across its three parts (A, B and C are three separate lists, but
+     one phase), and why inserting a step anywhere renumbers the rest for free.
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +29,9 @@
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 
-<body class="page-dark">
+<!-- "page-flow" switches on the numbered-walkthrough styling, exactly as on
+     the licensing page. -->
+<body class="page-dark page-flow">
 
   <!-- ===================== SLIM HEADER ===================== -->
   <header class="site-header">
@@ -50,23 +60,378 @@
   <main class="site-main">
     <div class="container">
 
+      <!-- Breadcrumb: back up to the three stages. -->
       <a href="/new-agents" class="crumb fade-up fade-up-1">
         <span aria-hidden="true">&larr;</span> All Stages
       </a>
 
       <div class="page-head fade-up fade-up-1">
         <h1 class="page-title">Get Contracted</h1>
-        <p class="page-sub">You passed. Now secure your license, NPN, and carriers.</p>
-      </div>
-
-      <div class="empty-state fade-up fade-up-2">
-        <span class="empty-pill">Coming soon</span>
-        <h2 class="empty-title">This stage is being built</h2>
-        <p class="empty-note">
-          The contracting walkthrough will live here — securing your license,
-          your NPN, and your carrier appointments.
+        <p class="page-sub flow-intro">
+          You passed. Now let's make it official &mdash; your license, your NPN,
+          and your carriers. Follow every step in order.
         </p>
       </div>
+
+
+      <!-- ================================================================
+           PHASE 1 — buy the license (steps 1-5)
+           ================================================================ -->
+      <section class="flow-phase fade-up fade-up-2">
+
+        <div class="phase-head">
+          <div class="phase-meta">
+            <span class="phase-eyebrow">Phase 1</span>
+          </div>
+          <h2 class="phase-title">Buy Your State License</h2>
+        </div>
+
+        <ol class="step-flow">
+
+          <!-- ---------- STEP 1 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Go to NIPR</h3>
+              <p class="step-text">Click Start Now.</p>
+              <a
+                class="btn-gold"
+                href="https://nipr.com/licensing-center/apply-for-a-license"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Apply for Your License
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- ---------- STEP 2 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Apply as an Individual</h3>
+              <p class="step-text">
+                Identify with your SSN. Enter your last name, SSN, and date of
+                birth, then click Start.
+              </p>
+            </div>
+          </li>
+
+          <!-- ---------- STEP 3 ---------- -->
+          <!-- Not an action — three exact values. Picking the wrong one here
+               means starting the application over, so they get the gold. -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Application Settings</h3>
+
+              <div class="ref-card">
+                <div class="ref-row">
+                  <span class="ref-label">Product type</span>
+                  <span class="mark-gold">Producer Licensing</span>
+                </div>
+                <div class="ref-row">
+                  <span class="ref-label">Application type</span>
+                  <span class="mark-gold">Initial</span>
+                </div>
+                <div class="ref-row">
+                  <span class="ref-label">Residency type</span>
+                  <span class="mark-gold">Resident</span>
+                </div>
+              </div>
+
+            </div>
+          </li>
+
+          <!-- ---------- STEP 4 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Select Your State &amp; Purchase</h3>
+              <p class="step-text">
+                Click next, search for your resident state &mdash; the one you
+                just passed in &mdash; and purchase your license.
+              </p>
+            </div>
+          </li>
+
+          <!-- ---------- STEP 5 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Download the NIPR App</h3>
+              <p class="step-text">Get it on your phone and sign in.</p>
+            </div>
+          </li>
+
+        </ol>
+      </section>
+
+
+      <!-- ================================================================
+           PHASE 2 — the NPN, and handing it to the upline
+           ================================================================ -->
+      <section class="flow-phase fade-up fade-up-3">
+
+        <div class="phase-head">
+          <div class="phase-meta">
+            <span class="phase-eyebrow">Phase 2</span>
+            <span class="phase-when">24&ndash;48 hours later</span>
+          </div>
+          <h2 class="phase-title">Find Your NPN</h2>
+        </div>
+
+        <!-- Sets expectations before the agent goes looking and finds nothing. -->
+        <div class="callout">
+          <svg class="callout-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 5.5V10L12.75 12" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p>
+            Your NPN appears 24&ndash;48 hours after you pass. Don't panic if
+            it's not instant.
+          </p>
+        </div>
+
+        <ol class="step-flow">
+
+          <!-- ---------- STEP 1 ---------- -->
+          <li class="step">
+            <div class="step-num" aria-hidden="true"></div>
+            <div class="step-body">
+              <h3 class="step-title">Look Up Your NPN</h3>
+              <p class="step-text">Search with your SSN.</p>
+              <a
+                class="btn-gold"
+                href="https://nipr.com/licensing-center/look-up-a-national-producer-number"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Look Up Your NPN
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </li>
+
+        </ol>
+
+        <!-- ================= THE ACTION CARD =================
+             The loudest element on the page. Everything else here is something
+             the agent does alone; this is the one handoff to another person,
+             and nothing in phase 3 can begin until it happens. -->
+        <section class="action-card">
+          <span class="action-eyebrow">Do this now</span>
+          <h3 class="action-title">Send This to Your Upline &mdash; Immediately</h3>
+          <p class="action-text">
+            The second you have your NPN, send your upline the following. This
+            starts your contracting.
+          </p>
+
+          <div class="template-wrap">
+            <div class="template-bar">
+              <span class="template-label">Send exactly this</span>
+
+              <!-- Wired up in /js/contracting.js. It reads the block below, so
+                   the template lives in exactly one place. -->
+              <button
+                type="button"
+                class="copy-btn"
+                data-copy-target="upline-template"
+              >
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <rect x="5.75" y="1.75" width="8.5" height="10.5" rx="2"
+                        stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M10.5 14.25H3.75a2 2 0 0 1-2-2V4.5"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span class="copy-btn-text">Copy</span>
+              </button>
+            </div>
+
+            <!-- Deliberately NOT indented to match the code around it. A <pre>
+                 renders its whitespace literally, so indenting these five lines
+                 to line up with the HTML would both draw them indented on screen
+                 and put that indentation on the agent's clipboard. -->
+<pre id="upline-template" class="template">NPN:
+Full Name:
+Phone:
+Email:
+Home Address:</pre>
+          </div>
+
+          <p class="action-note">
+            Your upline is the person who brought you to ULG.
+          </p>
+        </section>
+
+      </section>
+
+
+      <!-- ================================================================
+           PHASE 3 — contracting itself.
+
+           Deliberately NOT built from .step cards like phases 1 and 2. Those are
+           short, discrete errands. This is one long sitting that hops between two
+           systems (NLC -> SureLC -> back to NLC), and chopping it into eleven
+           separate cards hid that shape. It's one container instead, with a gold
+           rail running down the four parts, so it reads as a single continuous
+           flow — which is what it actually is.
+           ================================================================ -->
+      <section class="flow-phase fade-up fade-up-4">
+
+        <div class="phase-head">
+          <div class="phase-meta">
+            <span class="phase-eyebrow">Phase 3</span>
+          </div>
+          <h2 class="phase-title">Request Your Carriers</h2>
+          <p class="phase-note">
+            After you send your info, your upline will invite you as an agent.
+            Watch your email &mdash; your onboarding link is coming. Then follow
+            this exactly.
+          </p>
+        </div>
+
+        <!-- The numbers down the left are drawn by a counter in the stylesheet,
+             same idea as the step cards: nothing here is hand-numbered. -->
+        <div class="guide">
+
+          <!-- ---------- PART 1 ---------- -->
+          <section class="guide-part">
+            <div class="guide-num" aria-hidden="true"></div>
+            <h3 class="guide-title">Start in NLC</h3>
+
+            <p class="guide-text">
+              Open the onboarding link from your email and log in to Gateway. Go
+              to NLC and start the onboarding.
+            </p>
+            <p class="guide-text">
+              Create a Google Doc with three things: your bank name, routing
+              number, and account number &mdash; this is the account your direct
+              deposits and carrier commissions will hit. Upload that doc.
+            </p>
+
+            <div class="ref-card">
+              <ul class="ref-chips">
+                <li>Bank name</li>
+                <li>Routing number</li>
+                <li>Account number</li>
+              </ul>
+            </div>
+          </section>
+
+
+          <!-- ---------- PART 2 ---------- -->
+          <section class="guide-part">
+            <div class="guide-num" aria-hidden="true"></div>
+            <h3 class="guide-title">NLC Will Ask for E&amp;O &mdash; Get It Through SureLC</h3>
+
+            <p class="guide-text">
+              NLC's onboarding will ask you to upload E&amp;O insurance. You'll buy
+              it through SureLC &mdash; but SureLC makes you complete its own
+              onboarding before it lets you purchase. Register for a SureLC
+              account, then work through it.
+            </p>
+
+            <a
+              class="btn-gold"
+              href="https://accounts.surancebay.com/oauth/authorize?redirect_uri=https:%2F%2Fsurelc.surancebay.com%2Fproducer%2Foauth%3FreturnUrl%3D%252Fprofile%252Fcontact-info%253FgaId%253D689%2526gaId%253D689%2526branch%253DFFL%252520Apex%2526branchVisible%253Dtrue%2526branchEditable%253Dfalse%2526branchRequired%253Dfalse%2526autoAdd%253Dfalse%2526requestMethod%253DGET&amp;gaId=689&amp;client_id=surecrmweb&amp;response_type=code"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Register for SureLC
+              <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <ul class="check-list">
+              <li>
+                Doing business as:
+                <span class="mark-gold">INDIVIDUAL</span>
+              </li>
+              <li>Upload your bank info (the same Google Doc as before).</li>
+              <li>Answer the FINRA questions.</li>
+            </ul>
+          </section>
+
+
+          <!-- ---------- PART 3 ---------- -->
+          <section class="guide-part">
+            <div class="guide-num" aria-hidden="true"></div>
+            <h3 class="guide-title">AML Training, Then Buy Your E&amp;O</h3>
+            <span class="guide-where">In SureLC</span>
+
+            <p class="guide-text">
+              Before SureLC lets you buy E&amp;O, complete the AML requirement:
+              left menu &rarr; CE &amp; Training &rarr; Anti-Money Laundering
+              Training &rarr; Start Training (through SuranceBay, LLC). Finish it
+              and download your completion certificate.
+            </p>
+            <p class="guide-text">
+              Now buy the E&amp;O: left menu &rarr; E&amp;O Insurance &rarr;
+              <span class="mark-gold">BUY PLAN A</span> &rarr; sign &rarr;
+              download your E&amp;O certificate.
+            </p>
+
+            <!-- The whole point of this part: don't leave SureLC without both. -->
+            <div class="callout">
+              <svg class="callout-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4.5 10.5L8.25 14.25L15.5 6.5" stroke="currentColor" stroke-width="1.6"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p>
+                You leave SureLC with <strong>two documents</strong> in hand: your
+                AML certificate and your E&amp;O certificate.
+              </p>
+            </div>
+          </section>
+
+
+          <!-- ---------- PART 4 ---------- -->
+          <section class="guide-part">
+            <div class="guide-num" aria-hidden="true"></div>
+            <h3 class="guide-title">Back to NLC to Finish</h3>
+
+            <p class="guide-text">
+              Upload your E&amp;O information and your AML training certificate.
+              Answer the questions as you go &mdash; on question 12, select:
+              <span class="mark-gold">Individual Agent</span>
+            </p>
+            <p class="guide-text">
+              Then find the blue <strong>+</strong> button near the top left
+              &rarr; NEW CONTRACTING &rarr; request every single carrier one by
+              one.
+            </p>
+
+            <!-- The one instruction here with a real, lasting cost if it's
+                 skimmed, so it's the only thing on the page wearing a full gold
+                 border besides the action card. -->
+            <div class="guide-warn">
+              <p class="guide-warn-text">
+                Request every carrier <span class="mark-gold">EXCEPT Occidental</span>.
+                Do not request Occidental.
+              </p>
+            </div>
+
+            <p class="guide-close">
+              Go through everything thoroughly and sign every document &mdash; a
+              carrier isn't fully requested until it's signed.
+            </p>
+          </section>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================== ON TO THE NEXT STAGE ===================== -->
+      <a href="/new-agents/launch" class="next-card fade-up fade-up-4">
+        <div>
+          <span class="next-label">Next Stage</span>
+          <h2 class="next-title">Contracted? Head to Launch</h2>
+        </div>
+        <span class="next-arrow" aria-hidden="true">&rarr;</span>
+      </a>
 
     </div>
   </main>
@@ -81,5 +446,6 @@
   </footer>
 
   <script src="/js/main.js"></script>
+  <script src="/js/contracting.js"></script>
 </body>
 </html>
