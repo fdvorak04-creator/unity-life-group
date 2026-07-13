@@ -38,7 +38,7 @@ on desktop 95% of the time.
 # Rules
 - Desktop and laptop-first; narrow widths must still scroll and function.
 - Site structure: Home → Start Here (/new-agents: licensing,
-  contracting, launch) + Agent Portal (/agents) + The Vision (/vision)
+  contracting, launch) + Agent Portal (/agents)
 - Deployment: GitHub → Railway auto-deploy. "Push the update" =
   commit and push.
 - Verify changes before declaring done; never break existing links.
