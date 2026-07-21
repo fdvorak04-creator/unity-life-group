@@ -2,18 +2,18 @@
 <defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0" stop-color="#F2DFA8"/><stop offset="0.45" stop-color="#D8B36A"/><stop offset="0.75" stop-color="#B98A2F"/><stop offset="1" stop-color="#E8CC8A"/>
 </linearGradient></defs>
-<path d="M40.8,82.4 A27,27 0 0 1 41.7,31.3" fill="none" stroke="url(#lg)" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M59.2,82.4 A27,27 0 0 0 58.3,31.3" fill="none" stroke="url(#lg)" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M40.8,82.4 Q33.3,83.5 29.6,90.0 Q37.1,88.9 40.8,82.4 Z" fill="url(#lg)"/>
-<path d="M29.9,75.1 Q23.4,71.4 16.5,74.4 Q23.0,78.0 29.9,75.1 Z" fill="url(#lg)"/>
-<path d="M23.8,63.5 Q19.1,57.6 11.6,57.7 Q16.3,63.6 23.8,63.5 Z" fill="url(#lg)"/>
-<path d="M23.8,50.5 Q21.3,43.4 14.1,41.0 Q16.7,48.1 23.8,50.5 Z" fill="url(#lg)"/>
-<path d="M29.9,38.9 Q29.6,31.4 23.5,27.1 Q23.8,34.6 29.9,38.9 Z" fill="none" stroke="#164C39" stroke-width="1.3"/>
-<path d="M41.7,31.3 Q43.7,24.1 39.2,18.1 Q37.2,25.3 41.7,31.3 Z" fill="none" stroke="#164C39" stroke-width="1.3"/>
-<path d="M59.2,82.4 Q62.9,88.9 70.4,90.0 Q66.7,83.5 59.2,82.4 Z" fill="url(#lg)"/>
-<path d="M70.1,75.1 Q77.0,78.0 83.5,74.4 Q76.6,71.4 70.1,75.1 Z" fill="url(#lg)"/>
-<path d="M76.2,63.5 Q83.7,63.6 88.4,57.7 Q80.9,57.6 76.2,63.5 Z" fill="url(#lg)"/>
-<path d="M76.2,50.5 Q83.3,48.1 85.9,41.0 Q78.7,43.4 76.2,50.5 Z" fill="url(#lg)"/>
-<path d="M70.1,38.9 Q76.2,34.6 76.5,27.1 Q70.4,31.4 70.1,38.9 Z" fill="none" stroke="#164C39" stroke-width="1.3"/>
-<path d="M58.3,31.3 Q62.8,25.3 60.8,18.1 Q56.3,24.1 58.3,31.3 Z" fill="none" stroke="#164C39" stroke-width="1.3"/>
+<path d="M40.8,82.4 A27,27 0 0 1 41.7,31.3" fill="none" stroke="url(#lg)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M59.2,82.4 A27,27 0 0 0 58.3,31.3" fill="none" stroke="url(#lg)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M40.8,82.4 Q33.1,83.1 29.6,90.0 Q37.3,89.2 40.8,82.4 Z" fill="url(#lg)"/>
+<path d="M29.9,75.1 Q23.4,71.0 16.5,74.4 Q23.0,78.4 29.9,75.1 Z" fill="url(#lg)"/>
+<path d="M23.8,63.5 Q19.3,57.3 11.6,57.7 Q16.1,64.0 23.8,63.5 Z" fill="url(#lg)"/>
+<path d="M23.8,50.5 Q21.6,43.1 14.1,41.0 Q16.4,48.4 23.8,50.5 Z" fill="url(#lg)"/>
+<path d="M29.9,38.9 Q30.0,31.2 23.5,27.1 Q23.5,34.8 29.9,38.9 Z" fill="none" stroke="#2E6B52" stroke-width="2.0"/>
+<path d="M41.7,31.3 Q44.1,24.0 39.2,18.1 Q36.8,25.4 41.7,31.3 Z" fill="none" stroke="#2E6B52" stroke-width="2.0"/>
+<path d="M59.2,82.4 Q62.7,89.2 70.4,90.0 Q66.9,83.1 59.2,82.4 Z" fill="url(#lg)"/>
+<path d="M70.1,75.1 Q77.0,78.4 83.5,74.4 Q76.6,71.0 70.1,75.1 Z" fill="url(#lg)"/>
+<path d="M76.2,63.5 Q83.9,64.0 88.4,57.7 Q80.7,57.3 76.2,63.5 Z" fill="url(#lg)"/>
+<path d="M76.2,50.5 Q83.6,48.4 85.9,41.0 Q78.4,43.1 76.2,50.5 Z" fill="url(#lg)"/>
+<path d="M70.1,38.9 Q76.5,34.8 76.5,27.1 Q70.0,31.2 70.1,38.9 Z" fill="none" stroke="#2E6B52" stroke-width="2.0"/>
+<path d="M58.3,31.3 Q63.2,25.4 60.8,18.1 Q55.9,24.0 58.3,31.3 Z" fill="none" stroke="#2E6B52" stroke-width="2.0"/>
 </svg>

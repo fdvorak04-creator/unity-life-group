@@ -17,11 +17,13 @@
      IVORY     the voice. Nearly all type is ivory on green: headings, body,
                links, values. If a thing can be read, it is ivory (or Slate,
                ivory's quieter cousin, for labels and captions).
-     GOLD      the mark and the one move. Gold is NEVER flat wallpaper and, as
-               a rule, never text — it is the metallic GRADIENT reserved for the
-               logo and the single primary CTA on a screen (--gold-gradient).
-               Flat --gold (#D8B36A) is allowed only for tiny non-text accents:
-               one page rule, one hairline bar, a hover edge.
+     GOLD      the mark and the one move. Gold is ALWAYS the metallic GRADIENT
+               (--gold-gradient) — never flat, never wallpaper, never text. It is
+               reserved for the logo/emblem and the single primary CTA on a screen.
+               Flat gold is a brand violation (brand.md): every gold that reads as
+               a surface, rule or bar is the gradient. The only non-gradient gold
+               is a 1px edge of light — a hover hairline, a focus ring, the
+               emblem's ripple rings — which is light on the page, not a surface.
 
    If you find yourself reaching for gold to fill an area or to colour a word,
    reach for forest or ivory instead. That restraint is what makes the gold land. */
@@ -45,7 +47,7 @@
 
   /* -- GOLD: always the gradient for the mark & the CTA -------------------- */
   --gold-pale:  #F2DFA8;  /* gradient top / highlight                        */
-  --gold:       #D8B36A;  /* flat gold — tiny non-text accents ONLY          */
+  --gold:       #D8B36A;  /* the gradient's 45% stop; also 1px edges of light */
   --gold-mid:   #B98A2F;  /* gradient shadow                                 */
   --gold-warm:  #E8CC8A;  /* the brighter gold — hover, hairlines            */
   --gold-text:  #DEBD75;  /* small secondary gold (as "LIFE GROUP" in the mark) */
@@ -474,6 +476,18 @@ img {
   height: 11px;
   transform: translateY(-50%);
   background: var(--edge);
+}
+
+/* The right card's one-line caption. It mirrors the left card's jump links in
+   weight and colour so the two sides balance now the motif is gone — muted, never
+   gold: this is copy to be read, not a mark. */
+.world-sub {
+  margin: 0;
+  color: var(--text-mute);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: center;
 }
 
 /* (The 2x2 quick-link grid that used to sit under the Agent Portal button, and
@@ -917,7 +931,13 @@ img {
 .page-head {
   margin-bottom: clamp(28px, 3.6vh, 42px);
   padding-top: 18px;
-  border-top: 2px solid var(--gold);
+  /* The title rule is gold, so it is the metallic gradient, never flat (brand.md):
+     a 2px strip pinned to the top edge, run horizontally so the metal reads across
+     its length — the same move as .hero-rule. */
+  background-image: linear-gradient(90deg, var(--gold-pale) 0%, var(--gold-mid) 55%, var(--gold-warm) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+  background-position: left top;
   max-width: 62ch;
 }
 
@@ -1647,16 +1667,28 @@ img {
 
 /* -- SECTION B: "The ULG Method" — the licensing page's ONE gold-accent block ---
    This is the most important advice on the page, so it carries the page's single
-   flat-gold accent bar down its left edge. The box itself is the same forest
-   surface as everything else — the thin gold bar is the only gold in it. */
+   gold accent bar down its left edge — the real metallic gradient, never flat
+   (brand.md). The box itself is the same forest surface as everything else; the
+   gradient bar (drawn as ::before) is the only gold in it. */
 .method {
+  position: relative;
   margin-top: clamp(46px, 6vh, 76px);
   padding: clamp(32px, 4vh, 46px) clamp(28px, 3vw, 44px);
   border: 1px solid var(--edge);
-  border-left: 4px solid var(--gold);   /* the accent edge — flat gold, tiny */
+  border-left: 0;                        /* the gold bar below is the left edge */
   border-radius: var(--radius);
   background: linear-gradient(160deg, rgba(143, 167, 155, 0.15) 0%, rgba(143, 167, 155, 0.05) 100%);
   box-shadow: 0 0 46px rgba(0, 0, 0, 0.25);
+}
+.method::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  bottom: -1px;
+  width: 4px;
+  background: var(--gold-gradient);
+  border-radius: var(--radius) 0 0 var(--radius);
 }
 
 /* Slate, uppercase, wide-tracked — the eyebrow mirrors the SHAPE of "LIFE GROUP"
@@ -2335,16 +2367,28 @@ img {
 }
 
 /* The Occidental warning: it costs something real if it's skimmed, so it keeps a
-   thin flat-gold accent bar down its left edge — but the full gold box is spent
-   on the action card (one loudest block per page), so this steps down to a
-   forest surface with a forest-line border and that single gold bar. */
+   thin metallic-gold accent bar (the gradient, never flat — brand.md) down its
+   left edge — but the full gold box is spent on the action card (one loudest
+   block per page), so this steps down to a forest surface with a forest-line
+   border and that single gradient bar. */
 .guide-warn {
+  position: relative;
   margin-top: 22px;
   padding: 20px 24px;
   border: 1px solid var(--edge);
-  border-left: 4px solid var(--gold);
+  border-left: 0;                        /* the gold bar below is the left edge */
   border-radius: 3px;
   background: var(--surface);
+}
+.guide-warn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  bottom: -1px;
+  width: 4px;
+  background: var(--gold-gradient);
+  border-radius: 3px 0 0 3px;
 }
 
 .guide-warn-text {
