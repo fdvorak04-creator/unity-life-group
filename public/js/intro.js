@@ -28,11 +28,12 @@
   // or this isn't the homepage). Nothing to do, and nothing to listen for.
   if (!html.classList.contains("intro-armed")) return;
 
-  // Just past the last thing still moving. The final reveal (the "internal use
-  // only" note) starts at 1.66s and runs 0.55s, so everything is settled by
-  // 2.21s. Swapping the class any earlier would cut the last cards off mid-fade
-  // and snap them to full opacity — so this number and the reveal delays in
-  // styles.css ("3b. THE LOGO INTRO") have to be kept in step with each other.
+  // Just past the last thing still moving. In the fall-into-place intro the
+  // pieces settle by ~1.4s and the gold rings ripple out at 0.98s/1.08s; the
+  // hero's reveals (rule, tagline, worlds, note) land last, at ~2.16s. Swapping
+  // the class any earlier would cut those reveals off mid-fade and snap them to
+  // full opacity — so this number and the delays in styles.css ("3b. THE LOGO
+  // INTRO") have to be kept in step with each other.
   const RUNTIME_MS = 2260;
 
   // Any of these means "I'm here, get on with it".

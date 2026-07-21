@@ -3,37 +3,37 @@ Internal hub for ULG's insurance agents. Owner: Fraser. Users: agents
 on desktop 95% of the time.
 
 # Brand — never deviate
-- Palette: deep midnight navy base (#081428–#0A1830), gold #C6A15B
-  used sparingly as the accent weapon, steel blue secondary, white
-  #FDFDFC
-- Fonts: Playfair Display 600-800 for headings, Albert Sans for body
-- Logo assets: public/logos-final — ALWAYS use these files. Never
-  rebuild or approximate the marks in code.
-- Feel: private wealth firm — editorial, sharp, expensive. Never
-  startup-template.
+The authority is the vault: `C:\Projects\ulg-brain\10-Business\brand.md`.
+Read it before touching anything visual. In short:
+- Palette: forest ground (#061C15 page, #0A3628 cards, #164C39 lines),
+  gold as a metallic GRADIENT (#F2DFA8 → #D8B36A → #B98A2F → #E8CC8A),
+  ivory #EDE8DC body text, slate #8FA79B muted. Tokens live in the
+  `:root` block of public/css/styles.css.
+- Gold is ALWAYS a gradient (flat gold is a brand violation) and used
+  SCARCELY: the mark, headlines, and one CTA per screen. Everything else
+  is ivory on green. Body text is always ivory, never gold.
+- Fonts: Cinzel (display/headings, matches the wordmark), Albert Sans
+  (labels + body). Not Playfair — that was the retired system.
+- Feel: heraldic — prestige, permanence, earned status. Deep near-black
+  greens; gold stays genuinely metallic and scarce. Never startup-template,
+  and never let green+gold+crown drift into "country club".
 
-# Logos — how they actually work (read before touching a mark)
-- THE FILENAME NAMES THE BACKGROUND, NOT THE INK. `ulg-lockup-navy.svg`
-  is the LIGHT artwork, for navy backgrounds — that is the one this
-  site uses. `ulg-lockup-light.svg` is the DARK artwork, for white
-  backgrounds, and is currently unused. Getting this backwards puts a
-  white box with navy text on the midnight page.
-- The three files in public/logos-final are PRINT EXPORTS: a US-Letter
-  page (612x792) with an opaque background baked in and the logo
-  floating in the middle. They are masters. Do not use them directly.
-- What the site actually loads is public/logos-final/web/ — cropped,
-  transparent, web-ready marks GENERATED from those masters by
-  `node tools/build-marks.js`:
-    lockup-on-dark.svg    the full lockup
-    monogram-on-dark.svg  shields + ULG (favicon)
-    shield-on-dark.svg    the three-shield mark (nav)
-    shield-outline.svg    hairline version (hero watermark)
-  The tool also injects the inline markup into index.html (the hero
-  lockup, which the intro animates) and new-agents.html (the three
-  stage shields), between their `<!-- ULG:… -->` markers.
-- To change a mark: change the master, re-run the tool. NEVER hand-edit
-  the generated path data, and never retype a path from memory — that
-  is how the logo quietly stops being the logo.
+# Logo — how it works (read before touching the mark)
+- The master is `public/unity-life-group-logo.svg`: the gold lion emblem
+  (crown + lion + laurels) over the Cinzel wordmark. The EMBLEM IS ONE
+  MERGED PATH — it moves as a single unit, never in parts.
+- `public/brand/emblem.svg` is the emblem alone (favicon, header mark,
+  watermark). `public/brand/laurel-1..3.svg` are the laurel-progression
+  icons — the wreath filling stage by stage, used on the homepage motif
+  and the /new-agents stage cards (they replaced the old three-shield
+  progression).
+- The homepage hero inlines the emblem lockup so the intro can animate its
+  pieces (.lk-emblem / .lk-unity / .lk-lg / .lk-rules). THE SVG-TRANSFORM
+  TRAP: never put a CSS transform on an SVG element that already carries a
+  transform attribute — wrap it in an outer <g> and animate the wrapper
+  (brand.md spells this out).
+- The old `public/logos-final` three-shield system and its
+  `tools/build-marks.js` generator are RETIRED. Don't use them.
 
 # Rules
 - Desktop and laptop-first; narrow widths must still scroll and function.
