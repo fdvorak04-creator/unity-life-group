@@ -27,24 +27,14 @@
     const body = document.body;
     if (!body) return;
 
-    // The layer itself. aria-hidden because it is pure decoration. Inserted FIRST
-    // in the body so it sits behind everything without needing a negative z-index.
+    // The layer itself — a single near-black forest ground, nothing else.
+    // aria-hidden because it is pure decoration. Inserted FIRST in the body so it
+    // sits behind everything without needing a negative z-index. (The old gold
+    // glow and forest veil were removed: they lifted the ground toward mid-green
+    // and washed out the metallic gold.)
     const bg = document.createElement("div");
     bg.className = "ulg-bg";
     bg.setAttribute("aria-hidden", "true");
-
-    // The pool of gold light — on the homepage it sits high, behind the lockup;
-    // on every other page CSS dials it right down. This is what stops the flat
-    // forest reading as a dead rectangle: the page looks lit rather than printed.
-    const glow = document.createElement("div");
-    glow.className = "ulg-bg-glow";
-    bg.appendChild(glow);
-
-    // The dark veil: a forest wash over the glow, heaviest where the content is,
-    // so body text never has to compete with the light behind it.
-    const veil = document.createElement("div");
-    veil.className = "ulg-bg-veil";
-    bg.appendChild(veil);
 
     body.insertBefore(bg, body.firstChild);
   }

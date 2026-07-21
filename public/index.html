@@ -4,9 +4,9 @@
      different people land here:
 
        LEFT  — "I'm New Here"    the journey. One door: Begin. This side is about
-                                 BECOMING, so it carries the laurel progression:
-                                 the wreath filling stage by stage as onboarding
-                                 completes.
+                                 BECOMING. (The laurel progression that tells this
+                                 story lives large on /new-agents, where it's
+                                 legible — it was too small to read here.)
        RIGHT — "I'm Producing"   the toolkit. One door: Agent Portal. This side is
                                  about DOING, so it is denser, squarer, more
                                  utilitarian. More will be added to it later.
@@ -21,9 +21,9 @@
      ---------------------------------------------------------------------------
      THE LOGO: the mark is the gold lion emblem over the Cinzel wordmark, inlined
      below from /unity-life-group-logo.svg so the intro can animate its pieces.
-     The emblem is ONE merged unit and must move as one; the laurel motif icons
-     come from /brand/laurel-1..3.svg. (The old three-shield lockup and its
-     tools/build-marks.js generator are retired — see brand.md in the vault.)
+     The emblem is ONE merged unit and must move as one. (The old three-shield
+     lockup and its tools/build-marks.js generator are retired — see brand.md in
+     the vault.)
      ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -57,18 +57,26 @@
        when it finishes, so a visitor who lands and immediately clicks through to
        another page doesn't get the intro again when they come back.
 
+       FORCE REPLAY FOR TESTING. Loading the homepage with "?intro" (or "#intro")
+       in the URL always plays it, ignoring the once-per-session flag — e.g.
+       http://localhost:4173/?intro . Handy for reviewing the animation without
+       having to clear site data. Normal visits are unaffected.
+
        No class = no intro: the overlay is display:none by default, so the "not
        playing" path costs nothing and the page is just the page. sessionStorage
        throws in some locked-down/private modes, so a failure quietly means
        "no intro" rather than a broken homepage. -->
   <script>
+    var ULG_FORCE_INTRO =
+      location.search.indexOf("intro") !== -1 || location.hash.indexOf("intro") !== -1;
     try {
-      if (!sessionStorage.getItem("ulg-intro-played")) {
+      if (ULG_FORCE_INTRO || !sessionStorage.getItem("ulg-intro-played")) {
         sessionStorage.setItem("ulg-intro-played", "1");
         document.documentElement.classList.add("intro-armed");
       }
     } catch (e) {
-      /* no sessionStorage (private mode, blocked cookies) — just skip the intro */
+      /* no sessionStorage (private mode, blocked cookies): still honour ?intro */
+      if (ULG_FORCE_INTRO) document.documentElement.classList.add("intro-armed");
     }
   </script>
 </head>
@@ -128,13 +136,6 @@
 
       <!-- ---------- LEFT: the journey. About BECOMING. ---------- -->
       <section class="world fade-up fade-up-3" aria-labelledby="w-new">
-        <div class="world-row world-row-shield" aria-hidden="true">
-          <!-- ULG:MOTIF:START -->
-          <img class="stage-icon" src="/brand/laurel-1.svg" alt="" aria-hidden="true" />
-          <img class="stage-icon" src="/brand/laurel-2.svg" alt="" aria-hidden="true" />
-          <img class="stage-icon" src="/brand/laurel-3.svg" alt="" aria-hidden="true" />
-          <!-- ULG:MOTIF:END -->
-        </div>
         <div class="world-row world-row-label"><p class="world-eyebrow">I'm New Here</p></div>
         <div class="world-row world-row-headline"><h2 class="world-line" id="w-new">Start your path with clarity.</h2></div>
         <div class="world-row world-row-cta"><a href="/new-agents" class="btn-gold btn-lg world-cta">Begin <span class="btn-arrow" aria-hidden="true">&rarr;</span></a></div>
@@ -150,7 +151,6 @@
 
       <!-- ---------- RIGHT: the toolkit. About DOING. ---------- -->
       <section class="world fade-up fade-up-3" aria-labelledby="w-work">
-        <div class="world-row world-row-shield" aria-hidden="true"></div>
         <div class="world-row world-row-label"><p class="world-eyebrow">I'm Producing</p></div>
         <div class="world-row world-row-headline"><h2 class="world-line" id="w-work">Day to day resources.</h2></div>
         <div class="world-row world-row-cta"><a href="/agents" class="btn-ghost btn-lg world-cta">Agent Portal <span class="btn-arrow" aria-hidden="true">&rarr;</span></a></div>
