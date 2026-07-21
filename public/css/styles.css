@@ -497,9 +497,8 @@ img {
   margin: 0;
 }
 
-/* The two earlier stages sit back, so the complete wreath is the one that lands. */
-.world-row-shield :nth-child(1) { opacity: 0.4; }
-.world-row-shield :nth-child(2) { opacity: 0.62; }
+/* No opacity dimming here: the laurel SVGs already carry the progression (a few
+   leaves, then more, then the full wreath), so the growth reads on its own. */
 
 /* The ghost links, for the agent who is already mid-journey. Text only — they
    must not compete with "Begin". */
@@ -2211,8 +2210,9 @@ img {
 /* Held for a couple of seconds after a successful copy — the only feedback the
    agent gets that the clipboard actually took it. */
 .copy-btn.is-copied {
-  background: var(--gold);
-  color: var(--navy-deep);
+  background: var(--gold-gradient);   /* the real metal, never flat gold */
+  border-color: var(--gold-warm);
+  color: var(--forest-deep);
 }
 
 
