@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" role="img">
+<defs>
+<linearGradient id="laurelGold" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#F2DFA8"/><stop offset="0.45" stop-color="#D8B36A"/><stop offset="0.75" stop-color="#B98A2F"/><stop offset="1" stop-color="#E8CC8A"/>
+</linearGradient>
+</defs>
+<path fill="none" stroke="#164C39" stroke-width="1.4" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(30 50 53)"/>
+<path fill="none" stroke="#164C39" stroke-width="1.4" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(-30 50 53)"/>
+<path fill="none" stroke="#164C39" stroke-width="1.4" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(58 50 53)"/>
+<path fill="none" stroke="#164C39" stroke-width="1.4" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(-58 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(86 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(-86 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(114 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(-114 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(142 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(-142 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(168 50 53)"/>
+<path fill="url(#laurelGold)" d="M50,24 C44.6,16 44.6,12 50,8 C55.4,12 55.4,16 50,24 Z" transform="rotate(-168 50 53)"/>
+
+</svg>
