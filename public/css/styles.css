@@ -664,7 +664,8 @@ img {
   z-index: 500;   /* above .intro-armed .hero (320): it covers the assembling page */
   background: var(--navy-gradient);
   opacity: 1;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
 }
 
 .intro-armed .roar-intro {
@@ -678,9 +679,13 @@ img {
   object-fit: cover;   /* fill the viewport; the lockup stays centred, only empty forest crops */
 }
 
-/* The lift — /js/intro.js adds this when the roar ends or is skipped. */
+/* The lift — /js/intro.js adds this when the roar ends or is skipped. The roar
+   recedes (scales back into the distance) and dissolves while the homepage fades
+   up underneath, so the two blend into one transition instead of the video
+   cutting straight to the page. */
 .roar-intro.is-lifting {
   opacity: 0;
+  transform: scale(0.86);
   pointer-events: none;
 }
 
@@ -689,6 +694,7 @@ img {
    curtain goes (see the reveal below). */
 .intro-armed .hero {
   z-index: 320;
+  opacity: 0;   /* hidden under the roar; it fades in during the outro (see .intro-lifting) */
 }
 
 /* The lockup's own entrance is cancelled: its PIECES are the entrance now. */
@@ -803,6 +809,19 @@ img {
   animation: none;
 }
 
+/* THE OUTRO — the handoff from roar to homepage. While the roar overlay recedes
+   and dissolves (.is-lifting above), the whole hero fades into place as a single
+   piece, so the page arrives as PART of the transition instead of popping in.
+   Holding .fade-up at rest stops the pieces from re-running their own entrances
+   underneath the fade. */
+.intro-lifting .hero {
+  opacity: 1;
+  transition: opacity 0.85s ease;
+}
+.intro-lifting .fade-up {
+  animation: none;
+}
+
 /* Someone who has asked their computer to stop animating things does not want a
    two-second logo animation, however good it is. They get the homepage. The
    curtain never shows, and every piece sits at its resting state — which, by
@@ -810,6 +829,9 @@ img {
 @media (prefers-reduced-motion: reduce) {
   .intro-armed .roar-intro {
     display: none;
+  }
+  .intro-armed .hero {
+    opacity: 1;   /* no roar to fade in from — just show the page */
   }
   .intro-armed .hero-lockup,
   .intro-armed .lk-emblem,
