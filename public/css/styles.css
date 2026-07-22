@@ -674,19 +674,45 @@ img {
   to   { transform: translateY(0)    scale(1); }
 }
 
-/* THE EMBLEM leads: it fades in first — big and central — before the wordmark. */
-.intro-armed .lk-emblem { animation: lkFadeIn 0.4s ease-out 0.05s both; }
+/* THE EMBLEM leads: it fades in first — big and central — then takes a sharp
+   scale "punch" the instant the roar lands, for impact. */
+.intro-armed .lk-emblem {
+  animation: lkFadeIn 0.4s ease-out 0.05s both,
+             lkPunch  0.3s ease-out 0.42s both;
+}
 @keyframes lkFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lkPunch {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
 
-/* THE ROAR: two gold shockwave rings ripple outward from the emblem as it lands
-   — the "roar" carried by light, not a literal open mouth. They live inside the
-   lockup, so they scale out from the emblem wherever it is at that instant. */
-.intro-armed .lk-ring   { animation: lkRoar 0.65s ease-out 0.35s both; }
-.intro-armed .lk-ring-2 { animation: lkRoar 0.65s ease-out 0.48s both; }
+/* THE ROAR — a DIRECTIONAL shockwave, not concentric rings: gold arcs burst
+   forward from the lion's mouth. The lion faces LEFT, so the wave projects left.
+   Each arc grows out of its right edge (the mouth) and fades. Base shape and
+   position are in "THE SHOCKWAVE" below. */
+.intro-armed .lk-ring   { animation: lkRoar 0.5s ease-out 0.40s both; }
+.intro-armed .lk-ring-2 { animation: lkRoar 0.5s ease-out 0.52s both; }
 @keyframes lkRoar {
-  0%   { opacity: 0;    transform: scale(0.35); }
-  18%  { opacity: 0.9; }
-  100% { opacity: 0;    transform: scale(3.4); }
+  0%   { opacity: 0;    transform: scale(0.25); }
+  25%  { opacity: 0.95; }
+  100% { opacity: 0;    transform: scale(1.55); }
+}
+
+/* THE SHAKE — a short, sharp jolt as the roar lands. The whole hero shakes, so
+   the settling lockup jolts with it; it ends at zero, leaving no residual offset.
+   (brand.md currently rejects screen-shake — this is Fraser's call, and the vault
+   note is being updated to match.) */
+.intro-armed .hero {
+  animation: heroShake 0.34s ease-in-out 0.42s both;
+}
+@keyframes heroShake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  12% { transform: translate3d(-8px, 3px, 0); }
+  28% { transform: translate3d(7px, -4px, 0); }
+  44% { transform: translate3d(-5px, 3px, 0); }
+  60% { transform: translate3d(4px, -2px, 0); }
+  78% { transform: translate3d(-2px, 1px, 0); }
 }
 
 /* THE WORDMARK arrives as the lockup settles — UNITY, then LIFE GROUP, then the
@@ -738,22 +764,24 @@ img {
 }
 
 
-/* -- THE RINGS -------------------------------------------------------------
-   The two shockwave rings. They live inside .hero-lockup (an ordinary positioned
-   div) as absolutely-placed spans, centred on the emblem at ~52% across / 34%
-   down. The size is a percentage of the lockup's width, so the ripple scales with
-   the logo and never drifts off the mark. Gold here is light, not a surface, so a
-   flat gold ring is within the rules. */
+/* -- THE SHOCKWAVE ---------------------------------------------------------
+   The roar's shockwave — two gold ARCS, not full rings. Each is the left edge of
+   a circle (border-left only), positioned at the lion's mouth and grown out of
+   its right side (transform-origin: right centre) so the wave projects LEFT, the
+   way the lion faces. Gold here is light, not a surface, so it is within the
+   rules. */
 .lk-ring,
 .lk-ring-2 {
   position: absolute;
-  left: 52%;
-  top: 34%;
-  width: 26%;
+  left: 10%;
+  top: 37%;
+  width: 34%;
   aspect-ratio: 1;
-  margin: -13% 0 0 -13%;
-  border: 2px solid var(--gold-warm);   /* bolder + brighter so the roar reads */
+  margin-top: -17%;                      /* centre the arc on the mouth line */
+  border: 3px solid transparent;
+  border-left-color: var(--gold-warm);   /* only the left edge: an arc, not a ring */
   border-radius: 50%;
+  transform-origin: right center;        /* the arc grows out of the mouth, leftward */
   pointer-events: none;
   opacity: 0;   /* the resting state — and where the roar ends */
 }
@@ -769,6 +797,7 @@ img {
 /* Reduced motion: no intro at all. Every piece sits at its resting state — which
    is exactly where the intro would have left it. */
 @media (prefers-reduced-motion: reduce) {
+  .intro-armed .hero,
   .intro-armed .hero-lockup,
   .intro-armed .lk-emblem,
   .intro-armed .lk-unity,
