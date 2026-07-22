@@ -5,9 +5,19 @@
 // Railway runs this file automatically to put your site online.
 // ---------------------------------------------------------------------------
 
+// Load local secret settings from a .env file when running on your own
+// computer. On Railway these come from the dashboard instead, so this line
+// simply does nothing there.
+require("dotenv").config();
+
 // Bring in "Express", a small helper that makes running a web server easy.
 const express = require("express");
 const path = require("path");
+
+// "cookie-parser" lets the server read the encrypted login pass the browser
+// sends back on each visit. The bouncer logic itself lives in auth.js.
+const cookieParser = require("cookie-parser");
+const { requireAuth, mountAuthRoutes, configStatus } = require("./auth");
 
 // Create our web server application.
 const app = express();
@@ -20,6 +30,33 @@ const PORT = process.env.PORT || 3000;
 
 // Where all the visitor-facing files live.
 const PUBLIC_DIR = path.join(__dirname, "public");
+
+// ---------------------------------------------------------------------------
+// LOGIN (restricted access)
+// Read the browser's login pass, add the /login, /callback and /logout routes,
+// then put a checkpoint in front of the two locked sections. Everything below
+// this block — the clean addresses AND the static file server — sits behind
+// this checkpoint for protected paths, so a locked page can't leak through.
+//
+// Public and stays public: Home ("/"), Apply Now, and all shared images/CSS.
+// Locked: Get Licensed ("/new-agents" and its stage pages) and the Agent
+// Portal ("/agents").
+// ---------------------------------------------------------------------------
+app.use(cookieParser());
+mountAuthRoutes(app);
+
+const PROTECTED = [
+  /^\/agents(?:\.html)?\/?$/i,        // /agents, /agents/, /agents.html
+  /^\/new-agents(?:\.html)?\/?$/i,    // /new-agents, /new-agents/, /new-agents.html
+  /^\/new-agents\/.+/i,               // /new-agents/licensing, /contracting, /launch, ...
+];
+
+app.use((req, res, next) => {
+  if (PROTECTED.some((pattern) => pattern.test(req.path))) {
+    return requireAuth(req, res, next);
+  }
+  next();
+});
 
 // ---------------------------------------------------------------------------
 // CLEAN ADDRESSES
@@ -61,4 +98,19 @@ app.use((req, res) => {
 // Start listening for visitors.
 app.listen(PORT, () => {
   console.log(`Unity Life Group site is running. Open http://localhost:${PORT}`);
+
+  // Announce the login state loudly, so a half-finished setup is never mistaken
+  // for a protected site.
+  const status = configStatus();
+  if (!status.enabled) {
+    console.log("[auth] AUTH_ENABLED is off — every page is PUBLIC (no login required).");
+  } else if (!status.ready) {
+    console.warn(
+      "[auth] AUTH_ENABLED is ON but these settings are missing:",
+      status.missing.join(", "),
+      "— locked pages will show a 'being set up' notice until they are added."
+    );
+  } else {
+    console.log("[auth] Login is ON. Get Licensed and the Agent Portal are protected.");
+  }
 });
