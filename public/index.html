@@ -167,15 +167,10 @@
 
   </main>
 
-  <!-- THE CURTAIN. A single sheet in the site's own background gradient, sitting
-       over everything except the lockup. Because it is the SAME gradient as the
-       page beneath it, its exit isn't a curtain lifting off a different-coloured
-       page — there is nothing to "reveal" but the content itself. The tagline,
-       the two worlds and the embers simply arrive, and the intro has already
-       become the homepage.
-
-       display:none unless the intro is armed. -->
-  <div class="intro" id="intro" aria-hidden="true"></div>
+  <!-- No curtain and no overlay: the intro animates the real lockup below on the
+       real page ground and fades the rest of the hero in around it (see "3b. THE
+       LOGO INTRO" in styles.css). Nothing is painted over the homepage, so there
+       is no seam to hide. -->
 
   <script src="/js/main.js"></script>
   <script src="/js/intro.js"></script>

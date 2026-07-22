@@ -651,72 +651,84 @@ img {
    any future resize of the lockup, at any viewBox, forever.
    ========================================================================== */
 
-/* The curtain. The site's OWN background gradient — not a black screen, not a
-   different colour — so its exit reveals no seam. */
-.intro {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: var(--navy-gradient);
-  pointer-events: none;   /* it must never eat a click, even mid-fade */
-}
+/* Everything on the homepage is loaded but held INVISIBLE while the intro runs
+   (every piece below starts at opacity 0, filled backwards from `both`, so the
+   page never flashes before it animates). Nothing is painted over the page — no
+   curtain, no video. The mark animates on the real near-black ground and settles
+   into its exact resting place, then the rest of the hero fades up around it. So
+   the intro doesn't HAND OFF to the homepage, it BECOMES the homepage: no cut, no
+   colour change, no reposition. On every visit after the first, none of this
+   applies and it is simply the logo. */
 
-.intro-armed .intro {
-  display: block;
-  animation: introCurtain 0.5s ease 1.5s both;
-}
-
-@keyframes introCurtain {
-  from { opacity: 1; }
-  to   { opacity: 0; visibility: hidden; }
-}
-
-/* The hero is lifted above the curtain so the lockup can assemble ON it. That
-   lifts the tagline and the two worlds too — so they're held back until the
-   curtain goes (see the reveal below). */
-.intro-armed .hero {
-  z-index: 320;
-}
-
-/* The lockup's own entrance is cancelled: its PIECES are the entrance now. */
+/* THE LOCKUP settles from large-and-central down into its true resting size and
+   position. The transform is on the container div (plain pixels), so it composes
+   cleanly with the SVG pieces' own percentage transforms inside. transform-origin
+   sits on the emblem (the visible star) rather than the empty wordmark space
+   below it, so it scales around the lion, not the gap. */
 .intro-armed .hero-lockup {
-  animation: none;
+  animation: roarSettle 1s cubic-bezier(0.22, 0.61, 0.24, 1) both;
+  transform-origin: 50% 35%;
+}
+@keyframes roarSettle {
+  from { transform: translateY(12vh) scale(1.4); }
+  to   { transform: translateY(0)    scale(1); }
 }
 
-/* Everything in the hero that isn't the lockup waits, then arrives with the
-   curtain. Their normal .fade-up is replaced, not delayed, so there's no chance
-   of the two fighting over the same element. */
+/* THE EMBLEM leads: it fades in first — big and central — before the wordmark. */
+.intro-armed .lk-emblem { animation: lkFadeIn 0.4s ease-out 0.05s both; }
+@keyframes lkFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* THE ROAR: two gold shockwave rings ripple outward from the emblem as it lands
+   — the "roar" carried by light, not a literal open mouth. They live inside the
+   lockup, so they scale out from the emblem wherever it is at that instant. */
+.intro-armed .lk-ring   { animation: lkRoar 0.65s ease-out 0.35s both; }
+.intro-armed .lk-ring-2 { animation: lkRoar 0.65s ease-out 0.48s both; }
+@keyframes lkRoar {
+  0%   { opacity: 0;    transform: scale(0.35); }
+  18%  { opacity: 0.9; }
+  100% { opacity: 0;    transform: scale(3.4); }
+}
+
+/* THE WORDMARK arrives as the lockup settles — UNITY, then LIFE GROUP, then the
+   flanking rules — each rising the last short distance into place. Percentages,
+   not pixels (see the trap at the top), so it survives any resize of the lockup. */
+.intro-armed .lk-unity { animation: lkWordIn 0.42s ease-out 0.62s both; }
+.intro-armed .lk-lg    { animation: lkWordIn 0.42s ease-out 0.68s both; }
+.intro-armed .lk-rules { animation: lkWordIn 0.42s ease-out 0.74s both; }
+@keyframes lkWordIn {
+  from { opacity: 0; transform: translateY(9%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* THE REST OF THE HOMEPAGE fades up from invisible to visible around the settled
+   mark: the gold rule, the tagline, the two worlds, the note. These delays and
+   RUNTIME_MS in /js/intro.js are a pair — the last one finishes at 1.12 + 0.5 =
+   1.62s, and intro.js must not swap the class out before then or it clips the
+   final fades. Change one, change the other. */
 .intro-armed .hero-rule,
 .intro-armed .hero-tagline,
 .intro-armed .world,
 .intro-armed .home-note {
   animation: introReveal 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
-
-/* These delays and RUNTIME_MS in /js/intro.js are a pair. The last thing to
-   finish here is the note, at 1.66 + 0.5 = 2.16s — and intro.js (RUNTIME_MS
-   ~2200) must not swap the class out before then, or it will clip the final
-   reveals mid-fade and snap them to full opacity. Change one, change the other. */
-.intro-armed .hero-rule    { animation-delay: 1.52s; }
-.intro-armed .hero-tagline { animation-delay: 1.55s; }
-.intro-armed .world:nth-child(1) { animation-delay: 1.6s; }
-.intro-armed .world:nth-child(2) { animation-delay: 1.63s; }
-.intro-armed .home-note    { animation-delay: 1.66s; }
+.intro-armed .hero-rule    { animation-delay: 0.95s; }
+.intro-armed .hero-tagline { animation-delay: 1.00s; }
+.intro-armed .world:nth-child(1) { animation-delay: 1.05s; }
+.intro-armed .world:nth-child(2) { animation-delay: 1.08s; }
+.intro-armed .home-note    { animation-delay: 1.12s; }
 
 @keyframes introReveal {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 
 /* -- THE PIECES ------------------------------------------------------------
-   Four OUTER wrappers, each holding one piece of the lockup: the emblem, the
-   UNITY wordmark, the LIFE GROUP line, and the two flanking rules. All four need
-   fill-box: it makes `transform-origin: center` mean the piece's own centre, and
-   it makes the percentage distances below resolve against the piece itself. At
-   rest — which is to say on every visit after the first — none of this exists
-   and they are simply the logo. */
+   Outer wrappers, each holding one piece of the lockup. All need fill-box: it
+   makes `transform-origin: center` mean the piece's own centre, and it makes the
+   percentage distances above resolve against the piece itself. At rest — every
+   visit after the first — none of the animations apply and they are just the
+   logo. */
 .lk-emblem,
 .lk-unity,
 .lk-lg,
@@ -725,39 +737,13 @@ img {
   transform-origin: center;
 }
 
-/* THE FALL. Each piece fades in and falls the last short distance into place,
-   one after another. Same 900ms and same easing for all four, so it reads as
-   one settling motion rather than four separate drops; only the START time and
-   the emblem's shorter travel differ. The emblem is tall, so it falls -10%
-   instead of the -22% the lighter type pieces use, or it would lurch. */
-.intro-armed .lk-emblem { animation: lkFallEmblem 0.9s cubic-bezier(0.25, 0.7, 0.3, 1) 0.2s both; }
-.intro-armed .lk-unity  { animation: lkFall       0.9s cubic-bezier(0.25, 0.7, 0.3, 1) 0.34s both; }
-.intro-armed .lk-lg     { animation: lkFall       0.9s cubic-bezier(0.25, 0.7, 0.3, 1) 0.43s both; }
-.intro-armed .lk-rules  { animation: lkFall       0.9s cubic-bezier(0.25, 0.7, 0.3, 1) 0.5s both; }
-
-/* Percentages, not pixels — see the trap at the top. Both end at the resting
-   state (opacity 1, no transform), so dropping .intro-armed always snaps to the
-   finished logo. */
-@keyframes lkFall {
-  from { opacity: 0; transform: translateY(-22%); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes lkFallEmblem {
-  from { opacity: 0; transform: translateY(-10%); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 
 /* -- THE RINGS -------------------------------------------------------------
-   Two soft gold rings ripple outward from the emblem's centre, just after the
-   pieces have settled. They live inside .hero-lockup (an ordinary positioned
+   The two shockwave rings. They live inside .hero-lockup (an ordinary positioned
    div) as absolutely-placed spans, centred on the emblem at ~52% across / 34%
-   down. Every size is a percentage of the lockup's width, so the ripple scales
-   with the logo and never drifts off the mark. (A percentage margin resolves
-   against the parent's WIDTH — including the vertical one — which is what
-   centres these on a circle.) Gold here is light, not a surface, so a flat gold
-   ring is within the rules. */
+   down. The size is a percentage of the lockup's width, so the ripple scales with
+   the logo and never drifts off the mark. Gold here is light, not a surface, so a
+   flat gold ring is within the rules. */
 .lk-ring,
 .lk-ring-2 {
   position: absolute;
@@ -766,43 +752,23 @@ img {
   width: 26%;
   aspect-ratio: 1;
   margin: -13% 0 0 -13%;
-  border: 1px solid var(--gold);
+  border: 2px solid var(--gold-warm);   /* bolder + brighter so the roar reads */
   border-radius: 50%;
   pointer-events: none;
-  opacity: 0;   /* the resting state — and where both animations end */
-}
-
-.intro-armed .lk-ring   { animation: lkRing 0.8s ease-out 0.98s both; }
-.intro-armed .lk-ring-2 { animation: lkRing 0.8s ease-out 1.08s both; }
-
-@keyframes lkRing {
-  0%   { opacity: 0;    transform: scale(0.4); }
-  15%  { opacity: 0.85; }
-  100% { opacity: 0;    transform: scale(3); }
+  opacity: 0;   /* the resting state — and where the roar ends */
 }
 
 
 /* WHEN IT'S OVER (and when it's skipped) — /js/intro.js swaps .intro-armed for
-   .intro-done. This kills the .fade-up entrances too: by the time the intro is
-   finished those elements have already been revealed by introReveal above, and
-   without this, dropping .intro-armed would hand them back their fade-up and
-   they would fade in a second time. */
-.intro-done .intro {
-  display: none;
-}
-
+   .intro-done, freezing every entrance at its resting state (the pieces already
+   ended there). Without this the .fade-up elements would fade in a second time. */
 .intro-done .fade-up {
   animation: none;
 }
 
-/* Someone who has asked their computer to stop animating things does not want a
-   two-second logo animation, however good it is. They get the homepage. The
-   curtain never shows, and every piece sits at its resting state — which, by
-   design, is exactly where the intro would have put it anyway. */
+/* Reduced motion: no intro at all. Every piece sits at its resting state — which
+   is exactly where the intro would have left it. */
 @media (prefers-reduced-motion: reduce) {
-  .intro-armed .intro {
-    display: none;
-  }
   .intro-armed .hero-lockup,
   .intro-armed .lk-emblem,
   .intro-armed .lk-unity,
