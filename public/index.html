@@ -167,15 +167,22 @@
 
   </main>
 
-  <!-- THE CURTAIN. A single sheet in the site's own background gradient, sitting
-       over everything except the lockup. Because it is the SAME gradient as the
-       page beneath it, its exit isn't a curtain lifting off a different-coloured
-       page — there is nothing to "reveal" but the content itself. The tagline,
-       the two worlds and the embers simply arrive, and the intro has already
-       become the homepage.
+  <!-- THE ROAR INTRO. A short cinematic — the gold lion appears, roars, and the
+       full lockup assembles — that plays fullscreen over the settling homepage on
+       a visitor's FIRST arrival in a browser session, then lifts to reveal the
+       page. It sits above the hero while the real homepage quietly settles
+       underneath (the CSS in "3b. THE LOGO INTRO" still runs, invisible, so the
+       page is ready the instant the video lifts).
 
-       display:none unless the intro is armed. -->
-  <div class="intro" id="intro" aria-hidden="true"></div>
+       MUTED — browsers block autoplaying sound, so an autoplay intro is silent.
+       ONCE PER SESSION — armed by the head script; load with ?intro to force a
+       replay. display:none unless armed. Driven by /js/intro.js, which lifts it
+       when the roar ends (or the moment the visitor touches anything). -->
+  <div class="roar-intro" id="roar-intro" aria-hidden="true">
+    <video class="roar-intro__video" id="roar-intro-video" muted playsinline preload="auto">
+      <source src="/video/roar-intro.mp4" type="video/mp4" />
+    </video>
+  </div>
 
   <script src="/js/main.js"></script>
   <script src="/js/intro.js"></script>

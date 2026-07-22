@@ -651,25 +651,37 @@ img {
    any future resize of the lockup, at any viewBox, forever.
    ========================================================================== */
 
-/* The curtain. The site's OWN background gradient — not a black screen, not a
-   different colour — so its exit reveals no seam. */
-.intro {
+/* THE ROAR-INTRO OVERLAY. The roar video plays fullscreen ON TOP of the hero,
+   while the real homepage settles underneath via the piece + reveal animations
+   further down. When the roar ends — or the visitor skips it — /js/intro.js adds
+   .is-lifting and the whole layer fades out over 0.6s, revealing the settled
+   page. Its background is the site's own gradient, so the frame behind the video
+   (before it loads, and any crop margin) is never a seam. */
+.roar-intro {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 300;
+  z-index: 500;   /* above .intro-armed .hero (320): it covers the assembling page */
   background: var(--navy-gradient);
-  pointer-events: none;   /* it must never eat a click, even mid-fade */
+  opacity: 1;
+  transition: opacity 0.6s ease;
 }
 
-.intro-armed .intro {
+.intro-armed .roar-intro {
   display: block;
-  animation: introCurtain 0.5s ease 1.5s both;
 }
 
-@keyframes introCurtain {
-  from { opacity: 1; }
-  to   { opacity: 0; visibility: hidden; }
+.roar-intro__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* fill the viewport; the lockup stays centred, only empty forest crops */
+}
+
+/* The lift — /js/intro.js adds this when the roar ends or is skipped. */
+.roar-intro.is-lifting {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* The hero is lifted above the curtain so the lockup can assemble ON it. That
@@ -787,10 +799,6 @@ img {
    finished those elements have already been revealed by introReveal above, and
    without this, dropping .intro-armed would hand them back their fade-up and
    they would fade in a second time. */
-.intro-done .intro {
-  display: none;
-}
-
 .intro-done .fade-up {
   animation: none;
 }
@@ -800,7 +808,7 @@ img {
    curtain never shows, and every piece sits at its resting state — which, by
    design, is exactly where the intro would have put it anyway. */
 @media (prefers-reduced-motion: reduce) {
-  .intro-armed .intro {
+  .intro-armed .roar-intro {
     display: none;
   }
   .intro-armed .hero-lockup,

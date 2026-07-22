@@ -1,22 +1,20 @@
 // ---------------------------------------------------------------------------
-// intro.js  —  the logo intro, homepage only.
+// intro.js  —  the roar intro, homepage only.
 //
-// Almost all of the intro is CSS (see "3b. THE LOGO INTRO" in styles.css). The
-// decision to play it at all is made by an inline script in the head of
+// The decision to play at all is made by the inline script in the head of
 // index.html, which puts `intro-armed` on <html> on a visitor's first arrival in
-// a browser session.
+// a browser session (or whenever the URL carries ?intro). This file drives the
+// roar video once it's armed.
 //
-// So this file has exactly two jobs, and they are the same job:
-//   - end the intro when it's finished, and
-//   - end the intro early if the visitor touches anything.
+// The mechanism is the same swap the old fall-into-place intro used:
+//   - `intro-armed`  -> the roar overlay is shown; the homepage settles under it.
+//   - `intro-done`   -> the page is revealed and every entrance is frozen at rest.
+// We add `.is-lifting` to the overlay so it fades out (CSS transition), then drop
+// it from the DOM so it can never sit on top of the page and eat a click.
 //
-// "End the intro" means: take `intro-armed` off <html>, and put `intro-done` on.
-// That's the whole mechanism. Every piece's animation was written to finish at
-// the element's natural resting state — opacity 1, no transform, exactly where
-// the homepage's logo already sits — so removing the class mid-flight doesn't
-// "skip to an ending", it just stops pretending and shows the page. There is no
-// separate skipped-state to keep in sync with the played-one, which is why the
-// two can't drift apart.
+// "End the intro" happens on any of: the roar finishing, the visitor touching
+// anything, the video failing to load / autoplay being blocked, or a hard safety
+// timeout — so the overlay can never trap someone behind it.
 // ---------------------------------------------------------------------------
 
 (function () {
@@ -24,37 +22,68 @@
 
   const html = document.documentElement;
 
-  // Not armed = not the first arrival this session (or no sessionStorage at all,
-  // or this isn't the homepage). Nothing to do, and nothing to listen for.
+  // Not armed = not the first arrival this session (or not the homepage). Nothing
+  // to play and nothing to listen for.
   if (!html.classList.contains("intro-armed")) return;
 
-  // Just past the last thing still moving. In the fall-into-place intro the
-  // pieces settle by ~1.4s and the gold rings ripple out at 0.98s/1.08s; the
-  // hero's reveals (rule, tagline, worlds, note) land last, at ~2.16s. Swapping
-  // the class any earlier would cut those reveals off mid-fade and snap them to
-  // full opacity — so this number and the delays in styles.css ("3b. THE LOGO
-  // INTRO") have to be kept in step with each other.
-  const RUNTIME_MS = 2260;
+  const overlay = document.getElementById("roar-intro");
+  const video = document.getElementById("roar-intro-video");
 
-  // Any of these means "I'm here, get on with it".
+  // Someone who has asked their computer to reduce motion doesn't want a
+  // cinematic — hand them the settled homepage immediately, no video.
+  const reduceMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Hard ceiling: whatever else happens, the overlay is gone by this point, so a
+  // stalled or missing video never leaves the page unreachable behind it.
+  const MAX_MS = 6000;
+
   const SKIP_ON = ["pointerdown", "keydown", "wheel", "touchstart"];
 
   let done = false;
 
   function finish() {
-    if (done) return;   // the timer and a click can both land; only the first counts
+    if (done) return; // 'ended', a click and the safety timer can all land; first wins
     done = true;
 
-    clearTimeout(timer);
+    clearTimeout(safety);
     SKIP_ON.forEach((evt) => window.removeEventListener(evt, finish));
 
+    if (video) {
+      try { video.pause(); } catch (e) { /* nothing to do */ }
+    }
+
+    // Reveal the settled homepage, freeze every entrance at its resting state.
     html.classList.remove("intro-armed");
     html.classList.add("intro-done");
+
+    // Fade the overlay out, then remove it so it never blocks the page.
+    if (overlay) {
+      overlay.classList.add("is-lifting");
+      const drop = () => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); };
+      overlay.addEventListener("transitionend", drop, { once: true });
+      setTimeout(drop, 900); // fallback if transitionend never fires
+    }
   }
 
-  const timer = setTimeout(finish, RUNTIME_MS);
+  const safety = setTimeout(finish, MAX_MS);
 
-  // `passive` because none of these handlers ever calls preventDefault — it tells
-  // the browser it can keep scrolling without waiting to find out.
+  // `passive` because none of these handlers calls preventDefault.
   SKIP_ON.forEach((evt) => window.addEventListener(evt, finish, { passive: true }));
+
+  if (reduceMotion || !video) {
+    finish();
+    return;
+  }
+
+  // End when the roar finishes; bail to the page on any load/playback failure.
+  video.addEventListener("ended", finish, { once: true });
+  video.addEventListener("error", finish, { once: true });
+
+  // Autoplay needs the muted attribute (set in the HTML). If the browser still
+  // refuses, don't sit on a frozen first frame — just show the page.
+  const played = video.play();
+  if (played && typeof played.catch === "function") {
+    played.catch(function () { finish(); });
+  }
 })();
